@@ -38,5 +38,10 @@ module WorldBankLoans
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    
+    # Configure which frameworks to use for the different generators
+    config.generators do |g|
+      g.test_framework :rspec, :fixture => false, :views => true
+    end
   end
 end
