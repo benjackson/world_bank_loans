@@ -9,7 +9,13 @@ module NavigationHelpers
     case page_name
 
     when /the home\s?page/
-      '/'
+      root_path
+
+    when /the (.*?) json page/
+      path_to("the #{$1} page") + ".json"
+
+    when /the map page/
+      countries_path
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
