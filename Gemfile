@@ -31,4 +31,5 @@ group :development, :test do
    gem 'rspec-rails'
    gem 'cucumber-rails'
    gem 'capybara'
+   gem 'autotest'
 end
