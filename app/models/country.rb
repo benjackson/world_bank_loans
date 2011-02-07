@@ -8,8 +8,7 @@ class Country
     @number_of_projects = data[:number_of_projects]
   end
 
-  # class methods
-  class << self
+  class << self # class methods
     def create!(data)
       if data.is_a?(Array)
         return_array = []
@@ -18,6 +17,10 @@ class Country
         end
         return_array
       end
+    end
+
+    # Return the list of all countries and the number of projects they each have
+    def all
     end
 
     private

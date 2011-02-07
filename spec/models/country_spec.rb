@@ -37,4 +37,20 @@ describe Country do
       subject[1].number_of_projects.should == 99
     end
   end
+
+  context "when looking at the countries list" do
+    subject { Country.all }
+
+    it { should be_a(Array) }
+
+    it "should contain all the countries" do
+      subject.size.should == 50
+    end
+
+    it "should contain all country objects" do
+      subject.each do |country|
+        country.should be_a(Country)
+      end
+    end
+  end
 end
