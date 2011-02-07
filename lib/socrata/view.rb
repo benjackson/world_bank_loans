@@ -15,6 +15,7 @@ module Socrata
 
     # Return all the rows for this view
     def rows
+      Row.create_from_json(get_json("/rows"))
     end
 
     # Return a specific row from this view

@@ -10,14 +10,15 @@ module WorldBank
 
     # Get the column data for all the countries (name, number of projects)
     def get_country_groups
-      @country_column ||= column(2631500)
-      @country_column.groups unless @country_column.nil?
+      country_column = column(2631500)
+      country_column.groups unless country_column.nil?
     end
 
     # Get all the rows for a particular country.
     # Pass in the number of rows and optionally the start row in order to limit the amount
     # of results returned
-    def get_rows_for_country(name, num_rows = nil, start_row = nil)
+    def get_rows_for_country(name)
+      rows(:search => name) 
     end
   end
 end
