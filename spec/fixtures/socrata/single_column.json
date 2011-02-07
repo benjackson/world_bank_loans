@@ -1,0 +1,76 @@
+{
+  "id" : 2631500,
+  "name" : "Country",
+  "dataTypeName" : "text",
+  "position" : 5,
+  "renderTypeName" : "text",
+  "tableColumnId" : 1435078,
+  "width" : 154,
+  "cachedContents" : {
+    "non_null" : 7766,
+    "smallest" : "Albania",
+    "null" : 3,
+    "largest" : "Zimbabwe",
+    "top" : [ {
+      "count" : 570,
+      "item" : "Indonesia"
+    }, {
+      "count" : 401,
+      "item" : "Brazil"
+    }, {
+      "count" : 351,
+      "item" : "China"
+    }, {
+      "count" : 346,
+      "item" : "Mexico"
+    }, {
+      "count" : 324,
+      "item" : "World"
+    }, {
+      "count" : 277,
+      "item" : "Turkey"
+    }, {
+      "count" : 271,
+      "item" : "India"
+    }, {
+      "count" : 254,
+      "item" : "Morocco"
+    }, {
+      "count" : 249,
+      "item" : "Philippines"
+    }, {
+      "count" : 241,
+      "item" : "Colombia"
+    }, {
+      "count" : 223,
+      "item" : "Argentina"
+    }, {
+      "count" : 207,
+      "item" : "Tunisia"
+    }, {
+      "count" : 148,
+      "item" : "Peru"
+    }, {
+      "count" : 130,
+      "item" : "Thailand"
+    }, {
+      "count" : 128,
+      "item" : "Algeria"
+    }, {
+      "count" : 127,
+      "item" : "Malaysia"
+    }, {
+      "count" : 127,
+      "item" : "Korea, Republic of"
+    }, {
+      "count" : 120,
+      "item" : "Ecuador"
+    }, {
+      "count" : 106,
+      "item" : "Chile"
+    }, {
+      "count" : 106,
+      "item" : "Pakistan"
+    } ]
+  }
+}

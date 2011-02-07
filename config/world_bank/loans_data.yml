@@ -1,0 +1,16 @@
+test: &test
+  base_uri: "https://ctrpilot.socrata.com/api"
+  username: ctrpilot@gmail.com
+  password: app2011test
+  
+  data:
+    # The view ID of the specific dataset we're looking at
+    view_id: jdjw-if4m
+    # The column ID that contains all the country names
+    country_column: 2631500
+
+development:
+  <<: *test
+
+production:
+  <<: *test
