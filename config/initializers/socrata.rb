@@ -1,1 +1,1 @@
-require "socrata"
+require "socrata/rails/caching" # cache all socrata requests

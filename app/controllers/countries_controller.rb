@@ -1,6 +1,7 @@
 class CountriesController < ApplicationController
-
   respond_to :html, :json
+  
+  caches_action :index, :show
 
   def index
     @countries = Country.all

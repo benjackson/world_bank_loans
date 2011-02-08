@@ -7,7 +7,7 @@ module Socrata
     default_options[:headers] = {'Content-type' => 'application/json'}
     format :json
 
-    def initialize(id, params = {})
+    def initialize(id = nil, params = {})
       @id = id
       @config = params
 
@@ -18,6 +18,10 @@ module Socrata
     def get_json(*args)
       result = get(*args)
       JSON.parse(result.body)
+    end
+    
+    def get(*args)
+      self.class.get(*args)
     end
     
   end
