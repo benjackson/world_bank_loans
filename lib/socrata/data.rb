@@ -12,6 +12,11 @@ module Socrata
     def respond_to?(method_id)
       @data.has_key?(method_id.to_s)
     end
+    
+    # Convert all the data into a Hash
+    def to_hash
+      @data
+    end
 
     class << self
       # Create from a hash of data

@@ -1,6 +1,7 @@
 <div>
   <% @countries.each do |country| %>
-    <%= country.name %> has <%= country.number_of_projects %> projects<br/>
+    <%= link_to country.name, country_path(country) %> 
+    has <%= country.number_of_projects %> projects<br/>
   <% end %>
 </div>
 

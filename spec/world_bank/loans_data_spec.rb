@@ -29,7 +29,7 @@ module WorldBank
       end
       
       context "looking at one country" do
-        subject { LoansData.new(:username => "ctrpilot@gmail.com", :password => "app2011test").get_rows_for_country("Algeria") }
+        subject { LoansData.new(:username => "ctrpilot@gmail.com", :password => "app2011test").rows_for_country("Algeria") }
 
         it { should be_a(Array) }
         
