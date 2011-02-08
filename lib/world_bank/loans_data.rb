@@ -7,11 +7,17 @@ module WorldBank
     def initialize(params = {})
       super("jdjw-if4m", params)
     end
-
+    
+    def country_group_data
+      country_groups.map do |group|
+        { :name => group.name, :number_of_projects => group.count }
+      end
+    end
+    
     # Get the column data for all the countries (name, number of projects)
-    def get_country_groups
+    def country_groups
       country_column = column(2631500)
-      country_column.groups unless country_column.nil?
+      country_column.nil? ? [] : country_column.groups
     end
 
     # Get all the rows for a particular country.

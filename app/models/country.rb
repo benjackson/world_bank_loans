@@ -1,3 +1,5 @@
+require 'world_bank/loans_data'
+
 class Country
 
   attr_accessor :name
@@ -7,25 +9,28 @@ class Country
     @name = data[:name]
     @number_of_projects = data[:number_of_projects]
   end
-
-  class << self # class methods
-    def create!(data)
+  
+  class << self
+    def create(data)
       if data.is_a?(Array)
         return_array = []
         data.each do |row|
-          return_array << create_one_from(row)
+          return_array << self.new(row)
         end
         return_array
+      else
+        self.new(data)
       end
     end
-
-    # Return the list of all countries and the number of projects they each have
+    
     def all
+      self.create(loans_data.country_group_data)
     end
-
-    private
-    def create_one_from(row)
-      self.new(row)
+    
+    # TODO: abstract this out
+    def loans_data
+      WorldBank::LoansData.new(:username => "ctrpilot@gmail.com", :password => "app2011test")
     end
   end
+  
 end

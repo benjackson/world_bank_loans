@@ -1,3 +1,9 @@
+<div>
+  <% @countries.each do |country| %>
+    <%= country.name %> has <%= country.number_of_projects %> projects<br/>
+  <% end %>
+</div>
+
 <div id="map">
-  Map goes here
+  <%# Map goes here %>
 </div>
