@@ -17,6 +17,11 @@ module WorldBank
       it "should be able to get the country groups" do
         subject.get_country_groups.should be_a(Array)
       end
+
+      it "should be able to get all the rows for Algeria" do
+        rows = subject.get_rows_for_country("Algeria")
+      end
+
     end
   end
 end
