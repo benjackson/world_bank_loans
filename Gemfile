@@ -5,11 +5,13 @@ gem 'rails', '3.0.0.rc2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-#gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'pg'  # postgresql
 
 # Use HTTParty to make access to the Socrata API easier
 gem 'httparty'
+
+# Use Dalli memcaching
+gem 'dalli'
 
 # Use unicorn as the web server
 # gem 'unicorn'

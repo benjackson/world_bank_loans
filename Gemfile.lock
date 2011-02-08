@@ -57,6 +57,7 @@ GEM
     cucumber-rails (0.3.1)
       cucumber (>= 0.7.2)
     culerity (0.2.14)
+    dalli (1.0.2)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -137,6 +138,7 @@ DEPENDENCIES
   autotest
   capybara
   cucumber-rails
+  dalli
   httparty
   pg
   rails (= 3.0.0.rc2)
