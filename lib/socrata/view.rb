@@ -16,7 +16,7 @@ module Socrata
 
     # Return all the rows for this view
     def rows(params = {})
-      Row.create(get_json("/rows", params))
+      Row.create(get_json("/rows", :query => params))
     end
 
     # Return a specific row from this view
