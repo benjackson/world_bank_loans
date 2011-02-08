@@ -1,5 +1,6 @@
 require 'socrata'
 require 'socrata/column'
+require 'socrata/row'
 
 module Socrata
   class View < Base
@@ -14,8 +15,8 @@ module Socrata
     end
 
     # Return all the rows for this view
-    def rows
-      Row.create(get_json("/rows"))
+    def rows(params = {})
+      Row.create(get_json("/rows", params))
     end
 
     # Return a specific row from this view

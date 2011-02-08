@@ -18,8 +18,18 @@ module WorldBank
         subject.get_country_groups.should be_a(Array)
       end
 
-      it "should be able to get all the rows for Algeria" do
-        rows = subject.get_rows_for_country("Algeria")
+      context "looking at one country" do
+        subject { LoansData.new(:username => "ctrpilot@gmail.com", :password => "app2011test").get_rows_for_country("Algeria") }
+
+        it { should be_a(Array) }
+        
+        it "should have a few elements" do
+          subject.size.should > 1
+        end
+
+        it "should have mapped the data correctly" do
+          subject[0].region.should == "EUROPE AND CENTRAL ASIA"
+        end
       end
 
     end
