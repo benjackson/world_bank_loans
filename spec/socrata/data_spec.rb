@@ -5,7 +5,7 @@ module Socrata
   describe Data do
     context "single column created from json" do
       subject do
-        Data.create!(TestHelper.json_fixture("single_column"))
+        Data.create!(SpecHelper.json_fixture("single_column"))
       end
 
       it { should be_a(Data) }

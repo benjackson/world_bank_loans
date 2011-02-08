@@ -5,7 +5,7 @@ module Socrata
   describe Row do
     context "single row created from json" do
       subject do
-        Row.create!(TestHelper.json_fixture("single_row"))
+        Row.create!(SpecHelper.json_fixture("single_row"))
       end
 
       it { should be_a(Row) }
@@ -18,7 +18,7 @@ module Socrata
     
     context "multiple rows" do
       subject do
-        Row.create!(TestHelper.json_fixture("multiple_rows"))
+        Row.create!(SpecHelper.json_fixture("multiple_rows"))
       end
       
       it { should be_a(Array) }
