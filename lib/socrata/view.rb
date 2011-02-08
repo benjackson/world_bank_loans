@@ -10,8 +10,8 @@ module Socrata
     end
 
     # Return a specific column from this view
-    def column(id)
-      Column.create(get_json("/columns/#{id}"))
+    def column(id, params = {})
+      Column.create(get_json("/columns/#{id}", :query => params))
     end
 
     # Return all the rows for this view
