@@ -10,12 +10,12 @@ module Socrata
 
     # Return a specific column from this view
     def column(id)
-      Column.create_from_json(get_json("/columns/#{id}"))
+      Column.create(get_json("/columns/#{id}"))
     end
 
     # Return all the rows for this view
     def rows
-      Row.create_from_json(get_json("/rows"))
+      Row.create(get_json("/rows"))
     end
 
     # Return a specific row from this view
