@@ -13,6 +13,9 @@ gem 'httparty'
 # Use Dalli memcaching
 gem 'dalli'
 
+# Use jquery instead of prototype
+gem 'jquery-rails', '>= 0.2.6'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

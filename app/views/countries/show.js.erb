@@ -1,0 +1,5 @@
+new google.maps.Marker({
+    position: new google.maps.LatLng(<%=@country.latitude%>, <%=@country.longitude%>), 
+    map: the_map, 
+    title:"<%=@country.name%>"
+});

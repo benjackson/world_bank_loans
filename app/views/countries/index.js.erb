@@ -1,0 +1,3 @@
+<% @countries.each do |country| %>
+  $.get("<%=country_path(country)%>", null, null, "script");
+<% end %>
