@@ -13,7 +13,6 @@ module Socrata
         key = format_memcache_key(path, options[:query])
         
         ::Rails.cache.fetch(key) do
-          debugger
           json_result = get_json_without_caching(path, options)
           if json_result && !json_result["error"]
             ::Rails.logger.debug "Socrata cache miss: #{key} (stored)"
