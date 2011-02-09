@@ -23,8 +23,8 @@ module Socrata
     def row(id)
     end
 
-    def get(path, *args)
-      self.class.get("/views/#{@id}#{path}", *args)
+    def get_json(path, *args)
+      super("/views/#{@id}#{path}", *args)
     end
 
   end

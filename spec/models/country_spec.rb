@@ -44,7 +44,7 @@ describe Country do
     it { should be_a(Array) }
 
     it "should contain all the countries" do
-      subject.size.should == 50
+      subject.size.should == 19
     end
 
     it "should contain all country objects" do

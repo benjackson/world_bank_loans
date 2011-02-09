@@ -1,4 +1,5 @@
 {
+  "cache_keys" : ["socrata:/views/jdjw-if4m/rows:{}", "socrata:/views/jdjw-if4m/rows:{:search=>\"Algeria\"}", "socrata:/views/jdjw-if4m/rows:{:max_rows=>\"10\",:search=>\"Algeria\"}"],
   "meta" : {
     "view" : {
       "id" : "jdjw-if4m",

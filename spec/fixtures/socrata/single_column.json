@@ -1,4 +1,5 @@
 {
+  "cache_keys" : ["socrata:/views/jdjw-if4m/columns/2631500:{}"],
   "id" : 2631500,
   "name" : "Country",
   "dataTypeName" : "text",

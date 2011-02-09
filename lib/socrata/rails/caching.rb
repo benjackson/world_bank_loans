@@ -14,7 +14,7 @@ module Socrata
       
       private
       def format_memcache_key(path, query_hash = {})
-        "socrata:#{path.downcase}:#{format_query_hash(query_hash)}"
+        "socrata:#{path.downcase}:#{format_query_hash(query_hash)}".gsub(/\s/, "")
       end
       
       def format_query_hash(h)

@@ -32,8 +32,12 @@ class Country
         end
         return_array
       else
-        self.new(data)
+        self.new(data) unless data["error"]
       end
+    end
+    
+    def create!(data)
+      create(data) || raise("Unable to create Country object")
     end
     
     def all
