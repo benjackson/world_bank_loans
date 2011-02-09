@@ -5,7 +5,7 @@ module Socrata
     class << self
       # Rows are mapped to column names to make them easier to work with
       def create(data)
-        if data.has_key?("data")
+        if data.is_a?(Hash) && data.has_key?("data")
           columns = columns_for(data)
           
           rows = []

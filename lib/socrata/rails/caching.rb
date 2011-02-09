@@ -9,7 +9,20 @@ module Socrata
       included { alias_method_chain :get_json, :caching }
         
       def get_json_with_caching(path, options = {})
-        ::Rails.cache.fetch(format_memcache_key(path, options[:query])) { get_json_without_caching(path, options) }
+        # get the cache key
+        key = format_memcache_key(path, options[:query])
+        
+        ::Rails.cache.fetch(key) do
+          debugger
+          json_result = get_json_without_caching(path, options)
+          if json_result && !json_result["error"]
+            ::Rails.logger.debug "Socrata cache miss: #{key} (stored)"
+            json_result
+          else
+            ::Rails.logger.debug "Socrata cache miss: #{key}"
+            nil
+          end
+        end
       end
       
       private
@@ -17,7 +30,8 @@ module Socrata
         "socrata:#{path.downcase}:#{format_query_hash(query_hash)}".gsub(/\s/, "")
       end
       
-      def format_query_hash(h)
+      def format_query_hash(query_hash)
+        h = query_hash.dup
         h.each_pair do |k, v|
           h[k] = v.to_s.gsub(/\s/, "_").squeeze("_")
         end.inspect

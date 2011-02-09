@@ -28,13 +28,13 @@ module Socrata
           end
           ret
         else
-          self.new(data) unless data["error"]
+          self.new(data) unless data.nil? || data["error"]
         end
       end
       
       # Raise an error if the create fails
       def create!(data)
-        create(data) || raise("Couldn't create: #{data["message"]}")
+        create(data) || raise("Couldn't create: #{data.nil? ? "unknown" : data["message"]}")
       end
     end
     

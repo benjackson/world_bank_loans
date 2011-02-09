@@ -3,6 +3,10 @@ require 'socrata/row'
 
 module Socrata
   describe Row do
+    it "should cope with nil data" do
+      lambda { Row.create!(nil) }.should raise_error
+    end
+    
     context "single row created from json" do
       subject do
         Row.create!(SpecHelper.json_fixture("single_row"))
