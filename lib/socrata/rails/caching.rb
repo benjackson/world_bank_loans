@@ -11,17 +11,24 @@ module Socrata
       def get_json_with_caching(path, options = {})
         # get the cache key
         key = format_memcache_key(path, options[:query])
-        
-        ::Rails.cache.fetch(key) do
+        json_result = ::Rails.cache.read(key)
+        unless json_result
           json_result = get_json_without_caching(path, options)
           if json_result && !json_result["error"]
             ::Rails.logger.debug "Socrata cache miss: #{key} (stored)"
-            json_result
+            ::Rails.cache.write(key, json_result)
           else
-            ::Rails.logger.debug "Socrata cache miss: #{key}"
-            nil
+            if json_result
+              ::Rails.logger.debug "Socrata cache miss: #{key} (#{json_result["message"]})"
+            else
+              ::Rails.logger.debug "Socrata cache miss: #{key}"
+            end
           end
+        else
+          ::Rails.logger.debug "Socrata cache read: #{key}"
         end
+        
+        json_result
       end
       
       private
