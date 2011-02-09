@@ -1,0 +1,7 @@
+<h1><%= @country.name %></h1>
+<h2>Top 5 Projects</h2>
+<ul>
+  <% @country.projects.each do |project| %>
+    <li><%= project.name %></li>
+  <% end %>
+</ul>
