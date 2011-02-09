@@ -6,6 +6,10 @@ class Project < Socrata::Data
     project
   end
   
+  def id
+    loan_number
+  end
+  
   class << self
     def find_by_country(name)
       self.create(loans_data.rows_for_country_data(name))

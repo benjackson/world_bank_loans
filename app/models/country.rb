@@ -29,6 +29,11 @@ class Country
   
   memoize :projects
   
+  # Use the first project's loan number as an ID
+  def id
+    projects.empty? ? nil : projects[0].id
+  end
+  
   # Use the country name as a slug
   def to_param
     name

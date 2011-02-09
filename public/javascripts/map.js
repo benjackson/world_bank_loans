@@ -1,5 +1,9 @@
 var the_map;
 
+function countryClick(event) {
+  window.location.href = escape("/countries/" + this.title); 
+}
+
 $(document).ready(function() {
   the_map = new google.maps.Map(document.getElementById("map"), {
     center: new google.maps.LatLng(20, 0),
@@ -12,5 +16,4 @@ $(document).ready(function() {
   });
   
   $.get("/countries", null, null, "script");
-  //the_map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(-41, -102), new google.maps.LatLng(65, 175)));
 });

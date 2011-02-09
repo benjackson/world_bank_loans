@@ -1,5 +1,8 @@
-new google.maps.Marker({
+var marker_<%=@country.id%> = new google.maps.Marker({
     position: new google.maps.LatLng(<%=@country.latitude%>, <%=@country.longitude%>), 
     map: the_map, 
-    title:"<%=@country.name%>"
+    title:"<%=@country.name%>",
+    animation: google.maps.Animation.DROP
 });
+
+google.maps.event.addListener(marker_<%=@country.id%>, 'click', countryClick);
