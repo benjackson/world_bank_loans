@@ -32,7 +32,7 @@ module WorldBank
     # Pass in the number of rows and optionally the start row in order to limit the amount
     # of results returned
     def rows_for_country(name)
-      data = rows(:search => name, :max_rows => "5") || []
+      data = rows(:search => name) || []
       data.select { |row| row.country == name }  # TODO: add test for country name in another field
     end
   end

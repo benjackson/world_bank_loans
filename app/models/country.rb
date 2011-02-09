@@ -19,7 +19,7 @@ class Country
   end
   
   def number_of_projects
-    @number_of_projects || projects.size
+    projects.empty? ? @number_of_projects : projects.size
   end
   
   # Return all of the projects for this country

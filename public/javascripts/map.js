@@ -1,7 +1,18 @@
 var the_map;
+var the_info_window = new google.maps.InfoWindow({ disableAutoPan: true });
 
 function countryClick(event) {
   window.location.href = escape("/countries/" + this.title); 
+}
+
+function countryHover(event) {
+  the_info_window.close();
+  the_info_window.setContent(this.info_text);
+  the_info_window.open(the_map, this);
+}
+
+function countryEndHover(event) {
+  the_info_window.close();
 }
 
 $(document).ready(function() {

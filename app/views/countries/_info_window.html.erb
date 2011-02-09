@@ -1,0 +1,8 @@
+<h3><%=@country.name%></h3>
+<% if false %>
+  <ul>
+    <% @country.projects.each do |project|%>
+      <li><%=project.name%></li>
+    <% end %>
+  </ul>
+<% end %>

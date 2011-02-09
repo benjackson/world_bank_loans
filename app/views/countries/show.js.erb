@@ -5,4 +5,8 @@ var marker_<%=@country.id%> = new google.maps.Marker({
     animation: google.maps.Animation.DROP
 });
 
+marker_<%=@country.id%>.info_text = "<%=escape_javascript(render :partial => "info_window")%>"
+
 google.maps.event.addListener(marker_<%=@country.id%>, 'click', countryClick);
+google.maps.event.addListener(marker_<%=@country.id%>, 'mouseover', countryHover);
+google.maps.event.addListener(marker_<%=@country.id%>, 'mouseout', countryEndHover);
