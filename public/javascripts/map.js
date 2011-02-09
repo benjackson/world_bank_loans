@@ -15,5 +15,5 @@ $(document).ready(function() {
     maxZoom: 4
   });
   
-  $.get("/countries", null, null, "script");
+  $.get("/countries.js", null, null, "script");
 });
