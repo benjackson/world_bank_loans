@@ -57,10 +57,12 @@ GEM
     cucumber-rails (0.3.1)
       cucumber (>= 0.7.2)
     culerity (0.2.14)
+    daemons (1.1.0)
     dalli (1.0.2)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    eventmachine (0.12.10)
     ffi (0.6.3)
       rake (>= 0.8.7)
     gherkin (2.3.3)
@@ -127,6 +129,10 @@ GEM
       json_pure
       rubyzip
     term-ansicolor (1.0.5)
+    thin (1.2.7)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
@@ -148,3 +154,4 @@ DEPENDENCIES
   rails (= 3.0.0.rc2)
   rspec-rails
   ruby-debug
+  thin

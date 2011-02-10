@@ -2,3 +2,12 @@
   width: 80%;
   height: 80%;
 }
+
+
+#android.hidden {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}

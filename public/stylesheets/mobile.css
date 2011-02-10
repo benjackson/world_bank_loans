@@ -1,3 +1,7 @@
+p {
+  background: yellow;
+}
+
 #map {
   position: relative;
 	background:#f0f0f0;
