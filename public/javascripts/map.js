@@ -4,6 +4,13 @@ var markers = [];
 
 var Country = (function() {
   var marker_images = {
+      0: new google.maps.MarkerImage(
+        "/images/world-bank-marker.png",
+        new google.maps.Size(8, 8),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(4, 4),
+        new google.maps.Size(8, 8)
+        ),
       1: new google.maps.MarkerImage(
         "/images/world-bank-marker.png",
         new google.maps.Size(8, 8),
@@ -34,7 +41,14 @@ var Country = (function() {
   };
   
   var marker_image_shadows = {
-    1: new google.maps.MarkerImage(
+      0: new google.maps.MarkerImage(
+        "/images/world-bank-marker-shadow.png",
+        new google.maps.Size(12, 8),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(4, 4),
+        new google.maps.Size(12, 8)
+        ),
+      1: new google.maps.MarkerImage(
         "/images/world-bank-marker-shadow.png",
         new google.maps.Size(12, 8),
         new google.maps.Point(0, 0),
@@ -64,6 +78,7 @@ var Country = (function() {
   };
   
   var marker_shapes = {
+    0: { type: "circle", coords: [ 4, 4, 8 ] },
     1: { type: "circle", coords: [ 4, 4, 8 ] },
     2: { type: "circle", coords: [ 8, 8, 16 ] },
     3: { type: "circle", coords: [ 16, 16, 32 ] },
