@@ -173,7 +173,7 @@ function mapZoom() {
 
 $(document).ready(function() {
   the_map = new google.maps.Map(document.getElementById("map"), {
-    center: new google.maps.LatLng(0, 0),
+    center: new google.maps.LatLng(20, 0),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoom: 1,
     streetViewControl: false,
