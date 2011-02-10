@@ -10,6 +10,14 @@ class Project < Socrata::Data
     loan_number
   end
   
+  # so it can be serialiased to JSON nicely
+  def to_hash
+    {
+      :id => id,
+      :name => name
+    }
+  end
+  
   class << self
     def find_by_country(name)
       self.create(loans_data.rows_for_country_data(name))

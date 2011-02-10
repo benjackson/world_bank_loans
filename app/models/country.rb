@@ -39,6 +39,18 @@ class Country
     name
   end
   
+  # Mainly so it can be serialised as JSON nicely
+  def to_hash
+    {
+      :id => id,
+      :name => name,
+      :number_of_projects => number_of_projects,
+      :latitude => latitude,
+      :longitude => longitude,
+      :projects => projects.map { |project| project.to_hash }
+    }
+  end
+  
   class << self
     def create(data)
       if data.is_a?(Array)

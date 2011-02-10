@@ -1,5 +1,6 @@
 class CountriesController < ApplicationController
   #caches_action :index, :show
+  respond_to :html, :js, :json
   
   def index
     @countries = Country.all
@@ -7,7 +8,8 @@ class CountriesController < ApplicationController
   end
   
   def show
-    @country = Country.find(params[:id])
-    render :nothing => true if @country.projects.empty?
+    respond_with (@country = Country.find(params[:id]))
   end
 end
+
+#render :nothing => true if @country.projects.empty?

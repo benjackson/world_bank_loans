@@ -1,20 +1,21 @@
- 
-var marker_<%=@country.id%> = new google.maps.Marker({
-    position: new google.maps.LatLng(<%=@country.latitude%>, <%=@country.longitude%>), 
-    map: the_map, 
-    title:"<%=@country.name%>",
-    shape: {
-              type: "circle",
-              coords: [ 16, 16, 32 ]
-            },
-    icon: zoomDependentMarker(),
-    shadow: zoomDependentMarkerShadow()
-});
-
-marker_<%=@country.id%>.info_text = "<%=escape_javascript(render :partial => "info_window")%>"
-
-google.maps.event.addListener(marker_<%=@country.id%>, 'click', countryClick);
-<% unless is_mobile_device? %>
-google.maps.event.addListener(marker_<%=@country.id%>, 'mouseover', countryHover);
-google.maps.event.addListener(marker_<%=@country.id%>, 'mouseout', countryEndHover);
-<% end %>
+if (!markers[<%=@country.id%>]) {
+  markers[<%=@country.id%>] = new google.maps.Marker({
+      position: new google.maps.LatLng(<%=@country.latitude%>, <%=@country.longitude%>), 
+      map: the_map, 
+      title:"<%=@country.name%>",
+      shape: {
+                type: "circle",
+                coords: [ 16, 16, 32 ]
+              },
+      icon: zoomDependentMarker(),
+      shadow: zoomDependentMarkerShadow()
+  });
+  
+  markers[<%=@country.id%>].info_text = "<%=escape_javascript(render :partial => "info_window")%>"
+  
+  google.maps.event.addListener(markers[<%=@country.id%>], 'click', countryClick);
+  <% unless is_mobile_device? %>
+  //google.maps.event.addListener(marker_<%=@country.id%>, 'mouseover', countryHover);
+  //google.maps.event.addListener(marker_<%=@country.id%>, 'mouseout', countryEndHover);
+  <% end %>
+}

@@ -1,3 +1,5 @@
 <% @countries.each do |country| %>
-  $.get("<%=country_path(country, :format => :js)%>", null, null, "script");
+  $.getJSON("<%=country_path(country, :format => :json)%>", function(data) {
+    Country.create(data);
+  });
 <% end %>
