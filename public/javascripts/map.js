@@ -79,7 +79,7 @@ var Country = (function() {
       if (the_map.getZoom() == the_map.maxZoom) {
         window.location.href = escape("/countries/" + this.title);
       } else {
-        the_map.panToBounds(this.country.getBounds());
+        the_map.fitBounds(this.country.getBounds());
       }
     }
     
