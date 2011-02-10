@@ -15,6 +15,30 @@ function countryEndHover(event) {
   the_info_window.close();
 }
 
+function zoomDependentMarkerImage(image_url) {
+  
+}
+
+function zoomDependentMarker() {
+  return new google.maps.MarkerImage(
+    "/images/world-bank-marker.png",
+    new google.maps.Size(32, 32),
+    new google.maps.Point(0, 0),
+    new google.maps.Point(16, 16),
+    new google.maps.Size(32, 32)
+    );
+}
+
+function zoomDependentMarkerShadow() {
+  return new google.maps.MarkerImage(
+    "/images/world-bank-marker-shadow.png",
+    new google.maps.Size(87/2+10, 32),
+    new google.maps.Point(-10, 0),
+    new google.maps.Point((87/2)/2, 16),
+    new google.maps.Size(87/2, 32)
+    );
+}
+
 $(document).ready(function() {
   the_map = new google.maps.Map(document.getElementById("map"), {
     center: new google.maps.LatLng(20, 0),
