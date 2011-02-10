@@ -32,10 +32,10 @@ function zoomDependentMarker() {
 function zoomDependentMarkerShadow() {
   return new google.maps.MarkerImage(
     "/images/world-bank-marker-shadow.png",
-    new google.maps.Size(87/2+10, 32),
+    new google.maps.Size(93/2+10, 32),
     new google.maps.Point(-10, 0),
-    new google.maps.Point((87/2)/2, 16),
-    new google.maps.Size(87/2, 32)
+    new google.maps.Point((93/2)/2, 16),
+    new google.maps.Size(93/2, 32)
     );
 }
 
