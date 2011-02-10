@@ -71,23 +71,55 @@ var Country = (function() {
   };
   
   return function(data) {
-    Country.countries[data["name"]] = this;
-    
     var marker;   // the Google marker object
     var data;     // the data that makes it up
+    var bounds;
+    
+    function clicked(event) {
+      if (the_map.getZoom() == the_map.maxZoom) {
+        window.location.href = escape("/countries/" + this.title);
+      } else {
+        the_map.panToBounds(this.country.getBounds());
+      }
+    }
     
     this.changeOfZoom = function(zoom) {
       this.marker.setIcon(marker_images[zoom]);
       this.marker.setShadow(marker_image_shadows[zoom]);
       this.marker.setShape(marker_shapes[zoom]);
     }
-  
+    
+    this.getLatitude = function() {
+      return data["latitude"];
+    }
+    
+    this.getLongitude = function() {
+      return data["longitude"];
+    }
+    
+    this.getLatLng = function() {
+      return new google.maps.LatLng(this.getLatitude(), this.getLongitude());
+    }
+    
+    this.getBounds = function() {
+      bounds = bounds || new google.maps.LatLngBounds(
+        new google.maps.LatLng(this.getLatitude() - 1, this.getLongitude() - 1),
+        new google.maps.LatLng(this.getLatitude() + 1, this.getLongitude() + 1)
+        );
+      return bounds;
+    }
+    
+    // add this country to the list
+    Country.countries[data["name"]] = this;
+    
     this.data = data;
     this.marker = new google.maps.Marker({
       position: new google.maps.LatLng(data["latitude"], data["longitude"]),
       title: data["name"]
     });
-    this.changeOfZoom(the_map.zoom);
+    this.marker.country = this;   // add a reference back to this object
+    this.changeOfZoom(the_map.getZoom());
+    google.maps.event.addListener(this.marker, 'click', clicked);
     this.marker.setMap(the_map);
   }
   
@@ -97,7 +129,7 @@ Country.countries = [];    // all the Countrys created, by name
 
 Country.changeOfZoom = function(to_zoom) {
   for (var country_name in this.countries) {
-    if (to_zoom != the_map.zoom) { break; } // handle quick double-clicks
+    if (to_zoom != the_map.getZoom()) { break; } // handle quick double-clicks
     this.countries[country_name].changeOfZoom(to_zoom);
   }
 };
@@ -108,10 +140,6 @@ Country.create = function(data) {
   }
   return new Country(data);
 };
-
-function countryClick(event) {
-  window.location.href = escape("/countries/" + this.title); 
-}
 
 function countryHover(event) {
   the_info_window.close();
