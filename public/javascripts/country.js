@@ -85,16 +85,24 @@ $.WorldBank.Country = (function() {
   var label = new Label();
   
   return function(data) {
-    var marker;   // the Google marker object
-    var data;     // the data that makes it up
+    var marker;       // the Google marker object
+    var data;         // the data that makes it up
     var bounds;
+    var self = this;  // handle closure scope
     
-    function clicked(event) {
+    var clicked = function(event) {
       if ($.WorldBank.the_map.getZoom() == $.WorldBank.the_map.maxZoom) {
         window.location.href = escape("/countries/" + this.title);
       } else {
-        $.WorldBank.the_map.fitBounds(this.country.getBounds());
+        $.WorldBank.the_map.fitBounds(self.getBounds());
       }
+    }
+    
+    var changeMarkersForCurrentZoomLevel = function() {
+      var zoom = $.WorldBank.the_map.getZoom();
+      self.marker.setIcon(marker_images[zoom]);
+      self.marker.setShadow(marker_image_shadows[zoom]);
+      self.marker.setShape(marker_shapes[zoom]);
     }
     
     this.remove = function() {
@@ -109,12 +117,6 @@ $.WorldBank.Country = (function() {
       label.bindTo('text', this.marker, 'position');
       clearTimeout($.WorldBank.Country.timeout);
       $.WorldBank.Country.timeout = setTimeout(this.remove, $.WorldBank.Country.DISPLAY_DELAY);
-    }
-    
-    this.changeOfZoom = function(zoom) {
-      this.marker.setIcon(marker_images[zoom]);
-      this.marker.setShadow(marker_image_shadows[zoom]);
-      this.marker.setShape(marker_shapes[zoom]);
     }
     
     this.getLatitude = function() {
@@ -148,14 +150,24 @@ $.WorldBank.Country = (function() {
     // add this country to the list
     $.WorldBank.Country.countries[data["name"]] = this;
     
+    // save the data
     this.data = data;
+    
+    // create a google marker to represent this country on the map
     this.marker = new google.maps.Marker({
       position: new google.maps.LatLng(data["latitude"], data["longitude"]),
       title: data["name"]
     });
-    this.marker.country = this;   // add a reference back to this object
-    this.changeOfZoom($.WorldBank.the_map.getZoom());
-    google.maps.event.addListener(this.marker, 'click', clicked);
+    changeMarkersForCurrentZoomLevel();
+    // add a reference back to this object
+    this.marker.country = this;   
+    
+    // watch for a change of zoom
+    google.maps.event.addListener($.WorldBank.the_map, 'zoom_changed', function(event) {
+        changeMarkersForCurrentZoomLevel();
+    });
+    
+    google.maps.event.addListener(this.marker, 'click', function() { clicked() });
     this.marker.setMap($.WorldBank.the_map);
     if (this.isVisible())
       $.WorldBank.Country.visible_countries.push(this);
@@ -172,14 +184,6 @@ $.WorldBank.Country.timeout;    // the timeout variable for showing/hiding the i
 $.WorldBank.Country.currently_displayed_country;
 $.WorldBank.Country.displayed_country_id = -1;
 $.WorldBank.Country.visible_countries = [];
-
-// change the size of the country markers
-$.WorldBank.Country.changeOfZoom = function(to_zoom) {
-  for (var country_name in this.countries) {
-    if (to_zoom != $.WorldBank.the_map.getZoom()) { break; } // handle quick double-clicks
-    this.countries[country_name].changeOfZoom(to_zoom);
-  }
-};
 
 // recalculate the visible markers
 $.WorldBank.Country.boundsChanged = function() {
