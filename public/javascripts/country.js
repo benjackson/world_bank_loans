@@ -82,16 +82,6 @@ $.WorldBank.Country = (function() {
     4: { type: "circle", coords: [ 32, 32, 64 ] }
   };
   
-  var label = new Label();
-  
-  // the line from a country marker to its label
-  var infoLine = new google.maps.Polyline({
-      clickable: false,
-      strokeColor: "#fe8626",
-      strokeOpacity: 1,
-      strokeWeight: 2
-  });
-  
   return function(data) {
     var marker;       // the Google marker object
     var data;         // the data that makes it up
@@ -112,61 +102,12 @@ $.WorldBank.Country = (function() {
       self.marker.setShadow(marker_image_shadows[zoom]);
       self.marker.setShape(marker_shapes[zoom]);
     }
-    
-    // Work out the best place to put the info panel depending on where this
-    // country's marker is.
-    var getInfoLatLng = function() {
-      // establish the quadrant to place it in
-      var projection = $.WorldBank.the_map.getProjection();
-      
-      var bounds = $.WorldBank.the_map.getBounds();
-      var sw = projection.fromLatLngToPoint(bounds.getSouthWest());
-      var ne = projection.fromLatLngToPoint(bounds.getNorthEast());
-      var width = ne.x - sw.x;
-      var height = sw.y - ne.y;
-      
-      var center = $.WorldBank.the_map.getCenter();
-      var delta_lat = self.getLatitude() - center.lat();
-      var delta_lng = self.getLongitude() - center.lng();
-      var x, y;
-      
-      var randomness = Math.floor(Math.random() * 2);
-      
-      if (delta_lng > 0 || randomness)
-        x = sw.x + (width * 0.2);
-      else
-        x = sw.x + (width * 0.6);
-      
-      if (delta_lat < 0 && !randomness)
-        y = ne.y + (height * 0.2);
-      else
-        y = ne.y + (height * 0.6);
-      
-      label.setText(self.data["name"]);
-      return projection.fromPointToLatLng(new google.maps.Point(x, y));
+  
+    this.getSummaryHtml = function() {
+      return "<div style=\"display: none; position: absolute;\"><div class=\"country-info-summary\">"+
+      "<h1>Summary goes here</h1><ul><li>List item</li><li>List item</li></div></div>";
     }
-    
-    // Display the info panel for this country
-    this.displayInfo = function() {
-      var lat_lng = getInfoLatLng();
-      
-      infoLine.setPath([ lat_lng, this.getLatLng() ]);
-      infoLine.setMap(this.marker.getMap());
-      
-      label.setLatLng(lat_lng);
-      label.setMap(this.marker.getMap());
-    }
-    
-    // Remove the info panel for this country
-    this.removeInfo = function() {
-      infoLine.setPath([ new google.maps.LatLng(-179, -179),
-      new google.maps.LatLng(-179, -179) ]);
-      //infoLine.setMap(null);
-      
-      // give the line some time to disappear first
-      label.setMap(null);
-    }
-    
+       
     this.getLatitude = function() {
       return data["latitude"];
     }
@@ -193,6 +134,13 @@ $.WorldBank.Country = (function() {
         return true;
       else
         return false;
+    }
+    
+    this.disbursedAmount = function() {
+      
+    }
+    
+    this.undisbursedAmount = function() {
     }
     
     // add this country to the list
