@@ -17,7 +17,7 @@ Label.prototype = new google.maps.OverlayView;
 
 // Implement onAdd
 Label.prototype.onAdd = function() {
- var pane = this.getPanes().overlayLayer;
+ var pane = this.getPanes().overlayMouseTarget;
  pane.appendChild(this.div_);
 
  // Ensures the label is redrawn if the text or position is changed.
@@ -43,12 +43,20 @@ Label.prototype.onRemove = function() {
 // Implement draw
 Label.prototype.draw = function() {
  var projection = this.getProjection();
- var position = projection.fromLatLngToDivPixel(this.get('position'));
+ var position = projection.fromLatLngToDivPixel(this.lat_lng);
 
  var div = this.div_;
  div.style.left = position.x + 'px';
  div.style.top = position.y + 'px';
  div.style.display = 'block';
 
- this.span_.innerHTML = this.get('text').toString();
+ this.span_.innerHTML = this.text;
 };
+
+Label.prototype.setLatLng = function(lat_lng) {
+  this.lat_lng = lat_lng;
+};
+
+Label.prototype.setText = function(string) {
+  this.text = string;
+}

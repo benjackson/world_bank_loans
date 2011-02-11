@@ -84,6 +84,14 @@ $.WorldBank.Country = (function() {
   
   var label = new Label();
   
+  // the line from a country marker to its label
+  var infoLine = new google.maps.Polyline({
+      clickable: false,
+      strokeColor: "#ff0000",
+      strokeOpacity: 1,
+      strokeWeight: 2
+  });
+  
   return function(data) {
     var marker;       // the Google marker object
     var data;         // the data that makes it up
@@ -92,7 +100,7 @@ $.WorldBank.Country = (function() {
     
     var clicked = function(event) {
       if ($.WorldBank.the_map.getZoom() == $.WorldBank.the_map.maxZoom) {
-        window.location.href = escape("/countries/" + this.title);
+        window.location.href = escape("/countries/" + self.data["name"]);
       } else {
         $.WorldBank.the_map.fitBounds(self.getBounds());
       }
@@ -105,15 +113,51 @@ $.WorldBank.Country = (function() {
       self.marker.setShape(marker_shapes[zoom]);
     }
     
+    // Work out the best place to put the info panel depending on where this
+    // country's marker is.
+    var getInfoLatLng = function() {
+      // establish the quadrant to place it in
+      var projection = $.WorldBank.the_map.getProjection();
+      
+      var bounds = $.WorldBank.the_map.getBounds();
+      var sw = projection.fromLatLngToPoint(bounds.getSouthWest());
+      var ne = projection.fromLatLngToPoint(bounds.getNorthEast());
+      var width = ne.x - sw.x;
+      var height = sw.y - ne.y;
+      
+      var center = $.WorldBank.the_map.getCenter();
+      var delta_lat = self.getLatitude() - center.lat();
+      var delta_lng = self.getLongitude() - center.lng();
+      var x, y;
+      
+      if (delta_lng > 0)
+        x = sw.x + (width * 0.2);
+      else
+        x = sw.x + (width * 0.6);
+      
+      if (delta_lat < 0)
+        y = ne.y + (height * 0.2);
+      else
+        y = ne.y + (height * 0.6);
+      
+      label.setText(self.data["name"]);
+      return projection.fromPointToLatLng(new google.maps.Point(x, y));
+    }
+    
     // Display the info panel for this country
     this.displayInfo = function() {
+      var lat_lng = getInfoLatLng();
+      
+      infoLine.setPath([ lat_lng, this.getLatLng() ]);
+      infoLine.setMap(this.marker.getMap());
+      
+      label.setLatLng(lat_lng);
       label.setMap(this.marker.getMap());
-      label.bindTo('position', this.marker, 'position');
-      label.bindTo('text', this.marker, 'position');
     }
     
     // Remove the info panel for this country
     this.removeInfo = function() {
+      infoLine.setMap(null);
       label.setMap(null);
     }
     
