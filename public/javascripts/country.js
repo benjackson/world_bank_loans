@@ -87,7 +87,7 @@ $.WorldBank.Country = (function() {
   // the line from a country marker to its label
   var infoLine = new google.maps.Polyline({
       clickable: false,
-      strokeColor: "#ff0000",
+      strokeColor: "#fe8626",
       strokeOpacity: 1,
       strokeWeight: 2
   });
@@ -130,12 +130,14 @@ $.WorldBank.Country = (function() {
       var delta_lng = self.getLongitude() - center.lng();
       var x, y;
       
-      if (delta_lng > 0)
+      var randomness = Math.floor(Math.random() * 2);
+      
+      if (delta_lng > 0 || randomness)
         x = sw.x + (width * 0.2);
       else
         x = sw.x + (width * 0.6);
       
-      if (delta_lat < 0)
+      if (delta_lat < 0 && !randomness)
         y = ne.y + (height * 0.2);
       else
         y = ne.y + (height * 0.6);
@@ -158,7 +160,8 @@ $.WorldBank.Country = (function() {
     // Remove the info panel for this country
     this.removeInfo = function() {
       infoLine.setMap(null);
-      label.setMap(null);
+      // give the line some time to disappear first
+      setTimeout(function() { label.setMap(null); }, 100);
     }
     
     this.getLatitude = function() {

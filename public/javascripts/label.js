@@ -6,7 +6,7 @@ function Label(opt_options) {
  // Label specific
  var span = this.span_ = document.createElement('span');
  span.style.cssText = 'position: relative; left: -50%; top: -8px; ' +
-                      'white-space: nowrap; border: 1px solid blue; ' +
+                      'white-space: nowrap; border: 2px solid #fe8626; ' +
                       'padding: 2px; background-color: white';
 
  var div = this.div_ = document.createElement('div');
