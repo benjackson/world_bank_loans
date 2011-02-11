@@ -5,6 +5,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       var self = this;
       var country;
       var div;
+      var drawn_for_zoom;
       
       var getStrokeWeight = function() {
         switch (country.marker.map.getZoom()) {
@@ -106,7 +107,13 @@ $.WorldBank.CountryInfoOverlay = (function() {
       this.onAdd = function() {
         var pane = this.getPanes().overlayMouseTarget;
         div = $(country.getSummaryHtml());
+        drawn_for_zoom = country.marker.map.getZoom();
         $(pane).append(div);
+        var projection = this.getProjection();
+        var position = projection.fromLatLngToDivPixel(getLatLng());
+        div.css('left', position.x);
+        div.css('top', position.y);
+        div.show();
       }
       
       this.onRemove = function() {
@@ -114,11 +121,8 @@ $.WorldBank.CountryInfoOverlay = (function() {
       }
       
       this.draw = function() {
-        var projection = this.getProjection();
-        var position = projection.fromLatLngToDivPixel(getLatLng());
-        div.css('left', position.x);
-        div.css('top', position.y);
-        div.show();
+        if (country.marker.map.getZoom() != drawn_for_zoom)
+          this.hide();
       }
 
     }
