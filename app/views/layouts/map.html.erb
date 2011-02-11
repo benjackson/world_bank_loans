@@ -3,7 +3,7 @@
 <head>
   <title>WorldBankLoans</title>
   <%= stylesheet_link_tag 'world-bank-loans', :cache => false %>
-  <%= javascript_include_tag :defaults, "http://maps.google.com/maps/api/js?sensor=true", "map" %>
+  <%= javascript_include_tag :defaults, "http://maps.google.com/maps/api/js?sensor=true", "map", "label", "country" %>
   <%= csrf_meta_tag %>
   <% if in_mobile_view? %>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />

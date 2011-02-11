@@ -1,7 +1,7 @@
 if (!markers[<%=@country.id%>]) {
   markers[<%=@country.id%>] = new google.maps.Marker({
       position: new google.maps.LatLng(<%=@country.latitude%>, <%=@country.longitude%>), 
-      map: the_map, 
+      map: $.WorldBank.the_map, 
       title:"<%=@country.name%>",
       shape: {
                 type: "circle",
