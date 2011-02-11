@@ -152,7 +152,6 @@ $.WorldBank.Country = (function() {
       
       infoLine.setPath([ lat_lng, this.getLatLng() ]);
       infoLine.setMap(this.marker.getMap());
-      infoLine.setOptions({ strokeOpacity: 1 });
       
       label.setLatLng(lat_lng);
       label.setMap(this.marker.getMap());
@@ -160,10 +159,12 @@ $.WorldBank.Country = (function() {
     
     // Remove the info panel for this country
     this.removeInfo = function() {
-      infoLine.setOptions({ strokeOpacity: 0 });
-      infoLine.setMap(null);
+      infoLine.setPath([ new google.maps.LatLng(-179, -179),
+      new google.maps.LatLng(-179, -179) ]);
+      //infoLine.setMap(null);
+      
       // give the line some time to disappear first
-      setTimeout(function() { label.setMap(null); }, 100);
+      label.setMap(null);
     }
     
     this.getLatitude = function() {
