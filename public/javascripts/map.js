@@ -24,5 +24,5 @@ $(document).ready(function() {
   
   $.get("/countries.js", null, null, "script");
   
-  $.WorldBank.Country.displayRandomVisibleCountries();
+  $.WorldBank.CountryInfos.start();
 });

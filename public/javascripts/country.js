@@ -105,18 +105,16 @@ $.WorldBank.Country = (function() {
       self.marker.setShape(marker_shapes[zoom]);
     }
     
-    this.remove = function() {
-      label.setMap(null);
-      clearTimeout($.WorldBank.Country.timeout);
-      $.WorldBank.Country.timeout = setTimeout(function() { $.WorldBank.Country.displayNextVisibleCountry(); }, $.WorldBank.Country.NEXT_DELAY);
-    }
-    
-    this.display = function() {
+    // Display the info panel for this country
+    this.displayInfo = function() {
       label.setMap(this.marker.getMap());
       label.bindTo('position', this.marker, 'position');
       label.bindTo('text', this.marker, 'position');
-      clearTimeout($.WorldBank.Country.timeout);
-      $.WorldBank.Country.timeout = setTimeout(this.remove, $.WorldBank.Country.DISPLAY_DELAY);
+    }
+    
+    // Remove the info panel for this country
+    this.removeInfo = function() {
+      label.setMap(null);
     }
     
     this.getLatitude = function() {
@@ -175,14 +173,10 @@ $.WorldBank.Country = (function() {
   
 }) ();
 
-$.WorldBank.Country.countries = [];    // all the Countrys created, by name
-$.WorldBank.Country.INITIAL_DELAY = 1000;
-$.WorldBank.Country.DISPLAY_DELAY = 2000;
-$.WorldBank.Country.NEXT_DELAY = 1500;
-$.WorldBank.Country.NO_COUNTRIES_DELAY = 1000;
-$.WorldBank.Country.timeout;    // the timeout variable for showing/hiding the info on random visible countries
-$.WorldBank.Country.currently_displayed_country;
-$.WorldBank.Country.displayed_country_id = -1;
+// All the Countrys created, by name
+$.WorldBank.Country.countries = []; 
+
+// All the countries currently visible on the map
 $.WorldBank.Country.visible_countries = [];
 
 // recalculate the visible markers
@@ -202,28 +196,3 @@ $.WorldBank.Country.create = function(data) {
   }
   return new $.WorldBank.Country(data);
 };
-
-$.WorldBank.Country.getNextVisibleCountry = function() {
-  if (this.visible_countries.length == 0)
-    return null;
-  else
-    return this.visible_countries[++this.displayed_country_id % this.visible_countries.length];
-}
-
-$.WorldBank.Country.displayNextVisibleCountry = function() {
-  // pick a country
-  // display it
-  this.currently_displayed_country = this.getNextVisibleCountry();
-  if (this.currently_displayed_country)
-    this.currently_displayed_country.display();
-  else {
-    // wait a bit more for countries to show up
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(function () { $.WorldBank.Country.displayNextVisibleCountry(); }, this.NO_COUNTRIES_DELAY);
-  }
-}
-    
-$.WorldBank.Country.displayRandomVisibleCountries = function() {
-  clearTimeout(this.timeout);
-  this.timeout = setTimeout(function () { $.WorldBank.Country.displayNextVisibleCountry(); }, this.INITIAL_DELAY);
-}
