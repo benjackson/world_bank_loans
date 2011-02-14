@@ -54,14 +54,14 @@ $.WorldBank.CountryInfoOverlay = (function() {
         var x, y;
         
         if (positiveLng())
-          x = sw.x + (width * 0.2);
+          x = sw.x + (width * 0.4);
         else
           x = sw.x + (width * 0.6);
         
         if (positiveLat())
-          y = ne.y + (height * 0.6);
+          y = ne.y + (height * 0.75);
         else
-          y = ne.y + (height * 0.2);
+          y = ne.y + (height * 0.25);
             
         return projection.fromPointToLatLng(new google.maps.Point(x, y));
       }

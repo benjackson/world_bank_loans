@@ -1,8 +1,4 @@
-p {
-  background: yellow;
-}
-
 #map {
 	width: 100%;
-	height:100%; /* IE6: treated as min-height*/
+	height:100%;
 }
