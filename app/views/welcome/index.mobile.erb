@@ -1,12 +1,23 @@
-<h1>CTR Open Data Demo</h1>
-<p>You're viewing this on a mobile device.  It's a...</p>
-<div id="iphone" class="hidden">
-iPhone!
+<div class="toolbar">
+  <h1 id="pageTitle">CTR Open Data Demo</h1>
+  <%= link_to "", "#", :id => "backButton", :class => "button" %>   
+  <%= link_to "View map", "#MapContainer", :class => "button" %>
 </div>
-<div id="android" class="hidden">
-Android!
+
+<div id="Welcome" class="panel" selected="true" title="Welcome">
+  <h2>
+    This is a demo application from the World Bank, demonstrating the open data 
+    soon to be available through Socrata.
+  </h2>
+  
+  <p>
+    The map on the next page shows all of the countries currently receiving loans 
+    from the World Bank, using data hosted on Socrata.
+  </p>
 </div>
-<div id="blackberry" class="hidden">
-Blackberry!
+
+<div id="MapContainer" style="position: relative; width: 100%; height: 100%;" title="Map">
+  <div id="map">
+  </div>
 </div>
-<%= link_to "View map", countries_path %>
+

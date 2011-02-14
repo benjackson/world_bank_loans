@@ -2,6 +2,8 @@ class CountriesController < ApplicationController
   #caches_action :index, :show
   respond_to :html, :js, :json
   
+  layout nil, :only => :mobile 
+  
   def index
     @countries = Country.all
     render :layout => "map"
