@@ -89,11 +89,16 @@ $.WorldBank.Country = (function() {
     var self = this;  // handle closure scope
     
     var clicked = function(event) {
-      if ($.WorldBank.the_map.getZoom() == $.WorldBank.the_map.maxZoom) {
-        window.location.href = escape("/countries/" + self.data["name"]);
-      } else {
+      if ($.WorldBank.the_map.getZoom() == $.WorldBank.the_map.maxZoom)
         $.WorldBank.the_map.fitBounds(self.getBounds());
-      }
+      $.WorldBank.CountryInfos.stop();
+      $.WorldBank.CountryInfos.displayInfoFor(self);
+      
+      //if ($.WorldBank.the_map.getZoom() == $.WorldBank.the_map.maxZoom) {
+      //  window.location.href = escape("/countries/" + self.data["name"]);
+      //} else {
+      //  
+     // }
     }
     
     var changeMarkersForCurrentZoomLevel = function() {
@@ -104,8 +109,7 @@ $.WorldBank.Country = (function() {
     }
   
     this.getSummaryHtml = function() {
-      return "<div style=\"display: none; position: absolute;\"><div class=\"country-info-summary\">"+
-      "<h1>Summary goes here</h1><ul><li>List item</li><li>List item</li></div></div>";
+      return data["info_summary"];
     }
        
     this.getLatitude = function() {
@@ -134,13 +138,6 @@ $.WorldBank.Country = (function() {
         return true;
       else
         return false;
-    }
-    
-    this.disbursedAmount = function() {
-      
-    }
-    
-    this.undisbursedAmount = function() {
     }
     
     // add this country to the list

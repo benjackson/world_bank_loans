@@ -8,8 +8,12 @@ class CountriesController < ApplicationController
   end
   
   def show
-    respond_with (@country = Country.find(params[:id]))
+    @country = Country.find(params[:id])
+    respond_to do |format|
+      format.json do
+        render :json => @country.to_hash.merge( { :info_summary => render_to_string(:partial => "alternative_info_summary") })
+      end
+      format.any(:html, :js) { respond_with @country }
+    end
   end
 end
-
-#render :nothing => true if @country.projects.empty?

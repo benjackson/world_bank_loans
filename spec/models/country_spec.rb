@@ -52,5 +52,17 @@ describe Country do
         country.should be_a(Country)
       end
     end
+    
+    context "and the first country within" do
+      subject { Country.all.first }
+      
+      it "should have a lowest effective year of x" do
+        subject.lowest_effective_year == 1956
+      end
+      
+      it "should have a highest effective year of x" do
+        subject.highest_effective_year == 1978
+      end
+    end
   end
 end

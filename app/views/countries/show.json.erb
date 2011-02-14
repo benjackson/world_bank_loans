@@ -1,0 +1,1 @@
+<%= @country.to_hash.merge( { :info_summary => render(:partial => "info_summary", :format => :html) } ).to_json %>

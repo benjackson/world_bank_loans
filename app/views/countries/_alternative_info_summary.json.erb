@@ -1,0 +1,10 @@
+<div id="country-info-summary-container">
+  <div class="country-info-summary">
+    <p>
+      <strong><%=@country.name%></strong> has been loaned <strong><%=format_for_currency(@country.disbursed_amount / 1000 / 1000, @country.currency)%>bn</strong>
+      by the World Bank between <%=@country.lowest_effective_year%>-<%=@country.highest_effective_year%>, funding <strong><%=@country.projects.size%></strong> projects
+      in the region. <strong><%=format_for_currency(@country.owed_amount / 1000 / 1000, @country.currency)%>bn</strong> is due to be repaid.
+    </p>
+    <div class="link"><%= link_to "Find out more...", country_path(@country) %></div>
+  </div>
+</div>

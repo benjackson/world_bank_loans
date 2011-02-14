@@ -133,13 +133,12 @@ $.WorldBank.CountryInfoOverlay.prototype = new google.maps.OverlayView;
 // Handles display of the country information on the map by showing one
 // country at a time
 $.WorldBank.CountryInfos = function() {
-  var INITIAL_DELAY = 3000;
-  var DISPLAY_DELAY = 2000;
-  var NEXT_DELAY = 1500;
-  var NO_COUNTRIES_DELAY = 1000;
-  var DONE_ALL_COUNTRIES_DELAY = 5000;
+  var INITIAL_DELAY = 5000;
+  var DISPLAY_DELAY = 6000;
+  var NEXT_DELAY = 3000;
+  var NO_COUNTRIES_DELAY = 3000;
+  var DONE_ALL_COUNTRIES_DELAY = 15000;
   
-  var timeout;    // the timeout variable for showing/hiding the info on random visible countries
   var currently_displayed_country;
   var displayed_country_id = -1;
   
@@ -158,38 +157,51 @@ $.WorldBank.CountryInfos = function() {
         return visible_countries[displayed_country_id];
   }
   
-  function displayInfoFor(country) {
-    country_info_overlay.show(country);
-    clearTimeout(timeout);
-    timeout = setTimeout(function() { removeInfoFor(country); }, DISPLAY_DELAY);
-  }
-  
-  function removeInfoFor(country) {
-    country_info_overlay.hide();
-    clearTimeout(timeout);
-    timeout = setTimeout(function () { showNextCountryInfo(); }, NEXT_DELAY);
-  }
-  
   function showNextCountryInfo() {
     // pick a country
     // display it
     var country = getNextVisibleCountry();
-    if (country)
-      displayInfoFor(country);
-    else {
+    if (country) {
+      self.displayInfoFor(country);
+      clearTimeout(self.timeout);
+      self.timeout = setTimeout(function() { 
+        self.removeInfo(); 
+        clearTimeout(self.timeout);
+        self.timeout = setTimeout(function () { showNextCountryInfo(); }, NEXT_DELAY);
+      }, DISPLAY_DELAY);
+    } else {
       // wait a bit more for countries to show up
-      clearTimeout(timeout);
+      clearTimeout(self.timeout);
       if ($.WorldBank.Country.visible_countries.length == 0)
-        timeout = setTimeout(function () { showNextCountryInfo(); }, NO_COUNTRIES_DELAY);
+        self.timeout = setTimeout(function () { showNextCountryInfo(); }, NO_COUNTRIES_DELAY);
       else
-        timeout = setTimeout(function () { showNextCountryInfo(); }, DONE_ALL_COUNTRIES_DELAY);
+        self.timeout = setTimeout(function () { showNextCountryInfo(); }, DONE_ALL_COUNTRIES_DELAY);
     }
   }
   
-  return {
+  var self = {
+    timeout: null,
+    
     start: function() {
+      this.stopped = false;
       clearTimeout(this.timeout);
       this.timeout = setTimeout(function () { showNextCountryInfo(); }, INITIAL_DELAY);
+    },
+    
+    stop: function() {
+      this.stopped = true;
+      clearTimeout(this.timeout);
+      this.removeInfo();
+    },
+    
+    displayInfoFor: function(country) {
+      country_info_overlay.show(country);
+    },
+  
+    removeInfo: function() {
+      country_info_overlay.hide();
     }
-  }
+  };
+  
+  return self;
 } ();

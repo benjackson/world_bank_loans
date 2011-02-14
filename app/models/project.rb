@@ -10,6 +10,18 @@ class Project < Socrata::Data
     loan_number
   end
   
+  def effective_date_most_recent
+    begin
+      Time.parse(super)
+    rescue
+      nil
+    end
+  end
+  
+  def effective_year
+    effective_date_most_recent ? effective_date_most_recent.year : nil
+  end
+  
   # so it can be serialiased to JSON nicely
   def to_hash
     {
