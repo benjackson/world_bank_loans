@@ -59,7 +59,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
           x = sw.x + (width * 0.6);
         
         if (positiveLat())
-          y = ne.y + (height * 0.75);
+          y = ne.y + (height * 0.65);
         else
           y = ne.y + (height * 0.25);
             

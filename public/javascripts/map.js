@@ -12,11 +12,13 @@ $.WorldBank.boundsChanged = function() {
 $(document).ready(function() {
   $.WorldBank.the_map = new google.maps.Map(document.getElementById("map"), {
     center: $.WorldBank.map_center,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
     zoom: 1,
     streetViewControl: false,
     mapTypeControl: false,
     panControl: false,
+    zoomControl: false,
+    disableDefaultUI: true,
     maxZoom: 4
   });
   
@@ -25,6 +27,10 @@ $(document).ready(function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
       $.WorldBank.the_map.setCenter($.WorldBank.map_center);
       $.WorldBank.CountryInfos.start();
+  });
+  
+  $("#body").bind("orientation_change", function() {
+      google.maps.event.trigger($.WorldBank.the_map, 'resize');
   });
   
   google.maps.event.addListenerOnce($.WorldBank.the_map, 'bounds_changed', function() {

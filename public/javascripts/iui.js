@@ -301,6 +301,7 @@ function checkOrientAndLocation()
 
 function setOrientation(orient)
 {
+  $("#body").trigger("orientation_change");
 	document.body.setAttribute("orient", orient);
 	setTimeout(scrollTo, 100, 0, 1);
 }
