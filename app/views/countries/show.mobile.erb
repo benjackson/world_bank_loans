@@ -1,7 +1,11 @@
-<h1><%= @country.name %></h1>
-<h2>Projects</h2>
-<ul>
+<ul id="<%=@country.name%>" title="<%= @country.name %>">
   <% @country.projects.each do |project| %>
-    <li><%= project.name %></li>
+    <li><%= link_to project.name, "#project-#{project.id}" %></li>
   <% end %>
 </ul>
+
+<% @country.projects.each do |project| %>
+  <div id="project-<%=project.id%>" title="<%=project.name%>">
+    Project information goes here
+  </div>
+<% end %>

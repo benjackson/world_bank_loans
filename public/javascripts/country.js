@@ -189,5 +189,6 @@ $.WorldBank.Country.create = function(data) {
   if (data == null || data["error"] || this.countries[data["name"]]) {
     return null;
   }
-  return new $.WorldBank.Country(data);
+  var country = new $.WorldBank.Country(data);
+  return country;
 };

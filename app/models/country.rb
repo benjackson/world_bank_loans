@@ -79,6 +79,13 @@ class Country < Socrata::Data
   end
   memoize :projects
   
+  def project(id)
+    projects.each do |project|
+      return project if project.id == id
+    end
+    nil
+  end
+  
   # Return up to three example projects
   def example_projects
     projects[0,3]
