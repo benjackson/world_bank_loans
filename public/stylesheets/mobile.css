@@ -8,6 +8,7 @@ body {
   position: absolute;
   top: 45px;
   bottom: 0;
+  min-height: 10px;
 }
 
 #map {
