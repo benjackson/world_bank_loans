@@ -1,9 +1,4 @@
-body {
-  background: yellow url(/images/pinstripes.png);
-}
-
 #MapContainer {
-  background: green url(/images/pinstripes.png);
   width: 100%;
   position: absolute;
   top: 45px;
@@ -18,7 +13,6 @@ body {
 	margin-top: 0;
 	margin-bottom: 0;
 	padding: 0 0 0 0;
-  background: red url(http://www.uvmapper.com/help/checker_large.gif);
   width: auto;
   height: 100%;
 }
