@@ -30,7 +30,7 @@ window.iui =
 	showPage: function(page, backwards)
 	{
 		if (page)
-		{
+		{   
 			if (currentDialog)
 			{
 				currentDialog.removeAttribute("selected");
@@ -54,7 +54,7 @@ window.iui =
 
 	showPageById: function(pageId)
 	{
-		var page = $(pageId);
+		var page = getElById(pageId);
 		if (page)
 		{
 			var index = pageHistory.indexOf(pageId);
@@ -117,7 +117,7 @@ window.iui =
 				if (!child.id)
 					child.id = "__" + (++newPageCount) + "__";
 
-				var clone = $(child.id);
+				var clone = getElById(child.id);
 				if (clone)
 					clone.parentNode.replaceChild(child, clone);
 				else
@@ -200,10 +200,10 @@ addEventListener("click", function(event)
 		if (link.href && link.hash && link.hash != "#" && !link.target)
 		{
 			link.setAttribute("selected", "true");
-			iui.showPage($(link.hash.substr(1)));
+			iui.showPage(getElById(link.hash.substr(1)));
 			setTimeout(unselect, 500);
 		}
-		else if (link == $("backButton"))
+		else if (link == getElById("backButton"))
 			history.back();
 		else if (link.getAttribute("type") == "submit")
 		{
@@ -259,7 +259,7 @@ function getPageFromLoc()
 	if (result)
 		page = result[1];
 	if (page)
-		page = $(page);
+		page = getElById(page);
 	return page;
 }
 
@@ -336,23 +336,25 @@ function cancelDialog(form)
 
 function updatePage(page, fromPage)
 {
+  $(page).trigger("show");
+  
 	if (!page.id)
 		page.id = "__" + (++newPageCount) + "__";
 
 	location.hash = currentHash = hashPrefix + page.id;
 	pageHistory.push(page.id);
 
-	var pageTitle = $("pageTitle");
+	var pageTitle = getElById("pageTitle");
 	if (page.title)
 		pageTitle.innerHTML = page.title;
 
 	if (page.localName.toLowerCase() == "form" && !page.target)
 		showForm(page);
 		
-	var backButton = $("backButton");
+	var backButton = getElById("backButton");
 	if (backButton)
 	{
-		var prevPage = $(pageHistory[pageHistory.length-2]);
+		var prevPage = getElById(pageHistory[pageHistory.length-2]);
 		if (prevPage && !page.getAttribute("hideBackButton"))
 		{
 			backButton.style.display = "inline";
@@ -512,7 +514,7 @@ function replaceElementWithSource(replace, source)
 		page.appendChild(frag.firstChild);
 }
 
-function $(id) { return document.getElementById(id); }
+function getElById(id) { return document.getElementById(id); }
 function ddd() { console.log.apply(console, arguments); }
 
 })();

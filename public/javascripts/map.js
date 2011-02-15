@@ -5,9 +5,6 @@ $.WorldBank.the_map = null;
 $.WorldBank.map_center = new google.maps.LatLng(20, 0);
 
 $.WorldBank.boundsChanged = function() {
-  if ($.WorldBank.the_map.getZoom() == 1)
-    $.WorldBank.the_map.setCenter(map_center);
-
   // recalculate the visible markers
   $.WorldBank.Country.boundsChanged();
 }
@@ -23,10 +20,15 @@ $(document).ready(function() {
     maxZoom: 4
   });
   
+  // Show the map for the first time
+  $("#MapContainer").one("show", function() {
+      google.maps.event.trigger($.WorldBank.the_map, 'resize');
+      $.WorldBank.the_map.setCenter($.WorldBank.map_center);
+      $.WorldBank.CountryInfos.start();
+  });
   
-  google.maps.event.addListener($.WorldBank.the_map, 'bounds_changed', $.WorldBank.boundsChanged);
-  
-  $.get("/countries.js", null, null, "script");
-  
-  $.WorldBank.CountryInfos.start();
+  google.maps.event.addListenerOnce($.WorldBank.the_map, 'bounds_changed', function() {
+      google.maps.event.addListener($.WorldBank.the_map, 'bounds_changed', $.WorldBank.boundsChanged);
+      $.get("/countries.js", null, null, "script");
+  });
 });
