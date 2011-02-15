@@ -1,7 +1,6 @@
 <div class="toolbar">
   <h1 id="pageTitle">CTR Open Data Demo</h1>
   <%= link_to "", "#", :id => "backButton", :class => "button" %>   
-  <%= link_to "View map", "#MapContainer", :class => "button" %>
 </div>
 
 <div id="Welcome" class="panel" selected="true" title="Welcome">
@@ -14,6 +13,8 @@
     The map on the next page shows all of the countries currently receiving loans 
     from the World Bank, using data hosted on Socrata.
   </p>
+  
+  <%= link_to "View map", "#MapContainer", :class => "button" %>
 </div>
 
 <div id="MapContainer" title="Map">

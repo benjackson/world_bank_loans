@@ -101,7 +101,8 @@ $.WorldBank.CountryInfoOverlay = (function() {
       this.hide = function() {
         $(div).hide();
         this.setMap(null);
-        info_line.setMap(null);
+        if (info_line)
+          info_line.setMap(null);
       }
       
       this.onAdd = function() {

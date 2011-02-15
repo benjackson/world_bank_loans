@@ -8,4 +8,21 @@ module ApplicationHelper
         number_to_currency(number, :precision => 0, :unit => currency + " ")
     end
   end
+  
+  def format_for_date(date)
+    if date.is_a?(String)
+      begin
+        date = Time.parse(date)
+      rescue
+      end
+    end
+    
+    if date.respond_to?(:strftime) 
+      date.strftime("%x")
+    elsif date.nil?
+      ""
+    else
+      date
+    end
+  end
 end

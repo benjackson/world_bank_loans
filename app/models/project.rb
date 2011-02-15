@@ -10,11 +10,11 @@ class Project < Socrata::Data
     loan_number
   end
   
-  def effective_date_most_recent
-    begin
+  def method_missing(method_id, *args, &block)
+    method_id.to_s !~ /_date|date_/ ? super : begin
       Time.parse(super)
     rescue
-      nil
+      super
     end
   end
   
