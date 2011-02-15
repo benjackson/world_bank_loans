@@ -107,10 +107,8 @@ class Country < Socrata::Data
     {
       :id => id,
       :name => name,
-      :number_of_projects => number_of_projects,
       :latitude => latitude,
-      :longitude => longitude,
-      :projects => projects.map { |project| project.to_hash }
+      :longitude => longitude
     }
   end
   
