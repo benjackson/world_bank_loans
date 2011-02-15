@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  has_mobile_fu(true)  # detect different mobile phones
+  has_mobile_fu  # detect different mobile phones
   
   before_filter :ask_for_a_username_and_password
   
