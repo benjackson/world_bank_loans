@@ -24,12 +24,25 @@ $.WorldBank.Country = (function() {
         ),
       3: new google.maps.MarkerImage(
         "/images/world-bank-marker.png",
+        new google.maps.Size(16, 16),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(8, 8),
+        new google.maps.Size(16, 16)
+        ),
+      4: new google.maps.MarkerImage(
+        "/images/world-bank-marker.png",
         new google.maps.Size(32, 32),
         new google.maps.Point(0, 0),
         new google.maps.Point(16, 16),
         new google.maps.Size(32, 32)
         ),
-      4: new google.maps.MarkerImage("/images/world-bank-marker.png",
+      5: new google.maps.MarkerImage("/images/world-bank-marker.png",
+        new google.maps.Size(64, 64),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(32, 32),
+        new google.maps.Size(64, 64)
+        ),
+      6: new google.maps.MarkerImage("/images/world-bank-marker.png",
         new google.maps.Size(64, 64),
         new google.maps.Point(0, 0),
         new google.maps.Point(32, 32),
@@ -61,12 +74,25 @@ $.WorldBank.Country = (function() {
         ),
       3: new google.maps.MarkerImage(
         "/images/world-bank-marker-shadow.png",
+        new google.maps.Size(23, 16),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(8, 8),
+        new google.maps.Size(23, 16)
+        ),
+      4: new google.maps.MarkerImage(
+        "/images/world-bank-marker-shadow.png",
         new google.maps.Size(46, 32),
         new google.maps.Point(0, 0),
         new google.maps.Point(16, 16),
         new google.maps.Size(46, 32)
         ),
-      4: new google.maps.MarkerImage("/images/world-bank-marker-shadow.png",
+      5: new google.maps.MarkerImage("/images/world-bank-marker-shadow.png",
+        new google.maps.Size(93, 64),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(32, 32),
+        new google.maps.Size(93, 64)
+        ),
+      6: new google.maps.MarkerImage("/images/world-bank-marker-shadow.png",
         new google.maps.Size(93, 64),
         new google.maps.Point(0, 0),
         new google.maps.Point(32, 32),
@@ -78,8 +104,10 @@ $.WorldBank.Country = (function() {
     0: { type: "circle", coords: [ 4, 4, 8 ] },
     1: { type: "circle", coords: [ 4, 4, 8 ] },
     2: { type: "circle", coords: [ 8, 8, 16 ] },
-    3: { type: "circle", coords: [ 16, 16, 32 ] },
-    4: { type: "circle", coords: [ 32, 32, 64 ] }
+    3: { type: "circle", coords: [ 8, 8, 16 ] },
+    4: { type: "circle", coords: [ 16, 16, 32 ] },
+    5: { type: "circle", coords: [ 32, 32, 64 ] },
+    6: { type: "circle", coords: [ 32, 32, 64 ] }
   };
   
   return function(data) {
@@ -89,8 +117,9 @@ $.WorldBank.Country = (function() {
     var self = this;  // handle closure scope
     
     var clicked = function(event) {
-      if ($.WorldBank.the_map.getZoom() == $.WorldBank.the_map.maxZoom)
-        $.WorldBank.the_map.fitBounds(self.getBounds());
+      //if ($.WorldBank.the_map.getZoom() != $.WorldBank.the_map.maxZoom) {
+      //  $.WorldBank.the_map.fitBounds(self.getBounds());
+      //}
       $.WorldBank.CountryInfos.stop();
       $.WorldBank.CountryInfos.displayInfoFor(self);
     }

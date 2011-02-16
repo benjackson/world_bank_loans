@@ -16,12 +16,31 @@ $.WorldBank.CountryInfoOverlay = (function() {
           case 2:
             return 2;
           case 3:
-            return 3;
+            return 2;
           case 4:
+            return 3;
+          case 5:
+            return 4;
+          case 6:
             return 4;
         }
         
         return 1;
+      }
+      
+      var getLineOffsetAmount = function() {
+        switch (country.marker.map.getZoom()) {
+          case 3:
+            return 0.7;
+          case 4:
+            return 0.7;
+          case 5:
+            return 0.7;
+          case 6:
+            return 0.35;
+        }
+        
+        return 1.3;
       }
       
       // the line from a country marker to its label
@@ -71,14 +90,14 @@ $.WorldBank.CountryInfoOverlay = (function() {
         projection = country.marker.getMap().getProjection();
         var end_point = projection.fromLatLngToPoint(country.getLatLng()); 
         if (positiveLng())
-          end_point.x -= 1.3;
+          end_point.x -= getLineOffsetAmount();
         else
-          end_point.x += 1.3;
+          end_point.x += getLineOffsetAmount();
         
         if (positiveLat())
-          end_point.y += 1.3;
+          end_point.y += getLineOffsetAmount();
         else
-          end_point.y -= 1.3;
+          end_point.y -= getLineOffsetAmount();
         
         return projection.fromPointToLatLng(end_point);
       }
@@ -134,10 +153,10 @@ $.WorldBank.CountryInfoOverlay.prototype = new google.maps.OverlayView;
 // Handles display of the country information on the map by showing one
 // country at a time
 $.WorldBank.CountryInfos = function() {
-  var INITIAL_DELAY = 10000;
+  var INITIAL_DELAY = 5000;
   var DISPLAY_DELAY = 6000;
   var NEXT_DELAY = 3000;
-  var NO_COUNTRIES_DELAY = 3000;
+  var NO_COUNTRIES_DELAY = 5000;
   var DONE_ALL_COUNTRIES_DELAY = 15000;
   
   var currently_displayed_country;
@@ -184,8 +203,7 @@ $.WorldBank.CountryInfos = function() {
     timeout: null,
     
     start: function() {
-      this.stopped = false;
-      showNextCountryInfo();
+      setTimeout(function () { this.stopped = false; showNextCountryInfo(); }, 9000);
     },
     
     stop: function() {
