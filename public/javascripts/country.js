@@ -171,7 +171,7 @@ $.WorldBank.Country = (function() {
     
     // create a google marker to represent this country on the map
     this.marker = new google.maps.Marker({
-      position: new google.maps.LatLng(data["latitude"], data["longitude"]),
+      position: new google.maps.LatLng(this.getLatitude(), this.getLongitude()),
       title: data["name"]
     });
     changeMarkersForCurrentZoomLevel();
@@ -219,7 +219,7 @@ $.WorldBank.Country.load = function(data) {
 
 // create a country from data returned by the server
 $.WorldBank.Country.create = function(data) {
-  if (data == null || data["error"] || this.countries[data["name"]]) {
+  if (data == null || data["error"] || !data["latitude"] || !data["longitude"] || this.countries[data["name"]]) {
     return null;
   }
   var country = new $.WorldBank.Country(data);
