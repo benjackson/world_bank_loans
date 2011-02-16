@@ -31,6 +31,8 @@ window.iui =
 	{
 		if (page)
 		{   
+		  $(page).trigger("show");
+		  
 			if (currentDialog)
 			{
 				currentDialog.removeAttribute("selected");
@@ -337,8 +339,6 @@ function cancelDialog(form)
 
 function updatePage(page, fromPage)
 {
-  $(page).trigger("show");
-  
 	if (!page.id)
 		page.id = "__" + (++newPageCount) + "__";
 

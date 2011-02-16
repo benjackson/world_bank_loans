@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Project do
-  subject { Project.find_by_country("Algeria")[0] }
+  subject { Project.find_by_country_id("algeria")[0] }
   
   it "should be possible to get the latitude for a project" do
     subject.latitude.should == "28.0000"   

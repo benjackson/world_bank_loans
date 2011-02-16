@@ -31,13 +31,12 @@ class Project < Socrata::Data
   end
   
   class << self
-    def find_by_country(name)
-      self.create(loans_data.rows_for_country_data(name))
+    def find_by_country_id(id)
+      self.create(loans_data.rows_for_country_data(id))
     end
     
-     # TODO: abstract this out
     def loans_data
-      WorldBank::LoansData.new(:username => "ctrpilot@gmail.com", :password => "app2011test")
+      Configuration.world_bank_loans_data
     end
   end
 end

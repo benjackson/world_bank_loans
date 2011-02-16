@@ -1,22 +1,28 @@
 module Socrata
   class Data
-
+    extend ActiveSupport::Memoizable
+    
     def initialize(data)
       @data = data
     end
 
     def method_missing(method_id, *arguments, &block)
-      @data.has_key?(method_id.to_s) ? @data[method_id.to_s] : super
+      data.has_key?(method_id.to_s) ? data[method_id.to_s] : super
     end
 
     def respond_to?(method_id)
-      @data.has_key?(method_id.to_s)
+      data.has_key?(method_id.to_s)
     end
     
     # Convert all the data into a Hash
     def to_hash
-      @data
+      data
     end
+    
+    def data
+      @data.stringify_keys
+    end
+    memoize :data
 
     class << self
       # Create from a hash of data

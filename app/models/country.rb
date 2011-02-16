@@ -4,20 +4,16 @@ require 'socrata/data'
 class Country < Socrata::Data
   extend ActiveSupport::Memoizable
   
-  attr_accessor :name
-  
   def initialize(data)
     super
-    @name = data[:name]
-    @number_of_projects = data[:number_of_projects]
   end
   
   def latitude
-    projects.empty? ? 0 : projects[0].latitude
+    projects.empty? ? 179 : projects[0].latitude
   end
   
   def longitude
-    projects.empty? ? 0 : projects[0].longitude
+    projects.empty? ? 179 : projects[0].longitude
   end
   
   def currency
@@ -75,9 +71,12 @@ class Country < Socrata::Data
   
   # Return all of the projects for this country
   def projects
-    Project.find_by_country(name)
+    @projects ||= Project.find_by_country_id(id)
   end
-  memoize :projects
+  
+  def projects=(new_projects)
+    @projects = new_projects
+  end
   
   def project(id)
     projects.each do |project|
@@ -86,21 +85,15 @@ class Country < Socrata::Data
     nil
   end
   
-  # Return up to three example projects
-  def example_projects
-    projects[0,3]
-  end
-  memoize :example_projects
-  
-  # Use the first project's loan number as an ID
   def id
-    projects.empty? ? nil : projects[0].id
+    to_param
   end
   
   # Use the country name as a slug
   def to_param
-    name
+    self.class.parametrize(name)
   end
+  memoize :to_param
   
   # Mainly so it can be serialised as JSON nicely
   def to_hash
@@ -114,7 +107,7 @@ class Country < Socrata::Data
   
   class << self
     def all
-      self.create(loans_data.country_group_data)
+      loans_data.countries
     end
     
     def first
@@ -122,12 +115,18 @@ class Country < Socrata::Data
     end
     
     def find(id)
-      self.new({ :name => id })
+      loans_data.countries.each do |country|
+        return country if country.id == id
+      end
+      nil
     end
     
-    # TODO: abstract this out
     def loans_data
-      WorldBank::LoansData.new(:username => "ctrpilot@gmail.com", :password => "app2011test")
+      Configuration.world_bank_loans_data
+    end
+    
+    def parametrize(name)
+      name.downcase.gsub(/[.,]/, "").gsub(/\s/, "-").gsub(/\-+/, "-")
     end
   end
   

@@ -93,12 +93,6 @@ $.WorldBank.Country = (function() {
         $.WorldBank.the_map.fitBounds(self.getBounds());
       $.WorldBank.CountryInfos.stop();
       $.WorldBank.CountryInfos.displayInfoFor(self);
-      
-      //if ($.WorldBank.the_map.getZoom() == $.WorldBank.the_map.maxZoom) {
-      //  window.location.href = escape("/countries/" + self.data["name"]);
-      //} else {
-      //  
-     // }
     }
     
     var changeMarkersForCurrentZoomLevel = function() {

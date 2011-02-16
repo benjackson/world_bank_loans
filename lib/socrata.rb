@@ -1,7 +1,7 @@
 module Socrata
   class Base
     include ::HTTParty
-
+    
     base_uri "https://ctrpilot.socrata.com/api"
 
     default_options[:headers] = {'Content-type' => 'application/json'}
@@ -23,6 +23,5 @@ module Socrata
     def get(*args)
       self.class.get(*args)
     end
-    
   end
 end
