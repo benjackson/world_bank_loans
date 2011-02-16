@@ -16,3 +16,15 @@
   width: auto;
   height: 100%;
 }
+
+body[orient="landscape"] .country-info-summary {
+  width: 220px;
+  height: 60px;
+  top: -30px;
+}
+
+body[orient="portrait"] .country-info-summary {
+  width: 110px;
+  height: 140px;
+  top: -70px;
+}

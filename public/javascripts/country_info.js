@@ -125,7 +125,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       }
       
       this.onAdd = function() {
-        var pane = this.getPanes().overlayMouseTarget;
+        var pane = this.getPanes().floatPane;
         div = $(country.getSummaryHtml());
         drawn_for_zoom = country.marker.map.getZoom();
         $(pane).append(div);
