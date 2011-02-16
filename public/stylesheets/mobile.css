@@ -32,7 +32,7 @@ body[orient="portrait"] .country-info-summary {
 #Welcome .information {
   background: white;
   border: 1px solid #bab0ba;
-  margin: 3px;
+  margin: 2px;
   padding: 15px;
   border-radius: 24px;
   -moz-border-radius: 24px;
@@ -44,7 +44,7 @@ body[orient="portrait"] .country-info-summary {
 
 .ctr-logo {
   position: relative;
-  top: -6px;
+  top: -12px;
 }
 
 #Welcome blockquote {
