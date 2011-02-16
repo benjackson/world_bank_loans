@@ -178,6 +178,16 @@ $.WorldBank.Country.boundsChanged = function() {
     }
 };
 
+$.WorldBank.Country.load = function(data) {
+  if (!data || data.length == 0) return;  
+  var country_url = data.shift();
+  $.getJSON(country_url, function(country_data) {
+    // load the next country while creating this one
+    $.WorldBank.Country.load(data);
+    $.WorldBank.Country.create(country_data);
+  }); 
+}
+
 // create a country from data returned by the server
 $.WorldBank.Country.create = function(data) {
   if (data == null || data["error"] || this.countries[data["name"]]) {

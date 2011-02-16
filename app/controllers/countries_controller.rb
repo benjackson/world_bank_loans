@@ -6,7 +6,12 @@ class CountriesController < ApplicationController
   
   def index
     @countries = Country.all
-    render :layout => "map"
+    respond_to do |format|
+      format.json do
+        render :json => Country.all.map { |country| country_path(country, :format => :json) }
+      end
+      format.html { render :layout => "map" }
+    end
   end
   
   def show

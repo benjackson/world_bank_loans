@@ -134,7 +134,7 @@ $.WorldBank.CountryInfoOverlay.prototype = new google.maps.OverlayView;
 // Handles display of the country information on the map by showing one
 // country at a time
 $.WorldBank.CountryInfos = function() {
-  var INITIAL_DELAY = 5000;
+  var INITIAL_DELAY = 10000;
   var DISPLAY_DELAY = 6000;
   var NEXT_DELAY = 3000;
   var NO_COUNTRIES_DELAY = 3000;
@@ -185,8 +185,7 @@ $.WorldBank.CountryInfos = function() {
     
     start: function() {
       this.stopped = false;
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(function () { showNextCountryInfo(); }, INITIAL_DELAY);
+      showNextCountryInfo();
     },
     
     stop: function() {

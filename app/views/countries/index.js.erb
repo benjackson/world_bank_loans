@@ -1,5 +1,7 @@
 <% @countries.each do |country| %>
-  $.getJSON("<%=country_path(country, :format => :json)%>", function(data) {
-    $.WorldBank.Country.create(data);
-  });
+  setTimeout(function() { 
+    $.getJSON("<%=country_path(country, :format => :json)%>", function(data) {
+      $.WorldBank.Country.create(data);
+    });
+  }, 100);
 <% end %>

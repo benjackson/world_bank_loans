@@ -26,7 +26,6 @@ $(document).ready(function() {
   $("#MapContainer").one("show", function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
       $.WorldBank.the_map.setCenter($.WorldBank.map_center);
-      $.WorldBank.CountryInfos.start();
   });
   
   $("#body").bind("orientation_change", function() {
@@ -35,6 +34,12 @@ $(document).ready(function() {
   
   google.maps.event.addListenerOnce($.WorldBank.the_map, 'bounds_changed', function() {
       google.maps.event.addListener($.WorldBank.the_map, 'bounds_changed', $.WorldBank.boundsChanged);
-      $.get("/countries.js", null, null, "script");
+  });
+  
+  google.maps.event.addListenerOnce($.WorldBank.the_map, 'tilesloaded', function() {
+      $.getJSON("/countries.json", function(data) {
+          $.WorldBank.Country.load(data);
+      });
+      setTimeout($.WorldBank.CountryInfos.start, 9000);
   });
 });
