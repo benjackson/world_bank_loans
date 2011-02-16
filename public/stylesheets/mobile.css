@@ -42,6 +42,11 @@ body[orient="portrait"] .country-info-summary {
   color: #666666;
 }
 
+#Welcome .text {
+  position: relative;
+  top: -26px;
+}
+
 .ctr-logo {
   position: relative;
   top: -12px;
