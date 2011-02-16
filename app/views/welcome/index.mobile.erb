@@ -1,20 +1,28 @@
 <div class="toolbar">
   <h1 id="pageTitle">CTR Open Data Demo</h1>
-  <%= link_to "", "#", :id => "backButton", :class => "button" %>   
+  <%= link_to "", "#", :id => "backButton", :class => "button" %>
+  <%= link_to "Map", "#MapContainer", :class => "button" %>
 </div>
 
 <div id="Welcome" class="panel" selected="true" title="Welcome">
-  <h2>
-    This is a demo application from the World Bank, demonstrating the open data 
-    soon to be available through Socrata.
-  </h2>
-  
-  <p>
-    The map on the next page shows all of the countries currently receiving loans 
-    from the World Bank, using data hosted on Socrata.
-  </p>
-  
-  <%= link_to "View map", "#MapContainer", :class => "button" %>
+  <div class="information">  
+    <%=image_tag "ctr_logo.jpg", :alt => "CTR Open Data Beta", :class => "ctr-logo"%>
+    <p>
+      This is a demo application from the World Bank, demonstrating the open data 
+      soon to be available through Socrata.
+    </p>
+    
+    <p>
+      The map on the next page shows all of the countries currently receiving loans 
+      from the World Bank, populated with data hosted by Socrata.
+    </p>
+    
+    <blockquote>
+      Note -- the data in the app is provisional and often inaccurate. It does not represent actual World Bank data. Please do not reuse it.
+    </blockquote>
+    
+    For questions, please contact <%= mail_to "smoscoso@worldbank.org"%>
+  </div>
 </div>
 
 <div id="MapContainer" title="Map">
