@@ -4,11 +4,6 @@ $.WorldBank = {}   // namespace
 $.WorldBank.the_map = null;
 $.WorldBank.map_center = new google.maps.LatLng(20, 0);
 
-$.WorldBank.boundsChanged = function() {
-  // recalculate the visible markers
-  $.WorldBank.Country.boundsChanged();
-}
-
 $.WorldBank.mapClicked = function() {
   $.WorldBank.CountryInfos.removeInfo();
 }
@@ -26,23 +21,26 @@ $(document).ready(function() {
     maxZoom: 6
   });
   
-  // Show the map for the first time
+  // Trigger a resize when the map is shown for the first time (mobiles only)
   $("#MapContainer").one("show", function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
       $.WorldBank.the_map.setCenter($.WorldBank.map_center);
   });
   
+  // Only for mobiles
   $("#body").bind("orientation_change", function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
   });
   
-  google.maps.event.addListenerOnce($.WorldBank.the_map, 'bounds_changed', function() {
-      google.maps.event.addListener($.WorldBank.the_map, 'bounds_changed', $.WorldBank.boundsChanged);
-      google.maps.event.addListener($.WorldBank.the_map, 'click', $.WorldBank.mapClicked);
-  });
-  
   google.maps.event.addListenerOnce($.WorldBank.the_map, 'tilesloaded', function() {
+      // Get all the countries once the initial tiles have loaded
       $.getJSON("/countries.json", function(data) {
+          $.WorldBank.CountryInfos.start();   // start showing the country tooltips
+          
+          // Make sure we can clear the tooltip with a click on the map
+          google.maps.event.addListener($.WorldBank.the_map, 'click', $.WorldBank.mapClicked);
+          
+          // Load all the countries onto the map
           $.WorldBank.Country.load(data);
       });
   });

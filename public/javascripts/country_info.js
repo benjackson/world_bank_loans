@@ -165,7 +165,7 @@ $.WorldBank.CountryInfos = function() {
   var country_info_overlay = new $.WorldBank.CountryInfoOverlay();
   
   function getNextVisibleCountry() {
-    var visible_countries = $.WorldBank.Country.visible_countries;
+    var visible_countries = $.WorldBank.Country.getVisibleCountries();
     if (visible_countries.length == 0)
       return null;
     else

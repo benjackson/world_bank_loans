@@ -185,27 +185,12 @@ $.WorldBank.Country = (function() {
     
     google.maps.event.addListener(this.marker, 'click', function() { clicked() });
     this.marker.setMap($.WorldBank.the_map);
-    if (this.isVisible())
-      $.WorldBank.Country.visible_countries.push(this);
   }
   
 }) ();
 
 // All the Countrys created, by name
 $.WorldBank.Country.countries = []; 
-
-// All the countries currently visible on the map
-$.WorldBank.Country.visible_countries = [];
-
-// recalculate the visible markers
-$.WorldBank.Country.boundsChanged = function() {
-  this.visible_countries = [];
-    for (var country_name in this.countries) {
-      var country = this.countries[country_name];
-      if (country.isVisible())
-        this.visible_countries.push(country);
-    }
-};
 
 $.WorldBank.Country.load = function(data) {
   if (!data || data.length == 0) return;  
@@ -215,6 +200,17 @@ $.WorldBank.Country.load = function(data) {
     $.WorldBank.Country.load(data);
     $.WorldBank.Country.create(country_data);
   }); 
+}
+
+// Returns all the countries currently visible on the map
+$.WorldBank.Country.getVisibleCountries = function() {
+  var visible_countries = [];
+  for (var country_name in this.countries) {
+    var country = this.countries[country_name];
+    if (country.isVisible())
+      visible_countries.push(country);
+  }
+  return visible_countries;
 }
 
 // create a country from data returned by the server
