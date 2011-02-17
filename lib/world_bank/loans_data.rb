@@ -4,8 +4,10 @@ module WorldBank
   class LoansData < ::Socrata::View
     extend ActiveSupport::Memoizable
     
-    COUNTRY_COLUMN_ID = 2631500
+    # no longer needed: COUNTRY_COLUMN_ID = 2631500
 
+    attr_reader :projects, :loans
+    
     def initialize(params = {})
       super("jdjw-if4m", params)
     end
@@ -14,34 +16,27 @@ module WorldBank
       country_hash.values
     end
     
+    private
+    # Get all rows of socrata data for this view and turn each into a Project
+    # for a particular Country
     def country_hash
       ret = {}
       @projects = {}
+      @loans = []
       rows.each do |row|
         unless row.country.nil? || row.country == "World"
+          loan = Loan.new(row.to_hash)
+          @loans << loan
           unless ret[row.country]
             ret[row.country] = Country.new(:name => row.country)
-            @projects[row.country] = [ Project.new(row.to_hash) ]
+            ret[row.country].loans << loan
           else
-            @projects[row.country] << Project.new(row.to_hash)
+            ret[row.country].loans << loan
           end
         end
       end
-      
-      ret.each_value do |country|
-        country.projects = projects_for_country(country)
-      end
-      
       ret
     end
     memoize :country_hash
-    
-    def projects_for_country(country)
-      @projects[country.name]
-    end
-    
-    def projects_for_country_with_id(id)
-      Country.find(id).projects
-    end
   end
 end

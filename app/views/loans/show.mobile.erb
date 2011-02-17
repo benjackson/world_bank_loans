@@ -1,0 +1,29 @@
+<div id="@loan-<%=@loan.id%>" title="<%=@loan.project%>" class="panel">
+  <table class="itable" style="margin-left: auto; margin-right: auto;">
+    <tr><td>Country:</td><td><%=@loan.country%></td></tr>
+    <tr><td>Beneficiary:</td><td><%=@loan.beneficiary%></td></tr>
+    <tr><td>Guarantor:</td><td><%=@loan.guarantor%></td></tr>
+    <tr><td>Loan type:</td><td><%=@loan.loan_type%></td></tr>
+    <tr><td>Status:</td><td><%=@loan.status%></td></tr>
+    <tr><td>Interest rate:</td><td><%=@loan.interest_rate%>%</td></tr>
+    <tr><td>Amount approved:</td><td><%=format_for_currency(@loan.approved_amount, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Amount cancelled:</td><td><%=format_for_currency(@loan.cancelled_amount, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Amount disbursed:</td><td><%=format_for_currency(@loan.disbursed_amount, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Last disbursement:</td><td><%=format_for_date(@loan.last_disburse_date)%></td></tr>
+    <tr><td>Undisbursed:</td><td><%=format_for_currency(@loan.undisbursed_amount, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Repaid:</td><td><%=format_for_currency(@loan.repaid, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Due to IBRD:</td><td><%=format_for_currency(@loan.due_to_ibrd, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Exchange adjustment:</td><td><%=format_for_currency(@loan.exchange_adjustment, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Obligation:</td><td><%=format_for_currency(@loan.obligation, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Sold 3rd:</td><td><%=format_for_currency(@loan.sold_3rd, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Repaid 3rd:</td><td><%=format_for_currency(@loan.repaid_3rd, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Due 3rd:</td><td><%=format_for_currency(@loan.due_3rd, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>Loans held:</td><td><%=format_for_currency(@loan.loans_held, @loan.currency_of_commitment)%></td></tr>
+    <tr><td>First repayment date:</td><td><%=format_for_date(@loan.first_repayment_date)%></td></tr>
+    <tr><td>Last repayment date:</td><td><%=format_for_date(@loan.last_repayment_date)%></td></tr>
+    <tr><td>Date of signing:</td><td><%=format_for_date(@loan.signing_date)%></td></tr>
+    <tr><td>Date of board approval:</td><td><%=format_for_date(@loan.board_approval_date)%></td></tr>
+    <tr><td>Most recent effective date:</td><td><%=format_for_date(@loan.effective_date_most_recent)%></td></tr>
+    <tr><td>Most recent close date:</td><td><%=format_for_date(@loan.close_date_most_recent)%></td></tr>
+  </table>
+</div>

@@ -1,4 +1,6 @@
 WorldBankLoans::Application.routes.draw do
+  get "loans/show"
+
   resources :countries, :only => [ :index, :show ]
   resources :projects,  :only => [ :show ]
 

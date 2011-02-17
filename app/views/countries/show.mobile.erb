@@ -1,37 +1,17 @@
-<ul id="<%=@country.name%>" title="<%= @country.name %>">
+<ul id="<%=@country.id%>" title="<%= @country.name %>">
   <% @country.projects.each do |project| %>
-    <li><%= link_to project.name, "#project-#{project.id}" %></li>
+    <% if project.loans.size == 1 %>
+      <li><%= link_to project.name, loan_path(project.loans[0]) %></li>
+    <% else %>
+      <li><%= link_to "#{project.name} (#{project.loans.size})", "#project-#{project.id}" %></li>
+    <% end %>
   <% end %>
 </ul>
 
-<% @country.projects.each do |project| %>
-  <div id="project-<%=project.id%>" title="<%=project.name%>" class="panel">
-    <table class="itable" style="margin-left: auto; margin-right: auto;">
-      <tr><td>Country:</td><td><%=project.country%></td></tr>
-      <tr><td>Beneficiary:</td><td><%=project.beneficiary%></td></tr>
-      <tr><td>Guarantor:</td><td><%=project.guarantor%></td></tr>
-      <tr><td>Loan type:</td><td><%=project.loan_type%></td></tr>
-      <tr><td>Status:</td><td><%=project.status%></td></tr>
-      <tr><td>Interest rate:</td><td><%=project.interest_rate%>%</td></tr>
-      <tr><td>Amount approved:</td><td><%=format_for_currency(project.approved_amount, project.currency_of_commitment)%></td></tr>
-      <tr><td>Amount cancelled:</td><td><%=format_for_currency(project.cancelled_amount, project.currency_of_commitment)%></td></tr>
-      <tr><td>Amount disbursed:</td><td><%=format_for_currency(project.disbursed_amount, project.currency_of_commitment)%></td></tr>
-      <tr><td>Last disbursement:</td><td><%=format_for_date(project.last_disburse_date)%></td></tr>
-      <tr><td>Undisbursed:</td><td><%=format_for_currency(project.undisbursed_amount, project.currency_of_commitment)%></td></tr>
-      <tr><td>Repaid:</td><td><%=format_for_currency(project.repaid, project.currency_of_commitment)%></td></tr>
-      <tr><td>Due to IBRD:</td><td><%=format_for_currency(project.due_to_ibrd, project.currency_of_commitment)%></td></tr>
-      <tr><td>Exchange adjustment:</td><td><%=format_for_currency(project.exchange_adjustment, project.currency_of_commitment)%></td></tr>
-      <tr><td>Obligation:</td><td><%=format_for_currency(project.obligation, project.currency_of_commitment)%></td></tr>
-      <tr><td>Sold 3rd:</td><td><%=format_for_currency(project.sold_3rd, project.currency_of_commitment)%></td></tr>
-      <tr><td>Repaid 3rd:</td><td><%=format_for_currency(project.repaid_3rd, project.currency_of_commitment)%></td></tr>
-      <tr><td>Due 3rd:</td><td><%=format_for_currency(project.due_3rd, project.currency_of_commitment)%></td></tr>
-      <tr><td>Loans held:</td><td><%=format_for_currency(project.loans_held, project.currency_of_commitment)%></td></tr>
-      <tr><td>First repayment date:</td><td><%=format_for_date(project.first_repayment_date)%></td></tr>
-      <tr><td>Last repayment date:</td><td><%=format_for_date(project.last_repayment_date)%></td></tr>
-      <tr><td>Date of signing:</td><td><%=format_for_date(project.signing_date)%></td></tr>
-      <tr><td>Date of board approval:</td><td><%=format_for_date(project.board_approval_date)%></td></tr>
-      <tr><td>Most recent effective date:</td><td><%=format_for_date(project.effective_date_most_recent)%></td></tr>
-      <tr><td>Most recent close date:</td><td><%=format_for_date(project.close_date_most_recent)%></td></tr>
-    </table>
-  </div>
+<% @country.projects.select { |p| p.loans.size > 1 }.each do |project| %>
+  <ul id="project-<%=project.id%>" title="<%=project.name%>">
+    <% project.loans.each do |loan| %>
+      <li><%= link_to loan.name, loan_path(loan)%></li>
+    <% end %>
+  </ul>
 <% end %>

@@ -157,7 +157,6 @@ $.WorldBank.CountryInfos = function() {
   var DISPLAY_DELAY = 6000;
   var NEXT_DELAY = 3000;
   var NO_COUNTRIES_DELAY = 5000;
-  var DONE_ALL_COUNTRIES_DELAY = 15000;
   
   var currently_displayed_country;
   var displayed_country_id = -1;
@@ -192,10 +191,7 @@ $.WorldBank.CountryInfos = function() {
     } else {
       // wait a bit more for countries to show up
       clearTimeout(self.timeout);
-      if ($.WorldBank.Country.visible_countries.length == 0)
-        self.timeout = setTimeout(function () { showNextCountryInfo(); }, NO_COUNTRIES_DELAY);
-      else
-        self.timeout = setTimeout(function () { showNextCountryInfo(); }, DONE_ALL_COUNTRIES_DELAY);
+      self.timeout = setTimeout(function () { showNextCountryInfo(); }, NO_COUNTRIES_DELAY);
     }
   }
   

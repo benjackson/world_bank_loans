@@ -1,7 +1,10 @@
 WorldBankLoans::Application.routes.draw do
+  get "loans/show"
+
   resources :countries, :only => [ :index, :show ]
   resources :projects,  :only => [ :show ]
-
+  resources :loans,  :only => [ :show ]
+  
   root :to => "welcome#index"
 
   # The priority is based upon order of creation:
