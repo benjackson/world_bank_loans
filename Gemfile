@@ -13,6 +13,9 @@ gem 'httparty'
 # Use Dalli memcaching
 gem 'dalli'
 
+# Paginate projects
+gem 'will_paginate'
+
 # Use jquery instead of prototype
 gem 'jquery-rails', '>= 0.2.6'
 

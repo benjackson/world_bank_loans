@@ -20,7 +20,13 @@ class CountriesController < ApplicationController
       format.json do
         render :json => @country.to_hash.merge( { :info_summary => render_to_string(:partial => "alternative_info_summary") })
       end
-      format.any(:html, :js) { respond_with @country }
+      format.mobile do
+        @projects = @country.projects.paginate
+        render "projects/index", :layout => "country"
+      end
+      format.any(:html, :js) do
+        respond_with(@country)
+      end
     end
   end
 end

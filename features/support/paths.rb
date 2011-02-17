@@ -14,6 +14,9 @@ module NavigationHelpers
     when /the (.*?) json page/
       path_to("the #{$1} page") + ".json"
 
+    when /the (.*?) country page/
+      country_path(:id => $1)
+      
     when /the map page/
       countries_path
 

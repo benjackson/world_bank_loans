@@ -16,8 +16,8 @@ module Socrata
     end
     
     def self.json_fixture(filename)
-      filename += ".json" unless filename =~ /\.json$/
-      JSON.parse(File.open(File.join(FIXTURE_DIR, "#{filename}"), "rb") { |f| f.read } )
+      filename += ".json.gz" unless filename =~ /\.json.gz$/
+      JSON.parse(Zlib::GzipReader.open(File.join(FIXTURE_DIR, "#{filename}"), "rb") { |f| f.read } )
     end
   end
   
@@ -26,7 +26,8 @@ module Socrata
       raise "
             During tests you shouldn't be going to the Socrata site at all.  Get a 
             json download of the fixture you're trying to see and place it in the 
-            fixtures/socrata dir.  Add this key to the file by hand:
+            fixtures/socrata dir (gzip it after adding keys).  Add this key to the 
+            file by hand:
         
             \"cache_keys\" : [\"#{format_memcache_key(path, options[:query])}\"]"
     end

@@ -16,4 +16,8 @@ class Project
   def id
     self.loans[0].id
   end
+  
+  def has_multiple_loans?
+    loans.size > 1
+  end
 end

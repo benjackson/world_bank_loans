@@ -1,6 +1,7 @@
+require 'will_paginate/collection'
+
 # Holds a list of projects
 class ProjectList < Array
-  
   def initialize(loans)
     super()
     @projects = {}
@@ -13,8 +14,10 @@ class ProjectList < Array
     end
   end
   
-  # Return the projects with more than 1 loan attached
-  def with_multiple_loans
-    select { |p| p.loans.size > 1 }
+  def paginate(page = 1, per_page = 5)
+    page ||= 1    # handle nil params
+    WillPaginate::Collection.create(page, per_page, size) do |pager|
+      pager.replace self[pager.offset, pager.per_page].to_a
+    end
   end
 end
