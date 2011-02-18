@@ -2,15 +2,16 @@ class CountriesController < ApplicationController
   #caches_action :index, :show
   respond_to :html, :js, :json
   
-  layout nil, :only => :mobile 
+  layout nil, :only => :mobile
   
   def index
     @countries = Country.all
     respond_to do |format|
       format.json do
-        render :json => Country.all.map { |country| country_path(country, :format => :json) }
+        render :json => @countries.map { |country| country_path(country, :format => :json) }
       end
       format.html { render :layout => "map" }
+      format.js { render "index.js.erb" }
     end
   end
   

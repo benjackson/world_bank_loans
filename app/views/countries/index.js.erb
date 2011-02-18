@@ -1,7 +1,6 @@
-<% @countries.each do |country| %>
-  setTimeout(function() { 
-    $.getJSON("<%=country_path(country, :format => :json)%>", function(data) {
-      $.WorldBank.Country.create(data);
-    });
-  }, 100);
-<% end %>
+$.WorldBank.drawCountries = function() {
+  // Load the countries onto the map
+  <% @countries.each do |country| %>
+    $.WorldBank.Country.create(<%=country.to_hash.merge({ :link => country_path(country.id) }).to_json.html_safe%>);
+  <% end %>
+}

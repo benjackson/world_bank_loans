@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   layout nil, :only => :mobile
   
   def show
-    @project = Project.find(params[:id])
+    @project = Country.find(params[:country_id]).project(params[:id])
   end
   
   def index

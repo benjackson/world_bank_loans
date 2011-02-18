@@ -34,6 +34,7 @@ class Loan < Socrata::Data
       loans_data.loans.each do |loan|
         return loan if loan.id == id
       end
+      nil
     end
     
     def loans_data

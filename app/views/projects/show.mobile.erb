@@ -1,0 +1,5 @@
+<ul id="project-<%=@project.id%>" title="<%=@project.name%>">
+  <% @project.loans.each do |loan| %>
+    <li><%= link_to loan.name, loan_path(:id => loan.id)%></li>
+  <% end %>
+</ul>

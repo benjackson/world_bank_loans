@@ -33,9 +33,3 @@ module Socrata
     end
   end
 end
-
-RSpec.configure do |config|
-  config.before(:all) do
-    Socrata::SpecHelper.cache_all_fixtures
-  end
-end

@@ -14,6 +14,14 @@ class Country < Socrata::Data
   def projects
     ProjectList.new(loans)
   end
+  memoize :projects
+  
+  def project(id)
+    projects.each do |project|
+      return project if project.id == id
+    end
+    nil
+  end
   
   def latitude
     loans.empty? ? 179 : loans[0].latitude
@@ -102,6 +110,13 @@ class Country < Socrata::Data
   class << self
     def all
       loans_data.countries
+    end
+    
+    def paginate(page = 1, per_page = 5)
+      page ||= 1    # handle nil params
+      WillPaginate::Collection.create(page, per_page, all.size) do |pager|
+        pager.replace all[pager.offset, pager.per_page]
+      end
     end
     
     def first

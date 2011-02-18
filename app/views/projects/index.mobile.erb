@@ -1,23 +1,11 @@
 <% @projects.each do |project| %>
   <% unless project.has_multiple_loans? %>
-    <li><%= link_to project.name, loan_path(project.loans[0]) %></li>
+    <li><%= link_to project.name, loan_path(:id => project.loans[0].id) %></li>
   <% else %>
-    <li><%= link_to "#{project.name} (#{project.loans.size})", "#project-#{project.id}" %></li>
-    
-    <% content_for :projects_with_multiple_loans do %>
-      <ul id="project-<%=project.id%>" title="<%=project.name%>">
-      <% project.loans.each do |loan| %>
-        <li><%= link_to loan.name, loan_path(loan)%></li>
-      <% end %>
-    <% end %>
-  </ul>
+    <li><%= link_to "#{project.name} (#{project.loans.size})", country_project_path(@country.id, project.id) %></li>
   <% end %>
 <% end %>
 
 <% unless @projects.current_page == @projects.total_pages %>
-  <%= link_to "View more...", country_projects_path(@country.id, :page => @projects.current_page + 1) %>
-<% end %>
-
-<% content_for :other_pages do %>
-  <%=yield :projects_with_multiple_loans%>
+  <li><%= link_to "View more...", country_projects_path(@country.id, :page => @projects.current_page + 1), :target => "_replace" %></li>
 <% end %>

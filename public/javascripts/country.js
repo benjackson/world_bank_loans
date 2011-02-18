@@ -117,11 +117,9 @@ $.WorldBank.Country = (function() {
     var self = this;  // handle closure scope
     
     var clicked = function(event) {
-      //if ($.WorldBank.the_map.getZoom() != $.WorldBank.the_map.maxZoom) {
-      //  $.WorldBank.the_map.fitBounds(self.getBounds());
-      //}
-      $.WorldBank.CountryInfos.stop();
-      $.WorldBank.CountryInfos.displayInfoFor(self);
+      window.iui.showPageByHref(self.getLink());
+      //$.WorldBank.CountryInfos.stop();
+      //$.WorldBank.CountryInfos.displayInfoFor(self);
     }
     
     var changeMarkersForCurrentZoomLevel = function() {
@@ -153,6 +151,10 @@ $.WorldBank.Country = (function() {
         new google.maps.LatLng(this.getLatitude() + 1, this.getLongitude() + 1)
         );
       return bounds;
+    }
+    
+    this.getLink = function() {
+      return data["link"];
     }
     
     // returns true if this country's marker can be seen on the map

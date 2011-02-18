@@ -44,4 +44,5 @@ group :development, :test do
    gem 'cucumber-rails'
    gem 'capybara'
    gem 'autotest'
+   gem 'launchy'
 end
