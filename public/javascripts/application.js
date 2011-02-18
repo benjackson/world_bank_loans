@@ -1,3 +1,3 @@
-$.ajaxSetup({
-    'beforeSend':  function(xhr) { xhr.setRequestHeader("Accept", "text/javascript") }
-});
+//$.ajaxSetup({
+//    'beforeSend':  function(xhr) { xhr.setRequestHeader("Accept", "text/javascript") }
+//});
