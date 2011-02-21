@@ -1,28 +1,20 @@
 <div class="toolbar">
   <h1 id="pageTitle">CTR Open Data Demo</h1>
   <%= link_to "", "#", :id => "backButton", :class => "button" %>
-  <%= link_to "Map", "#MapContainer", :class => "button" %>
 </div>
 
 <div id="Welcome" class="panel" selected="true" title="Welcome">
-  <div class="information">
-    <div class="ctr-logo">
+  <ul>
+    <li class="ctr-logo">
       <%=image_tag "ctr_logo.jpg", :alt => "CTR Open Data Beta"%>
-    </div>
-    <div class="text">
-      <p>
-        The map on the next page shows all of the countries currently receiving loans 
-        from the World Bank.  Select a country to find out more about the funded
-        projects for that region.
-      </p>
-      
-      <blockquote>
-        Note -- the data in the app is provisional and often inaccurate. It does not represent actual World Bank data. Please do not reuse it.
-      </blockquote>
-      
-      For questions, please contact <%= mail_to "smoscoso@worldbank.org"%>
-    </div>
-  </div>
+    </li>
+    <li>
+      <%=link_to "View undisbursed loans", "#MapContainer"%>
+    </li>
+  </ul>
+  <h2>Note -- the data in the app is provisional and often inaccurate. It does 
+  not represent actual World Bank data. Please do not reuse it.  For questions, 
+  please contact <%= mail_to "smoscoso@worldbank.org"%></h2>
 </div>
 
 <div id="MapContainer" title="Map">
@@ -30,3 +22,30 @@
   </div>
 </div>
 
+
+
+<div id="aTrack" title="Track" class="Dialog">
+  <fieldset>
+  <h1>Sorry, but this feature is not yet implemented</h1>
+  </fieldset>
+</div>
+
+<div id="aReport" title="Report" class="Dialog">
+  <fieldset>
+  <h1>Sorry, but this feature is not yet implemented</h1>
+  </fieldset>
+</div>
+
+<form id="Track" class="dialog" action="">
+    <fieldset>
+        <h1>Sorry, this feature is not available yet</h1>
+        <%=link_to "Ok", "", :type => "cancel", :class => "grayButton"%>
+    </fieldset>
+</form>
+
+<form id="Report" class="dialog" action="">
+    <fieldset>
+        <h1>Sorry, this feature is not available yet</h1>
+        <%=link_to "Ok", "", :type => "cancel", :class => "grayButton"%>
+    </fieldset>
+</form>

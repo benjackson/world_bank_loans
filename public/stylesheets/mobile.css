@@ -47,9 +47,13 @@ body[orient="portrait"] .country-info-summary {
   top: -26px;
 }
 
-.ctr-logo {
+.row.ctr-logo {
+  text-align: left;
+}
+
+.ctr-logo img {
   position: relative;
-  top: -12px;
+  left: 12px;
 }
 
 #Welcome blockquote {
@@ -64,5 +68,46 @@ body[orient="portrait"] .country-info-summary {
 
 body > .panel {
   top: 45px;
+  bottom: 0;
+}
+
+#Welcome > ul > li {
+  min-height: auto;
+}
+
+#Welcome > ul > li {
+  position: relative;
+  margin: 0;
+  padding: 8px 0 8px 10px;
+  font-size: 20px;
+  font-weight: bold;
+  list-style: none;
+}
+
+#Welcome > ul > li > a {
+  display: block;
+  padding: 8px 32px 8px 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+#Welcome > ul li {
+  text-align: left;
+}
+
+#Welcome > ul li a {
+  background: url(t/default/listArrow.png) no-repeat right center;
+}
+
+#Welcome li > a[selected], li > a:active {
+    background-image: url(t/default/listArrowSel.png), url(t/default/selection.png) !important;
+}
+
+#Welcome li > a[selected="progress"] {
+    background-image: url(t/default/loading.gif), url(t/default/selection.png) !important;
+}
+
+body > .dialog {
+  top: 0;
   bottom: 0;
 }
