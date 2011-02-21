@@ -35,6 +35,14 @@ class Country < Socrata::Data
     loans.empty? ? 0 : loans[0].currency_of_commitment
   end
   
+  def approved_amount
+    amount = 0
+    loans.each do |project|
+      amount += project.approved_amount.to_i
+    end
+    amount
+  end
+  
   # Sum the disbused amounts of all the loans in this country
   def disbursed_amount
     amount = 0
@@ -80,6 +88,15 @@ class Country < Socrata::Data
     highest_year
   end
   
+  def disbursement_remaining
+    approved_amount - disbursed_amount
+  end
+  
+  # The amount left to disburse as a percentage of the total commitment
+  def disbursement_remaining_percentage
+    approved_amount == 0 ? 0 : 1 - (disbursed_amount / approved_amount.to_f)
+  end
+  
   def loan(id)
     loans.each do |loan|
       return loan if loan.id == id
@@ -103,7 +120,8 @@ class Country < Socrata::Data
       :id => id,
       :name => name,
       :latitude => latitude,
-      :longitude => longitude
+      :longitude => longitude,
+      :disbursement_remaining_percentage => disbursement_remaining_percentage
     }
   end
   

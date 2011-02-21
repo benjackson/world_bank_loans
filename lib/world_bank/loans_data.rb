@@ -8,6 +8,9 @@ module WorldBank
 
     attr_reader :projects, :loans
     
+    ACTIVE_STATUSES  = [ "DISBURSING", "EFFECTIVE", "SIGNED", "APPROVED"  ]
+    INACTIVE_STATUSES = [ "REPAID", "CANCELLED", "DISBURSED", "TERMINATED" ]
+    
     def initialize(params = {})
       super("jdjw-if4m", params)
     end
@@ -23,9 +26,8 @@ module WorldBank
       ret = {}
       @projects = {}
       @loans = []
-      rows.each do |row|
-        unless row.country.nil? || row.country == "World"
-          loan = Loan.new(row.to_hash)
+      valid_rows.each do |row|
+        loan = Loan.new(row.to_hash)
           @loans << loan
           unless ret[row.country]
             ret[row.country] = Country.new(:name => row.country)
@@ -33,10 +35,28 @@ module WorldBank
           else
             ret[row.country].loans << loan
           end
-        end
       end
       ret
     end
     memoize :country_hash
+    
+    def valid_rows
+      ret = []
+      rows.each do |row|
+        if valid?(row)
+          yield row if block_given?
+          ret << row
+        end
+      end
+      ret
+    end
+    
+    def valid?(row)
+      if row.country.nil? || row.country == "World" || INACTIVE_STATUSES.include?(row.status)
+        false
+      else
+        true
+      end
+    end
   end
 end
