@@ -1,7 +1,6 @@
 /*
    Copyright (c) 2007-9, iUI Project Members
    See LICENSE.txt for licensing terms
-   Version 0.40-dev2
  */
 
 
@@ -13,7 +12,6 @@ var slideInterval = 0;
 var currentPage = null;
 var currentDialog = null;
 var currentWidth = 0;
-var currentHeight = 0;
 var currentHash = location.hash;
 var hashPrefix = "#_";
 var pageHistory = [];
@@ -29,152 +27,87 @@ window.iui =
 {
 	animOn: true,	// Slide animation with CSS transition is now enabled by default where supported
 
-	httpHeaders: {
-	    "X-Requested-With" : "XMLHttpRequest"
-	},
-
 	showPage: function(page, backwards)
 	{
 		if (page)
-		{
-//			if (window.iui_ext)	window.iui_ext.injectEventMethods(page);	// TG
-			
-			if (currentDialog)
+		{   
+		  if (currentDialog)
 			{
 				currentDialog.removeAttribute("selected");
-				// EVENT blur->currentDialog
-				sendEvent("blur", currentDialog);
 				currentDialog = null;
 			}
 
 			if (hasClass(page, "dialog"))
-			{
-			    // EVENT focus->page
-				sendEvent("focus", page);
 				showDialog(page);
-			}
 			else
 			{
-				sendEvent("load", page);    // 127(stylesheet), 128(script), 129(onload)
-			                                    // 130(onFocus), 133(loadActionButton)
 				var fromPage = currentPage;
-				// EVENT blur->currentPage
-				sendEvent("blur", currentPage);
 				currentPage = page;
-				// EVENT focus->currentPage
-				sendEvent("focus", page);
 
 				if (fromPage)
-				{
-				    if (backwards) sendEvent("unload", fromPage);
 					setTimeout(slidePages, 0, fromPage, page, backwards);
-				}
 				else
-				{
 					updatePage(page, fromPage);
-				}
-					
 			}
 		}
 	},
 
 	showPageById: function(pageId)
 	{
-		var page = $(pageId);
+		var page = getElById(pageId);
 		if (page)
 		{
 			var index = pageHistory.indexOf(pageId);
 			var backwards = index != -1;
 			if (backwards)
-			{
-				// we're going back, remove history from index on
-				// remember - pageId will be added again in updatePage
-				pageHistory.splice(index);
-			}
+				pageHistory.splice(index, pageHistory.length);
 
 			iui.showPage(page, backwards);
 		}
 	},
-	
-	goBack: function()
-	{
-		pageHistory.pop();	// pop current page
-		var pageID = pageHistory.pop();  // pop/get parent
-		var page = $(pageID);
-		iui.showPage(page, true);
-	},
 
 	showPageByHref: function(href, args, method, replace, cb)
 	{
-	  // I don't think we need onerror, because readstate will still go to 4 in that case
-	  function spbhCB(xhr) 
-	  {
-		if (xhr.readyState == 4)
+		var req = new XMLHttpRequest();
+		req.onerror = function()
 		{
-		  // Add 'if (xhr.responseText)' to make sure we have something???
-		  var frag = document.createElement("div");
-		  frag.innerHTML = xhr.responseText;
-          // EVENT beforeInsert->body
-          sendEvent("beforeinsert", document.body, {fragment:frag})
-          if (replace)
-		  {
-			  replaceElementWithFrag(replace, frag);
-		  }
-		  else
-		  {
-			  iui.insertPages(frag);
-		  }
-		  if (cb)
-			setTimeout(cb, 1000, true);
-		}
-	  };
-	  iui.ajax(href, args, method, spbhCB);
-	},
-	
-	// Callback function gets a single argument, the XHR
-	ajax: function(url, args, method, cb)
-	{
-        var xhr = new XMLHttpRequest();
-        method = method ? method.toUpperCase() : "GET";
-        if (args && method == "GET")
-        {
-          url =  url + "?" + iui.param(args);
-        }
-        xhr.open(method, url, true);
-        if (cb)
-        {
-        xhr.onreadystatechange = function() { cb(xhr); };
-        }
-        var data = null;
-        if (args && method != "GET")
-        {
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            data = iui.param(args);
-        }
-        for (var header in iui.httpHeaders)
-        {
-            xhr.setRequestHeader(header, iui.httpHeaders[header]);
-        }
-        xhr.send(data);
-	},
-	
-	// Thanks, jQuery
-	//	stripped-down, simplified, object-only version
-	param: function( o )
-	{
-	  var s = [ ];
-	
-	  // Serialize the key/values
-	  for ( var key in o )
-		s[ s.length ] = encodeURIComponent(key) + '=' + encodeURIComponent(o[key]);
-  
-	  // Return the resulting serialization
-	  return s.join("&").replace(/%20/g, "+");
-	},
+			if (cb)
+				cb(false);
+		};
+		
+		req.onreadystatechange = function()
+		{
+			if (req.readyState == 4)
+			{
+				if (replace)
+					replaceElementWithSource(replace, req.responseText);
+				else
+				{
+					var frag = document.createElement("div");
+					frag.innerHTML = req.responseText;
+					iui.insertPages(frag.childNodes);
+				}
+				if (cb)
+					setTimeout(cb, 1000, true);
+			}
+		};
 
-	insertPages: function(frag)
+		if (args)
+		{
+			req.open(method || "GET", href, true);
+			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			req.setRequestHeader("Content-Length", args.length);
+			req.send(args.join("&"));
+		}
+		else
+		{
+			req.open(method || "GET", href, true);
+			req.send(null);
+		}
+	},
+	
+	insertPages: function(nodes)
 	{
-		var nodes = frag.childNodes;
 		var targetPage;
 		for (var i = 0; i < nodes.length; ++i)
 		{
@@ -184,17 +117,11 @@ window.iui =
 				if (!child.id)
 					child.id = "__" + (++newPageCount) + "__";
 
-				var clone = $(child.id);
-				var docNode;
-				if (clone) {
+				var clone = getElById(child.id);
+				if (clone)
 					clone.parentNode.replaceChild(child, clone);
-				    docNode = $(child.id);
-			    }
 				else
-					docNode = document.body.appendChild(child);
-					
-				sendEvent("afterinsert", document.body, {insertedNode:docNode});   
-
+					document.body.appendChild(child);
 
 				if (child.getAttribute("selected") == "true" || !targetPage)
 					targetPage = child;
@@ -202,9 +129,9 @@ window.iui =
 				--i;
 			}
 		}
-		if (targetPage)
-			iui.showPage(targetPage);
 
+		if (targetPage)
+			iui.showPage(targetPage);	 
 	},
 
 	getSelectedPage: function()
@@ -231,25 +158,7 @@ window.iui =
 		new RegExp("^http:\/\/www.youtube.com\/v\/"),
 		new RegExp("^javascript:"),
 
-	],
-	hasClass: function(self, name)
-	{
-		var re = new RegExp("(^|\\s)"+name+"($|\\s)");
-		return re.exec(self.getAttribute("class")) != null;
-	},
-		
-	addClass: function(self, name)
-	{
-	  if (!iui.hasClass(self,name)) self.className += " "+name;
-	},
-		
-	removeClass: function(self, name)
-	{
-	  if (iui.hasClass(self,name)) {
-		  var reg = new RegExp('(\\s|^)'+name+'(\\s|$)');
-		self.className=self.className.replace(reg,' ');
-	  }
-	}
+	]
 };
 
 // *************************************************************************************************
@@ -291,31 +200,27 @@ addEventListener("click", function(event)
 		if (link.href && link.hash && link.hash != "#" && !link.target)
 		{
 			link.setAttribute("selected", "true");
-			iui.showPage($(link.hash.substr(1)));
+			iui.showPage(getElById(link.hash.substr(1)));
 			setTimeout(unselect, 500);
 		}
-		else if (link == $("backButton"))
-		{
-			iui.goBack();
-		}
+		else if (link == getElById("backButton"))
+			history.back();
 		else if (link.getAttribute("type") == "submit")
 		{
 			var form = findParent(link, "form");
 			if (form.target == "_self")
 			{
 			    form.submit();
-			    return;  // allow default
+			    return;  // return so we don't preventDefault
 			}
 			submitForm(form);
 		}
 		else if (link.getAttribute("type") == "cancel")
-		{
 			cancelDialog(findParent(link, "form"));
-		}
 		else if (link.target == "_replace")
 		{
 			link.setAttribute("selected", "progress");
-			iui.showPageByHref(link.href, null, "GET", link, unselect);
+			iui.showPageByHref(link.href, null, null, link, unselect);
 		}
 		else if (iui.isNativeUrl(link.href))
 		{
@@ -328,7 +233,7 @@ addEventListener("click", function(event)
 		else if (!link.target)
 		{
 			link.setAttribute("selected", "progress");
-			iui.showPageByHref(link.href, null, "GET", null, unselect);
+			iui.showPageByHref(link.href, null, null, null, unselect);
 		}
 		else
 			return;
@@ -347,24 +252,6 @@ addEventListener("click", function(event)
 	}
 }, true);
 
-
-function sendEvent(type, node, props)
-{
-    if (node)
-    {
-        var event = document.createEvent("UIEvent");
-        event.initEvent(type, false, false);  // no bubble, no cancel
-        if (props)
-        {
-            for (i in props)
-            {
-                event[i] = props[i];
-            }
-        }
-        node.dispatchEvent(event);
-    }
-}
-
 function getPageFromLoc()
 {
 	var page;
@@ -372,7 +259,7 @@ function getPageFromLoc()
 	if (result)
 		page = result[1];
 	if (page)
-		page = $(page);
+		page = getElById(page);
 	return page;
 }
 
@@ -397,11 +284,10 @@ function checkOrientAndLocation()
 {
 	if (!hasOrientationEvent)
 	{
-	  if ((window.innerWidth != currentWidth) || (window.innerHeight != currentHeight))
+	  if (window.innerWidth != currentWidth)
 	  {	  
 		  currentWidth = window.innerWidth;
-		  currentHeight = window.innerHeight;
-		  var orient = (currentWidth < currentHeight) ? portraitVal : landscapeVal;
+		  var orient = currentWidth == 320 ? portraitVal : landscapeVal;
 		  setOrientation(orient);
 	  }
 	}
@@ -415,23 +301,8 @@ function checkOrientAndLocation()
 
 function setOrientation(orient)
 {
+  $("#body").trigger("orientation_change");
 	document.body.setAttribute("orient", orient);
-//  Set class in addition to orient attribute:
-	if (orient == portraitVal)
-	{
-		iui.removeClass(document.body, landscapeVal);
-		iui.addClass(document.body, portraitVal);
-	}
-	else if (orient == landscapeVal)
-	{
-		iui.removeClass(document.body, portraitVal);
-		iui.addClass(document.body, landscapeVal);
-	}
-	else
-	{
-		iui.removeClass(document.body, portraitVal);
-		iui.removeClass(document.body, landscapeVal);
-	}
 	setTimeout(scrollTo, 100, 0, 1);
 }
 
@@ -440,7 +311,7 @@ function showDialog(page)
 	currentDialog = page;
 	page.setAttribute("selected", "true");
 	
-	if (hasClass(page, "dialog"))
+	if (hasClass(page, "dialog") && !page.target)
 		showForm(page);
 }
 
@@ -448,17 +319,12 @@ function showForm(form)
 {
 	form.onsubmit = function(event)
 	{
-//  submitForm and preventDefault are called in the click handler
-//  when the user clicks the submit a.button
-// 
 		event.preventDefault();
 		submitForm(form);
 	};
 	
 	form.onclick = function(event)
 	{
-// Why is this code needed?  cancelDialog is called from
-// the click hander.  When will this be called?
 		if (event.target == form && hasClass(form, "dialog"))
 			cancelDialog(form);
 	};
@@ -471,31 +337,29 @@ function cancelDialog(form)
 
 function updatePage(page, fromPage)
 {
+  $(page).trigger("show");
+  
 	if (!page.id)
 		page.id = "__" + (++newPageCount) + "__";
 
 	location.hash = currentHash = hashPrefix + page.id;
 	pageHistory.push(page.id);
 
-	var pageTitle = $("pageTitle");
+	var pageTitle = getElById("pageTitle");
 	if (page.title)
 		pageTitle.innerHTML = page.title;
-	var ttlClass = page.getAttribute("ttlclass");
-	pageTitle.className = ttlClass ? ttlClass : "";
 
 	if (page.localName.toLowerCase() == "form" && !page.target)
 		showForm(page);
 		
-	var backButton = $("backButton");
+	var backButton = getElById("backButton");
 	if (backButton)
 	{
-		var prevPage = $(pageHistory[pageHistory.length-2]);
+		var prevPage = getElById(pageHistory[pageHistory.length-2]);
 		if (prevPage && !page.getAttribute("hideBackButton"))
 		{
 			backButton.style.display = "inline";
 			backButton.innerHTML = prevPage.title ? prevPage.title : "Back";
-			var bbClass = prevPage.getAttribute("bbclass");
-			backButton.className = (bbClass) ? 'button ' + bbClass : 'button';
 		}
 		else
 			backButton.style.display = "none";
@@ -508,8 +372,6 @@ function slidePages(fromPage, toPage, backwards)
 
 	clearInterval(checkTimer);
 	
-	sendEvent("beforetransition", fromPage, {out:true});
-	sendEvent("beforetransition", toPage, {out:false});
 	if (canDoSlideAnim() && axis != 'y')
 	{
 	  slide2(fromPage, toPage, backwards, slideDone);
@@ -526,9 +388,6 @@ function slidePages(fromPage, toPage, backwards)
 	  checkTimer = setInterval(checkOrientAndLocation, 300);
 	  setTimeout(updatePage, 0, toPage, fromPage);
 	  fromPage.removeEventListener('webkitTransitionEnd', slideDone, false);
-	  sendEvent("aftertransition", fromPage, {out:true});
-      sendEvent("aftertransition", toPage, {out:false});
-
 	}
 }
 
@@ -603,9 +462,7 @@ function preloadImages()
 
 function submitForm(form)
 {
-    iui.addClass(form, "progress");
-    iui.showPageByHref(form.action, encodeForm(form), form.method || "GET", null, clear);
-    function clear() {   iui.removeClass(form, "progress"); }
+	iui.showPageByHref(form.action || "POST", encodeForm(form), form.method);
 }
 
 function encodeForm(form)
@@ -614,17 +471,16 @@ function encodeForm(form)
 	{
 		for (var i = 0; i < inputs.length; ++i)
 		{
-	        if (inputs[i].name)
-		        args[inputs[i].name] = inputs[i].value;
+			if (inputs[i].name)
+				args.push(inputs[i].name + "=" + escape(inputs[i].value));
 		}
 	}
 
-    var args = {};
-    encode(form.getElementsByTagName("input"));
-    encode(form.getElementsByTagName("textarea"));
-    encode(form.getElementsByTagName("select"));
-    encode(form.getElementsByTagName("button"));
-    return args;	  
+	var args = [];
+	encode(form.getElementsByTagName("input"));
+	encode(form.getElementsByTagName("textarea"));
+	encode(form.getElementsByTagName("select"));
+	return args;	
 }
 
 function findParent(node, localName)
@@ -636,10 +492,11 @@ function findParent(node, localName)
 
 function hasClass(self, name)
 {
-	return iui.hasClass(self,name);
+	var re = new RegExp("(^|\\s)"+name+"($|\\s)");
+	return re.exec(self.getAttribute("class")) != null;
 }
 
-function replaceElementWithFrag(replace, frag)
+function replaceElementWithSource(replace, source)
 {
 	var page = replace.parentNode;
 	var parent = replace;
@@ -648,16 +505,17 @@ function replaceElementWithFrag(replace, frag)
 		page = page.parentNode;
 		parent = parent.parentNode;
 	}
+
+	var frag = document.createElement(parent.localName);
+	frag.innerHTML = source;
+
 	page.removeChild(parent);
 
-    var docNode;
-	while (frag.firstChild) {
-		docNode = page.appendChild(frag.firstChild);
-		sendEvent("afterinsert", document.body, {insertedNode:docNode});
-    }
+	while (frag.firstChild)
+		page.appendChild(frag.firstChild);
 }
 
-function $(id) { return document.getElementById(id); }
+function getElById(id) { return document.getElementById(id); }
 function ddd() { console.log.apply(console, arguments); }
 
 })();
