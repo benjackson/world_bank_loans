@@ -22,7 +22,7 @@ html,body {
   color: white;
   font-weight: bold;
   cursor: pointer;
-  font-family: verdana, sans-serif;
+  font-family: arial, sans-serif;
 }
 
 .size-0 { font-size: 6px; }
