@@ -23,6 +23,7 @@ $(document).ready(function() {
   
   $("#MapContainer").one("aftertransition", function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
+      $.WorldBank.the_map.setCenter($.WorldBank.map_center);
   });
   
   // Only for mobiles
