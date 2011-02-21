@@ -200,6 +200,7 @@ $.WorldBank.CountryInfos = function() {
     
     start: function() {
       setTimeout(function () { this.stopped = false; showNextCountryInfo(); }, 9000);
+      google.maps.event.addListener($.WorldBank.the_map, 'click', $.WorldBank.mapClicked);
     },
     
     stop: function() {

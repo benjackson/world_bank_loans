@@ -2,17 +2,13 @@ $.WorldBank = {}   // namespace
 
 // the google map
 $.WorldBank.the_map = null;
-$.WorldBank.map_center = new google.maps.LatLng(20, 0);
-
-$.WorldBank.mapClicked = function() {
-  $.WorldBank.CountryInfos.removeInfo();
-}
+$.WorldBank.map_center = new google.maps.LatLng(36, 8);
 
 $(document).ready(function() {
   $.WorldBank.the_map = new google.maps.Map(document.getElementById("map"), {
     center: $.WorldBank.map_center,
     mapTypeId: google.maps.MapTypeId.TERRAIN,
-    zoom: 2,
+    zoom: 4,
     streetViewControl: false,
     mapTypeControl: false,
     panControl: false,
@@ -31,8 +27,6 @@ $(document).ready(function() {
   $("#body").bind("orientation_change", function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
   });
-  
-  google.maps.event.addListener($.WorldBank.the_map, 'click', $.WorldBank.mapClicked);
   
   google.maps.event.addListenerOnce($.WorldBank.the_map, 'tilesloaded', function() {
       $.WorldBank.drawCountries();
