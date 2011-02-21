@@ -30,16 +30,5 @@ $(document).ready(function() {
   
   google.maps.event.addListenerOnce($.WorldBank.the_map, 'tilesloaded', function() {
       $.WorldBank.drawCountries();
-      //$.WorldBank.CountryInfos.start(); // start showing the country tooltips
-      // Get all the countries once the initial tiles have loaded
-      //$.getJSON("/countries.json", function(data) {
-          //   
-          
-          // Make sure we can clear the tooltip with a click on the map
-          
-          
-          // Load all the countries onto the map
-          //$.WorldBank.Country.load(data);
-      //});
   });
 });
