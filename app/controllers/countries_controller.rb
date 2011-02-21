@@ -18,15 +18,15 @@ class CountriesController < ApplicationController
   def show
     @country = Country.find(params[:id])
     respond_to do |format|
-      format.json do
-        render :json => @country.to_hash.merge( { :info_summary => render_to_string(:partial => "alternative_info_summary") })
-      end
       format.mobile do
         @projects = @country.projects.paginate
         render "projects/index", :layout => "country"
       end
       format.any(:html, :js) do
         respond_with(@country)
+      end
+      format.json do
+        render :json => @country.to_hash.merge( { :info_summary => render_to_string(:partial => "alternative_info_summary") })
       end
     end
   end

@@ -45,4 +45,5 @@ group :development, :test do
    gem 'capybara'
    gem 'autotest'
    gem 'launchy'
+   gem 'heroku'
 end
