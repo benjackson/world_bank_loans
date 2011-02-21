@@ -1,7 +1,7 @@
 #MapContainer {
   width: 100%;
   position: absolute;
-  top: 45px;
+  top: 0;
   bottom: 0;
   min-height: 10px;
 }
