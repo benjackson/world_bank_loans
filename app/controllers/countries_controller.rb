@@ -1,6 +1,6 @@
 class CountriesController < ApplicationController
   #caches_action :index, :show
-  respond_to :html, :js, :json
+  respond_to :html, :js, :json, :mobile
   
   layout nil, :only => :mobile
   
@@ -11,6 +11,7 @@ class CountriesController < ApplicationController
         render :json => @countries.map { |country| country_path(country, :format => :json) }
       end
       format.html { render :layout => "map" }
+      format.mobile
       format.js { render "index.js.erb" }
     end
   end
