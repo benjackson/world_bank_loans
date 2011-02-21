@@ -6,8 +6,8 @@ $.WorldBank.map_center = new google.maps.LatLng(36, 8);
 
 $(document).ready(function() {
   // hide the map out of sight while we set it up
-  $("#MapContainer").css("left", "100%");
-  $("#MapContainer").show();
+  //$("#MapContainer").css("left", "100%");
+  //$("#MapContainer").show();
   
   $.WorldBank.the_map = new google.maps.Map(document.getElementById("map"), {
     center: $.WorldBank.map_center,
@@ -19,6 +19,10 @@ $(document).ready(function() {
     zoomControl: false,
     disableDefaultUI: true,
     maxZoom: 6
+  });
+  
+  $("#MapContainer").one("aftertransition", function() {
+      google.maps.event.trigger($.WorldBank.the_map, 'resize');
   });
   
   // Only for mobiles
