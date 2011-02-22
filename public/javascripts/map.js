@@ -28,7 +28,6 @@ $(document).ready(function() {
   
   // resize the map when the window is resized
   $(window).resize(function() {
-      alert("resized");
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
   });
   
