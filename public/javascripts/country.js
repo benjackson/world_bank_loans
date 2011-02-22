@@ -144,6 +144,8 @@ $.WorldBank.Country = (function() {
     6: { type: "circle", coords: [ 32, 32, 64 ] }
   };
   
+  var data_property = "Undisbursed %";
+  
   return function(data) {
     var marker;       // the Google marker object
     var data;         // the data that makes it up
@@ -151,14 +153,16 @@ $.WorldBank.Country = (function() {
     var self = this;  // handle closure scope
     var overlay;
     
-    var changeMarkersForCurrentZoomLevel = function() {
+    /*
+    var changeMarkerForCurrentZoomLevel = function() {
       var zoom = $.WorldBank.the_map.getZoom();
       self.marker.setIcon(marker_images[zoom]);
       self.marker.setShadow(marker_image_shadows[zoom]);
       self.marker.setShape(marker_shapes[zoom]);
-    }
+    };
+    */
     
-    changeMarkersForCurrentZoomLevel = function() {
+    var changeMarkerForCurrentZoomLevel = function() {
       var zoom = $.WorldBank.the_map.getZoom();
       var size_factor = self.getMarkerSizeFactor();
       
@@ -182,29 +186,34 @@ $.WorldBank.Country = (function() {
       
       // Set the z-index so that smaller circles appear over larger ones
       self.marker.setZIndex(Math.round(1 - self.getMarkerSizeFactor() * 100));
-    }
+    };
     
     this.clicked = function(event) {
       window.iui.showPageByHref(self.getLink());
       //$.WorldBank.CountryInfos.stop();
       //$.WorldBank.CountryInfos.displayInfoFor(self);
-    }
+    };
   
     this.getSummaryHtml = function() {
       return data["info_summary"];
-    }
+    };
        
     this.getLatitude = function() {
       return data["latitude"];
-    }
+    };
     
     this.getLongitude = function() {
       return data["longitude"];
-    }
+    };
     
     this.getLatLng = function() {
       return new google.maps.LatLng(this.getLatitude(), this.getLongitude());
-    }
+    };
+    
+    // Update this country's marker and overlay text
+    this.update = function() {
+      changeMarkerForCurrentZoomLevel();
+    };
     
     this.getBounds = function() {
       bounds = bounds || new google.maps.LatLngBounds(
@@ -212,19 +221,19 @@ $.WorldBank.Country = (function() {
         new google.maps.LatLng(this.getLatitude() + 1, this.getLongitude() + 1)
         );
       return bounds;
-    }
+    };
     
     this.getMarkerSizeFactor = function() {
-      return data["disbursement_remaining_percentage"];
-    }
+      return data[$.WorldBank.Country.data_property];
+    };
     
     this.getLink = function() {
       return data["link"];
-    }
+    };
     
     this.getOverlayHtml = function() {
       return "<div class=\"country-overlay\">" + Math.round(data["disbursement_remaining_percentage"] * 100) + "%</div>";
-    }
+    };
     
     // returns true if this country's marker can be seen on the map
     this.isVisible = function() {
@@ -232,7 +241,7 @@ $.WorldBank.Country = (function() {
         return true;
       else
         return false;
-    }
+    };
     
     // add this country to the list
     $.WorldBank.Country.countries[data["name"]] = this;
@@ -248,13 +257,13 @@ $.WorldBank.Country = (function() {
     });
     
     // draw markers at the appropriate size
-    changeMarkersForCurrentZoomLevel();
+    changeMarkerForCurrentZoomLevel();
     
     overlay = new $.WorldBank.CountryOverlay(this);
     
     // watch for a change of zoom
     google.maps.event.addListener($.WorldBank.the_map, 'zoom_changed', function(event) {
-        changeMarkersForCurrentZoomLevel();
+        changeMarkerForCurrentZoomLevel();
     });
     
     // add a reference back to this object
@@ -271,6 +280,8 @@ $.WorldBank.Country = (function() {
 
 // All the Countrys created, by name
 $.WorldBank.Country.countries = []; 
+// The property used for displaying data on the map
+$.WorldBank.Country.data_property = "disbursement_remaining_percentage";
 
 $.WorldBank.Country.load = function(data) {
   if (!data || data.length == 0) return;  
@@ -301,3 +312,28 @@ $.WorldBank.Country.create = function(data) {
   var country = new $.WorldBank.Country(data);
   return country;
 };
+
+// Map the property name used in the Html to the data property
+$.WorldBank.Country.mapData = function(data_description) {
+  switch(data_description) {
+    case "Undisbursed %":
+      return "disbursement_remaining_percentage";
+    case "Undisbursed $":
+      return "disbursement_remaining";
+  };
+};
+
+$.WorldBank.Country.setDataProperty = function(data_property_or_description) {
+  var new_data_property = this.mapData(data_property_or_description);
+  if (new_data_property != this.data_property) {
+    this.data_property = new_data_property;
+    this.updateCountries();
+  }
+}
+
+$.WorldBank.Country.updateCountries = function() {
+  for (var country_name in this.countries) {
+    var country = this.countries[country_name];
+    country.update();
+  }
+}

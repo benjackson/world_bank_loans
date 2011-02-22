@@ -100,11 +100,51 @@ body > .panel {
 }
 
 #Welcome li > a[selected], li > a:active {
-    background-image: url(t/default/listArrowSel.png), url(t/default/selection.png) !important;
+  background-image: url(t/default/listArrowSel.png), url(t/default/selection.png) !important;
 }
 
 #Welcome li > a[selected="progress"] {
-    background-image: url(t/default/loading.gif), url(t/default/selection.png) !important;
+  background-image: url(t/default/loading.gif), url(t/default/selection.png) !important;
+}
+
+#Navigation {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-top: 1px solid #2d3642;
+  border-bottom: 1px solid #6d84a2;
+  background: url(t/default/toolbar.png) #6d84a2 repeat-x;
+  opacity: 0.9;
+}
+
+#Navigation > fieldset {
+  padding: 0;
+  margin: 0;
+  line-height: 38px;
+  border: 0;
+  border-top: 1px solid #ccccd4;
+  color: #666666;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#Navigation > fieldset > div {
+  float: left;
+  width: 140px;
+  cursor: pointer;
+  border: 0;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#Navigation div[selected="true"] {
+  -webkit-border-image: url(/images/whiteGrad.png) 6;
+  -moz-border-image: url(/images/whiteGrad.png) 6;
+  color: white;
 }
 
 body > .dialog {

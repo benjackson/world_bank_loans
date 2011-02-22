@@ -31,5 +31,12 @@ $(document).ready(function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
   });
   
+  // handle an option click
+  $("#Navigation div.option").click(function() {
+      $(this).attr("selected", true);
+      $(this).siblings().removeAttr("selected");
+      $.WorldBank.Country.setDataProperty($(this).text());
+  });
+  
   $.WorldBank.drawCountries();
 });

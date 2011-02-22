@@ -121,7 +121,8 @@ class Country < Socrata::Data
       :name => name,
       :latitude => latitude,
       :longitude => longitude,
-      :disbursement_remaining_percentage => disbursement_remaining_percentage
+      :disbursement_remaining_percentage => disbursement_remaining_percentage,
+      :disbursement_remaining => disbursement_remaining
     }
   end
   
