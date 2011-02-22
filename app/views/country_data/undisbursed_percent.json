@@ -1,0 +1,12 @@
+<%= @countries.map do |country|
+  {
+    :id => country.id,
+    :name => country.name,
+    :latitude => country.latitude,
+    :longitude => country.longitude,
+    :link => country_path(country.id),
+    :size_factor => country.disbursement_remaining_factor,
+    :overlay_text => "#{country.disbursement_remaining_percentage.round}%",
+    :marker_image_url => "/images/magenta-marker.png"
+  }
+end.to_json.html_safe %>

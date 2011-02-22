@@ -24,11 +24,11 @@ class Country < Socrata::Data
   end
   
   def latitude
-    loans.empty? ? 179 : loans[0].latitude
+    loans.empty? ? 179.0 : loans[0].latitude.to_f
   end
   
   def longitude
-    loans.empty? ? 179 : loans[0].longitude
+    loans.empty? ? 179.0 : loans[0].longitude.to_f
   end
   
   def currency
@@ -92,9 +92,29 @@ class Country < Socrata::Data
     approved_amount - disbursed_amount
   end
   
+  # The undisbursed amount as compared to all the other undisbursed amounts
+  def undisbursed_amount_factor
+    disbursement_remaining.to_f / Country.max_disbursement_remaining
+  end
+  
+  # The amount left to disburse as a factor of the total commitment
+  def disbursement_remaining_factor
+    approved_amount == 0 ? 0 : 1 - (disbursed_amount / approved_amount.to_f)
+  end
+  
+  # The amount disbursed as a factor of the total commitment
+  def disbursement_factor
+    approved_amount == 0 ? 0 : disbursed_amount / approved_amount.to_f
+  end
+  
   # The amount left to disburse as a percentage of the total commitment
   def disbursement_remaining_percentage
-    approved_amount == 0 ? 0 : 1 - (disbursed_amount / approved_amount.to_f)
+    disbursement_remaining_factor * 100
+  end
+  
+  # The amount disbursed as a percentage of the total commitment 
+  def disbursement_percentage
+    disbursement_factor * 100
   end
   
   def loan(id)
@@ -113,18 +133,6 @@ class Country < Socrata::Data
     self.class.parametrize(name)
   end
   memoize :to_param
-  
-  # Mainly so it can be serialised as JSON nicely
-  def to_hash
-    {
-      :id => id,
-      :name => name,
-      :latitude => latitude,
-      :longitude => longitude,
-      :disbursement_remaining_percentage => disbursement_remaining_percentage,
-      :disbursement_remaining => disbursement_remaining
-    }
-  end
   
   class << self
     def all
@@ -147,6 +155,12 @@ class Country < Socrata::Data
         return country if country.id == id
       end
       nil
+    end
+    
+    def max_disbursement_remaining
+      highest = 0
+      all.each { |country| highest = country.disbursement_remaining if country.disbursement_remaining > highest }
+      highest
     end
     
     def loans_data

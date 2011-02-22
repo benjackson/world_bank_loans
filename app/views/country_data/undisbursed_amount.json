@@ -1,0 +1,12 @@
+<%= @countries.map do |country|
+  {
+    :id => country.id,
+    :name => country.name,
+    :latitude => country.latitude,
+    :longitude => country.longitude,
+    :link => country_path(country.id),
+    :size_factor => country.undisbursed_amount_factor,
+    :overlay_text => format_for_currency(country.disbursement_remaining / 1000000000, country.currency) + "bn",
+    :marker_image_url => "/images/aqua-marker.png"
+  }
+end.to_json.html_safe %>

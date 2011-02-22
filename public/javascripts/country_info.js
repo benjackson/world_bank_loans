@@ -8,7 +8,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       var drawn_for_zoom;
       
       var getStrokeWeight = function() {
-        switch (country.marker.map.getZoom()) {
+        switch (country.getMarker().map.getZoom()) {
           case 0:
             return 1;
           case 1:
@@ -29,7 +29,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       }
       
       var getLineOffsetAmount = function() {
-        switch (country.marker.map.getZoom()) {
+        switch (country.getMarker().map.getZoom()) {
           case 3:
             return 0.7;
           case 4:
@@ -47,14 +47,14 @@ $.WorldBank.CountryInfoOverlay = (function() {
       var info_line;
       
       var positiveLng = function() {
-        var center = country.marker.getMap().getCenter();
+        var center = country.getMarker().getMap().getCenter();
         var delta_lng = country.getLongitude() - center.lng();
         
         return delta_lng > 0;
       }
       
       var positiveLat = function() {
-        var center = country.marker.getMap().getCenter();
+        var center = country.getMarker().getMap().getCenter();
         var delta_lat = country.getLatitude() - center.lat();
         
         return delta_lat > 0;
@@ -64,8 +64,8 @@ $.WorldBank.CountryInfoOverlay = (function() {
       // country's marker is.
       var getLatLng = function() {
         // establish the quadrant to place it in
-        var projection = country.marker.getMap().getProjection();
-        var bounds = country.marker.getMap().getBounds();
+        var projection = country.getMarker().getMap().getProjection();
+        var bounds = country.getMarker().getMap().getBounds();
         var sw = projection.fromLatLngToPoint(bounds.getSouthWest());
         var ne = projection.fromLatLngToPoint(bounds.getNorthEast());
         var width = ne.x - sw.x;
@@ -87,7 +87,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       
       // Shorten the line depending on its position and the zoom level
       var getLineEndLatLng = function() {
-        projection = country.marker.getMap().getProjection();
+        projection = country.getMarker().getMap().getProjection();
         var end_point = projection.fromLatLngToPoint(country.getLatLng()); 
         if (positiveLng())
           end_point.x -= getLineOffsetAmount();
@@ -104,7 +104,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       
       this.show = function(new_country) {
         country = new_country;
-        this.setMap(country.marker.getMap());
+        this.setMap(country.getMarker().getMap());
         
         // draw the line
         info_line = new google.maps.Polyline({
@@ -112,7 +112,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
             strokeColor: "#fe8626",
             strokeOpacity: 1,
             strokeWeight: getStrokeWeight(),
-            map: country.marker.getMap(),
+            map: country.getMarker().getMap(),
             path: [ getLatLng(), getLineEndLatLng() ]
         });
       }
@@ -127,7 +127,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       this.onAdd = function() {
         var pane = this.getPanes().floatPane;
         div = $(country.getSummaryHtml());
-        drawn_for_zoom = country.marker.map.getZoom();
+        drawn_for_zoom = country.getMarker().map.getZoom();
         $(pane).append(div);
         var projection = this.getProjection();
         var position = projection.fromLatLngToDivPixel(getLatLng());
@@ -141,7 +141,7 @@ $.WorldBank.CountryInfoOverlay = (function() {
       }
       
       this.draw = function() {
-        if (country.marker.map.getZoom() != drawn_for_zoom)
+        if (country.getMarker().map.getZoom() != drawn_for_zoom)
           this.hide();
       }
 

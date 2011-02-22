@@ -35,8 +35,8 @@ $(document).ready(function() {
   $("#Navigation div.option").click(function() {
       $(this).attr("selected", true);
       $(this).siblings().removeAttr("selected");
-      $.WorldBank.Country.setDataProperty($(this).text());
+      $.WorldBank.Country.changeData($(this).text());
   });
   
-  $.WorldBank.drawCountries();
+  $.WorldBank.Country.changeData("Undisbursed %");
 });
