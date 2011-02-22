@@ -27,7 +27,7 @@ $(document).ready(function() {
   });
   
   // Only for mobiles
-  $(window).bind("orientationchange", function() {
+  $(window).resize(function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
   });
   

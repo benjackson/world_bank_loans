@@ -111,3 +111,11 @@ body > .dialog {
   top: 0;
   bottom: 0;
 }
+
+.row > label {
+  left: 0;
+}
+
+.row > span {
+  left: 0;
+}
