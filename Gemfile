@@ -5,7 +5,7 @@ gem 'rails', '3.0.0.rc2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'pg'  # postgresql
+#gem 'pg'  # postgresql
 
 # Use HTTParty to make access to the Socrata API easier
 gem 'httparty'
