@@ -6,7 +6,7 @@
     :longitude => country.longitude,
     :link => country_path(country.id),
     :size_factor => country.disbursed_amount_factor,
-    :overlay_text => format_for_currency(country.disbursed_amount / 1000000000, country.currency) + "bn",
+    :overlay_text => format_for_map(country.disbursed_amount, country.currency),
     :marker_image_url => "/images/magenta-marker.png"
   }
 end.to_json.html_safe %>

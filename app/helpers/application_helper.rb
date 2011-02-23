@@ -1,11 +1,18 @@
 module ApplicationHelper
-  def format_for_currency(number, currency)
+  def format_for_map(number, currency, options = {})
+    number /= 1000000.0
+    options[:format] = "%u%n"
+    options[:format] = "%u<1" if number < 1
+    format_for_currency(number, currency, options)
+  end
+  
+  def format_for_currency(number, currency, options = {})
     case currency
-      when "GBP" then number_to_currency(number, :precision => 0, :unit => "&pound;")
-      when "EUR" then number_to_currency(number, :precision => 0, :unit => "&euro;")
-      when "USD" then number_to_currency(number, :precision => 0, :unit => "$")
-      else
-        number_to_currency(number, :precision => 0, :unit => currency + " ")
+      when "GBP" then number_to_currency(number, { :precision => 0, :unit => "&pound;" }.merge(options))
+      when "EUR" then number_to_currency(number, { :precision => 0, :unit => "&euro;" }.merge(options))
+      when "USD" then number_to_currency(number, { :precision => 0, :unit => "$" }.merge(options))
+    else
+      number_to_currency(number, { :precision => 0, :unit => currency + " " }.merge(options))
     end
   end
   

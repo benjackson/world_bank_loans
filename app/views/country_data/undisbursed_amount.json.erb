@@ -6,7 +6,7 @@
     :longitude => country.longitude,
     :link => country_path(country.id),
     :size_factor => country.undisbursed_amount_factor,
-    :overlay_text => format_for_currency(country.disbursement_remaining / 1000000000, country.currency) + "bn",
+    :overlay_text => format_for_map(country.disbursement_remaining, country.currency),
     :marker_image_url => "/images/aqua-marker.png"
   }
 end.to_json.html_safe %>
