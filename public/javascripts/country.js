@@ -1,3 +1,4 @@
+// A Class representing the text that goes over a data blob
 $.WorldBank.CountryOverlay = (function() {
     return function(new_country) {
       var country = new_country;
@@ -45,7 +46,6 @@ $.WorldBank.Country = (function() {
     var marker;       // the Google marker object
     var overlay;      // text to overlay over the marker
     var data;         // the data that makes it up
-    var bounds;
     var last_zoom;    // the last zoom we were at
     var self = this;  // handle closure scope
     
@@ -121,14 +121,6 @@ $.WorldBank.Country = (function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
     };
     
-    this.getBounds = function() {
-      bounds = bounds || new google.maps.LatLngBounds(
-        new google.maps.LatLng(this.getLatitude() - 1, this.getLongitude() - 1),
-        new google.maps.LatLng(this.getLatitude() + 1, this.getLongitude() + 1)
-        );
-      return bounds;
-    };
-    
     this.getMarkerSizeFactor = function() {
       return data.size_factor;
     };
@@ -141,14 +133,7 @@ $.WorldBank.Country = (function() {
       return data.overlay_text;
     };
     
-    // returns true if this country's marker can be seen on the map
-    this.isVisible = function() {
-      if (marker.getMap().getBounds().contains(this.getLatLng()))
-        return true;
-      else
-        return false;
-    };
-    
+    //****** Constructor ******
     // add this country to the list
     $.WorldBank.Country.countries[data.name] = this;
     
@@ -161,9 +146,6 @@ $.WorldBank.Country = (function() {
       title: data.name,
       flat: true    // no shadow
     });
-    
-    // draw markers at the appropriate size
-    changeMarkerForCurrentZoomLevel();
     
     overlay = new $.WorldBank.CountryOverlay(this);
     
@@ -190,21 +172,10 @@ $.WorldBank.Country = (function() {
   
 }) ();
 
-// All the Countrys created, by name
+// All the Countries created, by name
 $.WorldBank.Country.countries = []; 
 // The property used for displaying data on the map
 $.WorldBank.Country.data_property;
-
-// Returns all the countries currently visible on the map
-$.WorldBank.Country.getVisibleCountries = function() {
-  var visible_countries = [];
-  for (var country_name in this.countries) {
-    var country = this.countries[country_name];
-    if (country.isVisible())
-      visible_countries.push(country);
-  }
-  return visible_countries;
-}
 
 // Create or update a country or a bunch of countries from some JSON data
 $.WorldBank.Country.create_or_update = function(data) {

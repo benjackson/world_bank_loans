@@ -546,6 +546,7 @@ function slide1(fromPage, toPage, backwards, axis, cb)
 
 	scrollTo(0, 1);
 	toPage.setAttribute("selected", "true");
+	sendEvent("selected", toPage);
 	var percent = 100;
 	slide();
 	var timer = setInterval(slide, slideInterval);

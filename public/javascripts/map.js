@@ -5,10 +5,6 @@ $.WorldBank.the_map = null;
 $.WorldBank.map_center = new google.maps.LatLng(36, 8);
 
 $(document).ready(function() {
-  // hide the map out of sight while we set it up
-  //$("#MapContainer").css("left", "100%");
-  //$("#MapContainer").show();
-  
   $.WorldBank.the_map = new google.maps.Map(document.getElementById("map"), {
     center: $.WorldBank.map_center,
     mapTypeId: google.maps.MapTypeId.TERRAIN,
@@ -21,9 +17,13 @@ $(document).ready(function() {
     maxZoom: 6
   });
   
-  $("#MapContainer").one("aftertransition", function() {
+  $("#MapContainer").one("selected", function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
       $.WorldBank.the_map.setCenter($.WorldBank.map_center);
+      
+      $("#MapContainer").bind("selected", function() {
+          google.maps.event.trigger($.WorldBank.the_map, 'resize');
+      });
   });
   
   // resize the map when the window is resized
@@ -36,6 +36,7 @@ $(document).ready(function() {
       $.WorldBank.Country.changeData(this);
   });
   
+  // handle the welcome page clicks
   $("#view_undisbursed_loans").click(function() {
       $("#undisbursed_percent").trigger("click");
   });
@@ -44,6 +45,6 @@ $(document).ready(function() {
       $("#disbursed_percent").trigger("click");
   });
   
-  // Choose something to begin with
+  // Choose some data to view to begin with
   $("#undisbursed_percent").trigger("click");
 });
