@@ -2,7 +2,7 @@ $.WorldBank = {}   // namespace
 
 // the google map
 $.WorldBank.the_map = null;
-$.WorldBank.map_center = new google.maps.LatLng(36, 8);
+$.WorldBank.map_center = new google.maps.LatLng(40, 14);
 
 $(document).ready(function() {
   $.WorldBank.the_map = new google.maps.Map(document.getElementById("map"), {
