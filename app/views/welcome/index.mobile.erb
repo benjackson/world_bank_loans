@@ -9,7 +9,10 @@
       <%=image_tag "ctr_logo.jpg", :alt => "CTR Open Data Beta"%>
     </li>
     <li>
-      <%=link_to "View undisbursed loans", "#MapContainer"%>
+      <%=link_to "View undisbursed loans", "#MapContainer", :id => "view_undisbursed_loans"%>
+    </li>
+    <li>
+      <%=link_to "View disbursed loans", "#MapContainer", :id => "view_disbursed_loans"%>
     </li>
   </ul>
   <h2>Note -- the data in the app is provisional and often inaccurate. It does 
@@ -25,24 +28,24 @@
     <table>
       <tr>
         <td align="center">
-          <div id="undisbursed-percent" class="option" selected="true">
+          <div id="undisbursed_percent" class="option" selected="true">
             <div class="description">Undisbursed</div>
             <div class="symbol">%</div>
           </div>
         </td>
         <td align="center">
-          <div id="disbursed-percent" class="option">
+          <div id="disbursed_percent" class="option">
             <div class="description">Disbursed</div>
             <div class="symbol">%</div>
           </div>
         </td>
         <td align="center">
-          <div id="undisbursed-amount" class="option">
+          <div id="undisbursed_amount" class="option">
             <div class="description">Undisbursed</div>
             <div class="symbol">$</div>
           </div>
         <td align="center">
-          <div id="disbursed-amount" class="option">
+          <div id="disbursed_amount" class="option">
             <div class="description">Disbursed</div>
             <div class="symbol">$</div>
           </div>

@@ -35,8 +35,17 @@ $(document).ready(function() {
   $("#Navigation div.option").click(function() {
       $("#Navigation .option").removeAttr("selected");
       $(this).attr("selected", true);
-      $.WorldBank.Country.changeData($(this).id);
+      $.WorldBank.Country.changeData(this.id);
   });
   
-  $.WorldBank.Country.changeData("Undisbursed %");
+  $("#view_undisbursed_loans").click(function() {
+      $("#undisbursed_percent").trigger("click");
+  });
+  
+  $("#view_disbursed_loans").click(function() {
+      $("#disbursed_percent").trigger("click");
+  });
+  
+  // Choose something to begin with
+  $("#undisbursed_percent").trigger("click");
 });

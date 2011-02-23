@@ -92,6 +92,11 @@ class Country < Socrata::Data
     approved_amount - disbursed_amount
   end
   
+  # The disbursed amount as compared to all the other disbursed amounts
+  def disbursed_amount_factor
+    disbursed_amount.to_f / Country.max_disbursed_amount
+  end
+  
   # The undisbursed amount as compared to all the other undisbursed amounts
   def undisbursed_amount_factor
     disbursement_remaining.to_f / Country.max_disbursement_remaining
@@ -155,6 +160,12 @@ class Country < Socrata::Data
         return country if country.id == id
       end
       nil
+    end
+    
+    def max_disbursed_amount
+      highest = 0
+      all.each { |country| highest = country.disbursed_amount if country.disbursed_amount > highest }
+      highest
     end
     
     def max_disbursement_remaining

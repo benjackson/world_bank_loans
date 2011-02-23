@@ -232,6 +232,6 @@ $.WorldBank.Country.exists = function(data) {
 $.WorldBank.Country.changeData = function(to) {
   if (to != this.data_property) {
     this.data_property = to;
-    $.getJSON("/data/" + this.data_property, this.create_or_update);
+    $.getJSON("/country_data/" + this.data_property, this.create_or_update);
   }
 }

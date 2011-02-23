@@ -7,6 +7,6 @@
     :link => country_path(country.id),
     :size_factor => country.disbursement_remaining_factor,
     :overlay_text => "#{country.disbursement_remaining_percentage.round}%",
-    :marker_image_url => "/images/magenta-marker.png"
+    :marker_image_url => "/images/green-marker.png"
   }
 end.to_json.html_safe %>
