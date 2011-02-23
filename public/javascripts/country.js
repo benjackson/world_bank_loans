@@ -46,14 +46,24 @@ $.WorldBank.Country = (function() {
     var overlay;      // text to overlay over the marker
     var data;         // the data that makes it up
     var bounds;
+    var last_zoom;    // the last zoom we were at
     var self = this;  // handle closure scope
     
+    // Has the zoom changed at all?
+    var zoomHasChanged = function() {
+      if (last_zoom == null || last_zoom != marker.getMap().getZoom()) {
+        last_zoom = marker.getMap().getZoom();
+        return true;
+      } else {
+        return false;
+      }
+    }
+    
     var changeMarkerForCurrentZoomLevel = function() {
-      var zoom = $.WorldBank.the_map.getZoom();
       var size_factor = self.getMarkerSizeFactor();
       
       // Work out a nice marker size for display at whatever zoom we're looking at
-      var marker_size = size_factor * (Math.log(((zoom + 1) / 7)) + 1) * 100 + 28;
+      var marker_size = size_factor * (Math.log(((last_zoom + 1) / 7)) + 1) * 100 + 28;
       
       // The center of the circle
       var center = marker_size / 2;
@@ -158,8 +168,14 @@ $.WorldBank.Country = (function() {
     overlay = new $.WorldBank.CountryOverlay(this);
     
     // watch for a change of zoom
-    google.maps.event.addListener($.WorldBank.the_map, 'zoom_changed', function(event) {
-        changeMarkerForCurrentZoomLevel();
+    google.maps.event.addListener($.WorldBank.the_map, 'idle', function(event) {
+        if (zoomHasChanged()) {
+          // don't let the user get to zoom 0
+          if (last_zoom == 0)
+            marker.getMap().setZoom(1);
+          
+          changeMarkerForCurrentZoomLevel();
+        }
     });
     
     // add a reference back to this object

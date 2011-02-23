@@ -25,29 +25,28 @@ html,body {
   font-family: arial, sans-serif;
 }
 
-.size-0 { font-size: 6px; }
-.size-1 { font-size: 10px; }
-.size-2 { font-size: 14px; }
-.size-3 { font-size: 20px; }
-.size-0.zoom-5 { font-size: 6px; }
-.size-1.zoom-5 { font-size: 8px; }
-.size-2.zoom-5 { font-size: 10px; }
-.size-3.zoom-5 { font-size: 14px; }
-.size-0.zoom-4 { display: none; }
-.size-1.zoom-4 { display: none; }
-.size-2.zoom-4 { font-size: 8px; }
-.size-3.zoom-4 { font-size: 12px; }
-.size-0.zoom-3 { display: none; }
-.size-1.zoom-3 { display: none; }
-.size-2.zoom-3 { display: none; }
-.size-3.zoom-3 { font-size: 10px; }
-.size-0.zoom-2 { display: none; }
-.size-1.zoom-2 { display: none; }
-.size-2.zoom-2 { display: none; }
-.size-3.zoom-2 { font-size: 8px; }
+.size-0 { font-size: 12px; }
+.size-1 { font-size: 16px; }
+.size-2 { font-size: 20px; }
+.size-3 { font-size: 24px; }
+.size-0.zoom-5 { font-size: 10px; }
+.size-1.zoom-5 { font-size: 12px; }
+.size-2.zoom-5 { font-size: 16px; }
+.size-3.zoom-5 { font-size: 20px; }
+.size-0.zoom-4 { font-size: 10px; }
+.size-1.zoom-4 { font-size: 12px; }
+.size-2.zoom-4 { font-size: 16px; }
+.size-3.zoom-4 { font-size: 18px; }
+.size-0.zoom-3 { font-size: 8px; }
+.size-1.zoom-3 { font-size: 10px; }
+.size-2.zoom-3 { font-size: 12px; }
+.size-3.zoom-3 { font-size: 14px; }
+.size-0.zoom-2 { font-size: 6px; }
+.size-1.zoom-2 { font-size: 8px; }
+.size-2.zoom-2 { font-size: 10px; }
+.size-3.zoom-2 { font-size: 12px; }
 .zoom-0 { display: none; }
 .zoom-1 { display: none; }
-.zoom-2 { display: none; }
 
 #country-info-summary-container {
   position: absolute;
