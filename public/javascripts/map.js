@@ -36,11 +36,6 @@ $(document).ready(function() {
       $.WorldBank.Country.changeData(this);
   });
   
-  // handle the welcome page clicks
-  $("#view_undisbursed_loans").click(function() {
-      $("#undisbursed_percent").trigger("click");
-  });
-  
   $("#view_disbursed_loans").click(function() {
       $("#disbursed_percent").trigger("click");
   });
