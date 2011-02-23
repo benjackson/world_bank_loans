@@ -7,11 +7,7 @@ $.WorldBank.CountryOverlay = (function() {
       this.onAdd = function() {
         var pane = this.getPanes().floatPane;
         div = $("<div class=\"country-overlay\">" + country.getOverlayText() + "</div>");
-        $(div).click(function() {
-          country.getMarker().setAnimation(google.maps.Animation.BOUNCE);
-          setTimeout(function() { country.getMarker().setAnimation(null); }, 1000);
-          country.clicked(); 
-        });
+        $(div).click(function() { country.clicked(); });
         $(pane).append(div);
       }
       

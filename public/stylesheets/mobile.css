@@ -150,6 +150,25 @@ body > .dialog {
   bottom: 0;
 }
 
+#Report > fieldset {
+  bottom: 0;
+  position: absolute;
+}
+
+#Report fieldset > h1 {
+  font-weight: normal;
+  font-size: 12px;
+  text-shadow: none;
+}
+
+#Report fieldset > div {
+  margin: 8px 18px;
+}
+
+#Report fieldset > div:last-child {
+  margin-top: 20px;
+}
+
 .row > label {
   left: 0;
 }
