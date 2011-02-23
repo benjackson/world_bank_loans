@@ -17,18 +17,6 @@
   height: 100%;
 }
 
-body[orient="landscape"] .country-info-summary {
-  width: 220px;
-  height: 60px;
-  top: -30px;
-}
-
-body[orient="portrait"] .country-info-summary {
-  width: 110px;
-  height: 140px;
-  top: -70px;
-}
-
 #Welcome .information {
   background: white;
   border: 1px solid #bab0ba;
@@ -54,12 +42,6 @@ body[orient="portrait"] .country-info-summary {
 .ctr-logo img {
   position: relative;
   left: 12px;
-}
-
-#Welcome blockquote {
-  font-style: italic;
-  margin-left: 20px;
-  font-size: 12px;
 }
 
 #Welcome a {
@@ -100,11 +82,11 @@ body > .panel {
 }
 
 #Welcome li > a[selected], li > a:active {
-  background-image: url(t/default/listArrowSel.png), url(t/default/selection.png) !important;
+  background-image: url(t/default/listArrowSel.png);
 }
 
 #Welcome li > a[selected="progress"] {
-  background-image: url(t/default/loading.gif), url(t/default/selection.png) !important;
+  background-image: url(t/default/loading.gif);
 }
 
 #Navigation {

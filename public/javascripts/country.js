@@ -110,15 +110,17 @@ $.WorldBank.Country = (function() {
     
     // Update this country from the new data provided
     this.update = function(new_data) {
+      var map = marker.getMap();
+      marker.setMap(null);
       data = new_data;
       
       // re-draw the marker, since the data might have changed
       changeMarkerForCurrentZoomLevel();
       
+      marker.setMap(map);
+      
       // set the overlay text, since that might have changed also
       overlay.update();
-      
-      google.maps.event.trigger($.WorldBank.the_map, 'resize');
     };
     
     this.getMarkerSizeFactor = function() {
