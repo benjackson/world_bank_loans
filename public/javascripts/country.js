@@ -224,8 +224,8 @@ $.WorldBank.Country.changeData = function(button_div) {
   if (button_div.id != this.data_property) {
     this.data_property = button_div.id;
     $.getJSON("/country_data/" + this.data_property, function(data) {
-        $.WorldBank.Country.create_or_update(data);
         $(button_div).attr("selected", true);
+        $.WorldBank.Country.create_or_update(data);
     });
   }
 }
