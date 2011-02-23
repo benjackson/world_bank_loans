@@ -21,9 +21,9 @@ $(document).ready(function() {
       google.maps.event.trigger($.WorldBank.the_map, 'resize');
       $.WorldBank.the_map.setCenter($.WorldBank.map_center);
       
-      $("#MapContainer").bind("selected", function() {
-          google.maps.event.trigger($.WorldBank.the_map, 'resize');
-      });
+      //$("#MapContainer").bind("selected", function() {
+      //    google.maps.event.trigger($.WorldBank.the_map, 'resize');
+      //});
   });
   
   // resize the map when the window is resized
