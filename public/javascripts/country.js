@@ -34,7 +34,7 @@ $.WorldBank.CountryOverlay = (function() {
         this.draw();
       }
       
-      this.setMap($.WorldBank.the_map);
+      this.setMap(country.getMarker().getMap());
     }
 }) ();
 $.WorldBank.CountryOverlay.prototype = new google.maps.OverlayView;
@@ -151,7 +151,7 @@ $.WorldBank.Country = (function() {
       icon: null
     });
     // show it on the map
-    marker.setMap($.WorldBank.the_map);
+    marker.setMap($.WorldBank.TheMap.getMap());
     
     // add a reference back to this object
     marker.country = this;   
@@ -163,7 +163,7 @@ $.WorldBank.Country = (function() {
     overlay = new $.WorldBank.CountryOverlay(this);
     
     // watch for a change of zoom
-    google.maps.event.addListener($.WorldBank.the_map, 'idle', function(event) {
+    google.maps.event.addListener(marker.getMap(), 'idle', function(event) {
         if (zoomHasChanged()) {
           // don't let the user get to zoom 0
           if (last_zoom == 0)
@@ -228,7 +228,7 @@ $.WorldBank.Country.changeData = function(button_div) {
     $.getJSON("/country_data/" + this.data_property, function(data) {
         $(button_div).attr("selected", true);
         $.WorldBank.Country.create_or_update(data);
-        google.maps.event.trigger($.WorldBank.the_map, 'idle');
+        google.maps.event.trigger($.WorldBank.TheMap.getMap(), 'idle');
     });
   }
 }
