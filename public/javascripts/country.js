@@ -229,9 +229,14 @@ $.WorldBank.Country.exists = function(data) {
 }
 
 // Change what data we're looking at on the map
-$.WorldBank.Country.changeData = function(to) {
-  if (to != this.data_property) {
-    this.data_property = to;
-    $.getJSON("/country_data/" + this.data_property, this.create_or_update);
+$.WorldBank.Country.changeData = function(button_div) {
+  $("#Navigation .option").removeAttr("selected");
+  $(button_div).attr("selected", "progress");
+  if (button_div.id != this.data_property) {
+    this.data_property = button_div.id;
+    $.getJSON("/country_data/" + this.data_property, function(data) {
+        $.WorldBank.Country.create_or_update(data);
+        $(button_div).attr("selected", true);
+    });
   }
 }

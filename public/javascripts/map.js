@@ -33,9 +33,7 @@ $(document).ready(function() {
   
   // handle an option click
   $("#Navigation div.option").click(function() {
-      $("#Navigation .option").removeAttr("selected");
-      $(this).attr("selected", true);
-      $.WorldBank.Country.changeData(this.id);
+      $.WorldBank.Country.changeData(this);
   });
   
   $("#view_undisbursed_loans").click(function() {

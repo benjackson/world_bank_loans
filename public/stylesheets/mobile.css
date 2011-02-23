@@ -117,7 +117,7 @@ body > .panel {
   border-top: 1px solid #2d3642;
   border-bottom: 1px solid #6d84a2;
   background: url(t/default/toolbar.png) #6d84a2 repeat-x;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 #Navigation > table {
@@ -137,7 +137,9 @@ body > .panel {
   width: 50px;
   cursor: pointer;
   text-align: center;
+  border-radius: 3px;
   -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
   padding: 2px;
 }
 
@@ -149,6 +151,10 @@ body > .panel {
 
 #Navigation .description {
   font-size: 8px;
+}
+
+#Navigation div[selected="progress"] {
+  background: url(t/default/loading.gif) 18px 16px no-repeat;
 }
 
 #Navigation div[selected="true"] {
