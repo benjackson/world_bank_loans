@@ -228,25 +228,10 @@ $.WorldBank.Country.exists = function(data) {
     return false;
 }
 
-// Map the property name used in the Html to the data property
-$.WorldBank.Country.mapData = function(data_description) {
-  switch(data_description) {
-    case "Undisbursed %":
-      return "undisbursed-percent";
-    case "Disbursed %":
-      return "disbursed-percent";
-    case "Undisbursed $":
-      return "undisbursed-amount";
-  };
-  
-  return data_description;
-};
-
 // Change what data we're looking at on the map
-$.WorldBank.Country.changeData = function(data_property_or_description) {
-  var new_data_property = this.mapData(data_property_or_description);
-  if (new_data_property != this.data_property) {
-    this.data_property = new_data_property;
+$.WorldBank.Country.changeData = function(to) {
+  if (to != this.data_property) {
+    this.data_property = to;
     $.getJSON("/data/" + this.data_property, this.create_or_update);
   }
 }

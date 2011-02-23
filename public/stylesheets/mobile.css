@@ -120,31 +120,41 @@ body > .panel {
   opacity: 0.9;
 }
 
-#Navigation > fieldset {
+#Navigation > table {
   padding: 0;
   margin: 0;
-  line-height: 38px;
   border: 0;
   border-top: 1px solid #ccccd4;
   color: #666666;
-  font-size: 14px;
-  font-weight: bold;
+  width: 100%;
 }
 
-#Navigation > fieldset > div {
-  float: left;
-  width: 140px;
+#Navigation td {
+  padding: 0;
+}
+
+#Navigation td > div {
+  width: 50px;
   cursor: pointer;
-  border: 0;
   text-align: center;
-  margin-left: 20px;
-  margin-right: 20px;
+  -moz-border-radius: 3px;
+  padding: 2px;
+}
+
+#Navigation .symbol {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 28px;
+}
+
+#Navigation .description {
+  font-size: 8px;
 }
 
 #Navigation div[selected="true"] {
-  -webkit-border-image: url(/images/whiteGrad.png) 6;
-  -moz-border-image: url(/images/whiteGrad.png) 6;
+  background: url(/images/lighter-grad.png) top left repeat-x #777879;
   color: white;
+  cursor: auto;
 }
 
 body > .dialog {

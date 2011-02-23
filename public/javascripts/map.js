@@ -33,9 +33,9 @@ $(document).ready(function() {
   
   // handle an option click
   $("#Navigation div.option").click(function() {
+      $("#Navigation .option").removeAttr("selected");
       $(this).attr("selected", true);
-      $(this).siblings().removeAttr("selected");
-      $.WorldBank.Country.changeData($(this).text());
+      $.WorldBank.Country.changeData($(this).id);
   });
   
   $.WorldBank.Country.changeData("Undisbursed %");
