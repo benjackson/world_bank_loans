@@ -11,6 +11,7 @@ module ApplicationHelper
       when "GBP" then number_to_currency(number, { :precision => 0, :unit => "&pound;" }.merge(options))
       when "EUR" then number_to_currency(number, { :precision => 0, :unit => "&euro;" }.merge(options))
       when "USD" then number_to_currency(number, { :precision => 0, :unit => "$" }.merge(options))
+      when "ZAR" then number_to_currency(number, { :precision => 0, :unit => "R" }.merge(options))
     else
       number_to_currency(number, { :precision => 0, :unit => currency + " " }.merge(options))
     end
