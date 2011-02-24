@@ -8,9 +8,9 @@
     <span><%=format_for_currency(@country.disbursed_amount, @country.currency)%></span>
   </li>
   <li class="row">
-    <label>Projects</label>
+    <label>Disbursing Projects</label>
     <span><%=@country.projects.size%></span>
   </li>
-  <li class="group">Projects</li>
+  <li class="group">List of Disbursing Projects</li>
   <%= yield %>
 </ul>
