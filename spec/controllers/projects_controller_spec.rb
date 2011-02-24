@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ProjectsController do
   render_views
   
-  before { request.env["HTTP_AUTHORIZATION"] = "Basic " + Base64::encode64("plaldas:smoscoso") }
+  before { request.env["HTTP_AUTHORIZATION"] = "Basic " + Base64::encode64("#{ENV["HTTP_BASIC_USER"]}:#{ENV["HTTP_BASIC_PASSWORD"]}") }
   
   context "mobile format" do
     before { request.format = :mobile }

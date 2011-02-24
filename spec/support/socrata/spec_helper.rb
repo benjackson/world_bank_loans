@@ -1,7 +1,5 @@
 module Socrata
   module SpecHelper
-    FIXTURE_DIR = File.expand_path("../../../fixtures/socrata", __FILE__)
-
     def self.cache_all_fixtures
       fixture_files.each do |fixture_filename|
         fixture = json_fixture(fixture_filename)
@@ -12,12 +10,12 @@ module Socrata
     end
     
     def self.fixture_files
-      Dir.new(FIXTURE_DIR).select { |filename| filename =~ /.json$/ }
+      Dir.new(File.expand_path("../../../fixtures/socrata", __FILE__)).select { |filename| filename =~ /.json.gz$/ }
     end
     
     def self.json_fixture(filename)
       filename += ".json.gz" unless filename =~ /\.json.gz$/
-      JSON.parse(Zlib::GzipReader.open(File.join(FIXTURE_DIR, "#{filename}"), "rb") { |f| f.read } )
+      JSON.parse(Zlib::GzipReader.open(File.join(File.expand_path("../../../fixtures/socrata", __FILE__), filename)) { |f| f.read } )
     end
   end
   

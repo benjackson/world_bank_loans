@@ -19,6 +19,16 @@ module WorldBank
       country_hash.values
     end
     
+    def loans
+      country_hash if @loans.nil?
+      @loans
+    end
+    
+    def projects
+      country_hash if @projects.nil?
+      @projects
+    end
+    
     private
     # Get all rows of socrata data for this view and turn each into a Project
     # for a particular Country

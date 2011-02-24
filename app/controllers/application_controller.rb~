@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   
   private
   def set_age_header
-    response.headers['Cache-Control'] = 'public, max-age=604800'
+    response.headers['Cache-Control'] = 'public, max-age=28800'
   end
   
   def ask_for_a_username_and_password

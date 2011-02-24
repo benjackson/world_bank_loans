@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   
   def ask_for_a_username_and_password
     authenticate_or_request_with_http_basic("Please log in to use the World Bank's CTR Open Data Beta Application...") do |user_name, password|
-      user_name == "plaldas" && password == "smoscoso"
+      user_name == ENV["HTTP_BASIC_USER"] && password == ENV["HTTP_BASIC_PASSWORD"]
     end
   end
 end

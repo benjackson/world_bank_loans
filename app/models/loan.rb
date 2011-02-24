@@ -31,6 +31,8 @@ class Loan < Socrata::Data
   
   class << self
     def find(id)
+      return nil unless loans_data.loans
+      
       loans_data.loans.each do |loan|
         return loan if loan.id == id
       end
