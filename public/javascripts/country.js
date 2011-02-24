@@ -42,6 +42,9 @@ $.WorldBank.CountryOverlay.prototype = new google.maps.OverlayView;
 // class representing a Country, including the markers necessary to display it on the map
 $.WorldBank.Country = (function() {
   
+  var marker_scale = [ 1, 10, 30, 40, 60, 90, 100 ];
+  var marker_min = [ 10, 10, 14, 20, 28, 34, 40 ];
+    
   return function(data) {
     var marker;       // the Google marker object
     var overlay;      // text to overlay over the marker
@@ -61,12 +64,13 @@ $.WorldBank.Country = (function() {
     
     var changeMarkerForCurrentZoomLevel = function() {
       var size_factor = self.getMarkerSizeFactor();
+      if (size_factor < 0) size_factor = 0;
       
-      // Work out a nice marker size for display at whatever zoom we're looking at
-      var marker_size = size_factor * (Math.log(((last_zoom + 1) / 7)) + 1) * 100 + 28;
+      // Find a good size for the marker, depending on the zoom level
+      var marker_size = Math.round(marker_scale[last_zoom] * size_factor + marker_min[last_zoom]);
       
       // The center of the circle
-      var center = marker_size / 2;
+      var center = Math.round(marker_size / 2);
  
       // Set the icon size
       marker.setIcon(new google.maps.MarkerImage(
@@ -81,7 +85,7 @@ $.WorldBank.Country = (function() {
       marker.setShape({ type: "circle", coords: [center, center, center * 0.6] });
       
       // Set the z-index so that smaller circles appear over larger ones
-      marker.setZIndex(Math.round(1 - self.getMarkerSizeFactor() * 100));
+      marker.setZIndex(Math.round(1 - size_factor * 100));
     };
     
     this.getMarkerImageUrl = function() {
