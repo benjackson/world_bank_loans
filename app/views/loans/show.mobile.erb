@@ -1,4 +1,4 @@
-<div id="@loan-<%=@loan.id%>" title="Loan Detail" class="panel">
+<div id="loan-<%=@loan.id%>" title="Loan Detail" class="loan panel">
   <h2><%=@loan.project%></h2>
   
   <fieldset>
@@ -16,7 +16,7 @@
     </div>
     <% if @loan.last_disburse_date %>
       <div class="row">
-        <label>Last</label>
+        <label>Last Disbursal</label>
         <span><%=format_for_date(@loan.last_disburse_date)%></span>
       </div>
     <% end %>

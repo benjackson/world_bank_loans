@@ -206,6 +206,7 @@ $.WorldBank.Country.create_or_update = function(data) {
 // create a country from data returned by the server
 $.WorldBank.Country.create = function(data) {
   var country = new $.WorldBank.Country(data);
+  this.countries.push(country);
   return country;
 };
 

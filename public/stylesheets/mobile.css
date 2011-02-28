@@ -177,6 +177,10 @@ body > .dialog {
   left: 0;
 }
 
+.loan .row > span {
+  padding-left: 140px;
+}
+
 .country .row {
   position: relative;
   text-align: right;
