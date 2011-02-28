@@ -16,7 +16,7 @@ module Socrata
         end
         
         it "really shouldn't have any spaces in the key at all" do
-          subject.format_memcache_key("/views/1/test", :test => "with spaces  inside", :two => 2).should == "socrata:/views/1/test:{:test=>\"with_spaces_inside\",:two=>\"2\"}"
+          subject.format_memcache_key("/views/1/test", :test => "with spaces  inside", :two => 2).should == "socrata:/views/1/test:{:two=>\"2\",:test=>\"with_spaces_inside\"}"
         end
         
         it "shouldn't change the original query hash" do
