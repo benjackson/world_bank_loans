@@ -4,7 +4,7 @@ module Socrata
     
     base_uri "https://ctrpilot.socrata.com/api"
 
-    default_options[:headers] = {'Content-type' => 'application/json'}
+    default_options[:headers] = {'Content-type' => 'application/json', 'X-APP-TOKEN' => ENV["SOCRATA_APP_TOKEN"]}
     format :json
 
     def initialize(id = nil, params = {})
