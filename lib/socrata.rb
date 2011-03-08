@@ -4,6 +4,16 @@ module Socrata
     
     base_uri "https://ctrpilot.socrata.com/api"
 
+    if ENV["SOCRATA_APP_TOKEN"].blank?
+      raise <<-APP_TOKEN_MISSING
+        SOCRATA_APP_TOKEN environment variable missing
+        
+        You need to supply the app token for socrata access in the environment variable 'SOCRATA_APP_TOKEN'.
+        See the Socrata developer information for more details: http://dev.socrata.com/authentication
+        
+      APP_TOKEN_MISSING
+    end
+    
     default_options[:headers] = {'Content-type' => 'application/json', 'X-APP-TOKEN' => ENV["SOCRATA_APP_TOKEN"]}
     format :json
 
