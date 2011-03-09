@@ -4,6 +4,7 @@ $.WorldBank = {}   // namespace
 $.WorldBank.TheMap = function() {
   var map;
   var map_center;
+  var last_zoom;
   
   // Use browser geolocation to find the map center
   function findCenter() {
@@ -21,6 +22,16 @@ $.WorldBank.TheMap = function() {
     // do nothing. Use the default
   }
   
+  // Has the zoom changed since the last time we checked?
+  function zoomHasChanged() {
+    if (last_zoom == null || last_zoom != map.getZoom()) {
+        last_zoom = map.getZoom();
+        return true;
+      } else {
+        return false;
+      }
+  }
+  
   function initializeMap() {
     map = new google.maps.Map(document.getElementById("map"), {
       center: map_center,
@@ -36,42 +47,52 @@ $.WorldBank.TheMap = function() {
   }
   
   function initializeEvents() {
-    // The map is hidden to begin with, so we need to do some stuff when it is
-    // seen for the first time
-    $("#MapContainer").one("selected", firstView);
-    
     // resize the map when the window is resized
-    $(window).resize(function() {
-      google.maps.event.trigger(map, 'resize');
-    });
+    $("#MapContainer").bind("selected", resize);
+    $(window).resize(resize);
     
-    // handle an option click
-    $("#Navigation div.option").click(function() {
-        $.WorldBank.Country.changeData(this);
+    // watch for a change of zoom
+    google.maps.event.addListener(map, 'idle', function(event) {
+        // don't let the user get to zoom 0
+        if (map.getZoom() == 0)
+          map.setZoom(1);
+        
+        if (zoomHasChanged()) {
+          $.WorldBank.Country.zoomChangedTo(map.getZoom());
+        }
     });
     
     // handle the welcome page clicks
     $("#view_undisbursed_loans").click(function() {
-        $("#undisbursed_percent").trigger("click");
+        $.WorldBank.Country.loadNewData($("#undisbursed_percent")[0]);
     });
     
     $("#view_disbursed_loans").click(function() {
-        $("#disbursed_percent").trigger("click");
+        $.WorldBank.Country.loadNewData($("#disbursed_percent")[0]);
     });
   }
   
-  // The map is hidden to begin with, so we need to do some stuff when it is
-  // seen for the first time
-  function firstView() {
+  // Resize the map (usually because the window resized)
+  function resize() {
     google.maps.event.trigger(map, 'resize');
-    map.setCenter(map_center);
   }
   
   var self = {
     initialize: function() {
+      // Load the google maps API asynchronously
+      $("body").append("<script src=\"http://maps.google.com/maps/api/js?sensor=true&callback=$.WorldBank.TheMap.googleLoaded\" type=\"text/javascript\"></script>");
+    },
+    
+    googleLoaded: function() {
+      // The google API is now loaded, so we can do this:
       $.WorldBank.CountryOverlay.prototype = new google.maps.OverlayView;
+      
       findCenter();
       initializeMap();
+      
+      // Show some data to begin with
+      $.WorldBank.Country.loadNewData($("#" + data_to_view)[0]);
+      
       initializeEvents();
     },
     
@@ -81,8 +102,11 @@ $.WorldBank.TheMap = function() {
   return self;
 } ();
 
+// Show this by default
+var data_to_view = "undisbursed_percent";
+
 // Begin when ready
 $(document).ready(function () {
-  // Load the google maps API asynchronously
-  $("body").append("<script src=\"http://maps.google.com/maps/api/js?sensor=true&callback=$.WorldBank.TheMap.initialize\" type=\"text/javascript\"></script>");
+  $("#view_disbursed_loans").one("click", function() { data_to_view = "disbursed_percent"; });
+  $("#MapContainer").one("selected", $.WorldBank.TheMap.initialize);
 });
