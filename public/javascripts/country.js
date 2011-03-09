@@ -37,7 +37,6 @@ $.WorldBank.CountryOverlay = (function() {
       this.setMap(country.getMarker().getMap());
     }
 }) ();
-$.WorldBank.CountryOverlay.prototype = new google.maps.OverlayView;
 
 // class representing a Country, including the markers necessary to display it on the map
 $.WorldBank.Country = (function() {

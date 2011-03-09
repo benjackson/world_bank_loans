@@ -1,0 +1,17 @@
+embed_assets: on
+
+javascripts:
+  common:
+    - public/javascripts/jquery.js
+    - public/javascripts/rails.js
+  mobile:
+    - public/javascripts/iui.js
+    - public/javascripts/map.js
+    - public/javascripts/country.js
+    
+stylesheets:
+  mobile:
+    - public/stylesheets/world-bank-loans.css
+    - public/stylesheets/mobile.css
+    - public/stylesheets/iui.css
+    - public/stylesheets/t/default/default-theme.css

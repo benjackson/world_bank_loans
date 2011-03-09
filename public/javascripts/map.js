@@ -3,15 +3,11 @@ $.WorldBank = {}   // namespace
 // A wrapper around a google map
 $.WorldBank.TheMap = function() {
   var map;
-  var map_center = new google.maps.LatLng(40, 14);
-  
-  function initialize() {
-    initializeMap();
-    initializeEvents();
-  }
+  var map_center;
   
   // Use browser geolocation to find the map center
   function findCenter() {
+    map_center = new google.maps.LatLng(40, 14);
     if (navigator && navigator.geolocation)
       navigator.geolocation.getCurrentPosition(locationFound, locationNotFound);
   }
@@ -72,14 +68,21 @@ $.WorldBank.TheMap = function() {
   }
   
   var self = {
+    initialize: function() {
+      $.WorldBank.CountryOverlay.prototype = new google.maps.OverlayView;
+      findCenter();
+      initializeMap();
+      initializeEvents();
+    },
+    
     getMap: function() { return map; }
   };
   
-  // Might as well start this off at any time?
-  findCenter();
-  
-  // Begin when ready
-  $(document).ready(initialize);
-      
   return self;
 } ();
+
+// Begin when ready
+$(document).ready(function () {
+  // Load the google maps API asynchronously
+  $("body").append("<script src=\"http://maps.google.com/maps/api/js?sensor=true&callback=$.WorldBank.TheMap.initialize\" type=\"text/javascript\"></script>");
+});

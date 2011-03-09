@@ -23,6 +23,9 @@ gem 'jquery-rails', '>= 0.2.6'
 # gem 'unicorn'
 gem 'thin'
 
+# Javascript and css compression
+gem "jammit", :git => "git://github.com/documentcloud/jammit.git"
+
 # Deploy with Capistrano
 # gem 'capistrano'
 
