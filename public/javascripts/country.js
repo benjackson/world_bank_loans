@@ -3,6 +3,7 @@ $.WorldBank.CountryOverlay = (function() {
     return function(new_country) {
       var country = new_country;
       var div;
+      var last_zoom = -1;
       
       this.onAdd = function() {
         var pane = this.getPanes().floatPane;
@@ -12,25 +13,32 @@ $.WorldBank.CountryOverlay = (function() {
       }
       
       this.onRemove = function() {
+        $(div).unbind("click");
         $(div).remove();
       }
       
       this.draw = function() {
-        div.removeClass("zoom-0 zoom-1 zoom-2 zoom-3 zoom-4 zoom-5 zoom-6");
-        div.addClass("zoom-" + country.getMarker().getMap().getZoom());
-        
-        div.removeClass("size-0 size-1 size-2 size-3");
-        div.addClass("size-" + Math.round(country.getMarkerSizeFactor() * 3)); 
-        
-        var projection = this.getProjection();
-        var position = projection.fromLatLngToDivPixel(country.getLatLng());
-        div.css('left', position.x - div.width() / 2);
-        div.css('top', position.y - div.height() / 2);
+        var potential_new_zoom = country.getMarker().getMap().getZoom();
+        if (potential_new_zoom != last_zoom) {
+          div.removeClass("zoom-0 zoom-1 zoom-2 zoom-3 zoom-4 zoom-5 zoom-6");
+          div.addClass("zoom-" + potential_new_zoom);
+          
+          div.removeClass("size-0 size-1 size-2 size-3");
+          div.addClass("size-" + Math.round(country.getMarkerSizeFactor() * 3));
+          
+          var projection = this.getProjection();
+          var position = projection.fromLatLngToDivPixel(country.getLatLng());
+          div.css('left', position.x - div.width() / 2);
+          div.css('top', position.y - div.height() / 2);
+          
+          last_zoom = potential_new_zoom;
+        }
       }
       
       // Update the overlay
       this.update = function() {
         div.html(country.getOverlayText());
+        last_zoom = -1;
         this.draw();
       }
       
@@ -113,17 +121,18 @@ $.WorldBank.Country = (function() {
     
     // Update this country from the new data provided
     this.update = function(new_data) {
+      data = new_data;
+      
+      // set the overlay text, since that might have changed also
+      overlay.update();
+      
       var map = marker.getMap();
       marker.setMap(null);
-      data = new_data;
       
       // re-draw the marker, since the data might have changed
       changeMarkerForCurrentZoomLevel();
       
       marker.setMap(map);
-      
-      // set the overlay text, since that might have changed also
-      overlay.update();
     };
     
     this.getMarkerSizeFactor = function() {
@@ -167,13 +176,11 @@ $.WorldBank.Country = (function() {
     
     // watch for a change of zoom
     google.maps.event.addListener(marker.getMap(), 'idle', function(event) {
-        if (zoomHasChanged()) {
-          // don't let the user get to zoom 0
-          if (last_zoom == 0)
-            marker.getMap().setZoom(1);
-          
-          changeMarkerForCurrentZoomLevel();
-        }
+        // don't let the user get to zoom 0
+        if (marker.getMap().getZoom() == 0)
+          marker.getMap().setZoom(1);
+        
+        if (zoomHasChanged()) changeMarkerForCurrentZoomLevel();
     });
   }
   

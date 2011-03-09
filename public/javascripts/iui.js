@@ -585,6 +585,7 @@ function slide2(fromPage, toPage, backwards, cb)
 	var fromEnd = 'translateX(' + (backwards ? '100%' : '-100%') + ')';
 	toPage.style.webkitTransform = toStart;
 	toPage.setAttribute("selected", "true");
+	sendEvent("selected", toPage);
 	toPage.style.webkitTransitionDuration = '';	  // Turn transitions back on
 	function startTrans()
 	{
