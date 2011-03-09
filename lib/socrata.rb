@@ -27,7 +27,7 @@ module Socrata
     # Perform a get of the data and transform it into ruby from json
     def get_json(*args)
       result = get(*args)
-      JSON.parse(result.body)
+      ::JSON.parse(result.body)
     end
     
     def get(*args)
