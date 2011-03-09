@@ -9,6 +9,7 @@ gem 'rails', '3.0.0.rc2'
 
 # Use HTTParty to make access to the Socrata API easier
 gem 'httparty'
+get 'json'
 
 # Use Dalli memcaching
 gem 'dalli'
