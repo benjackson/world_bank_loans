@@ -19,13 +19,9 @@ gem 'will_paginate'
 # Use jquery instead of prototype
 gem 'jquery-rails', '>= 0.2.6'
 
-# Use unicorn as the web server
-# gem 'unicorn'
-gem 'thin'
-
 # Javascript and css compression
 gem "jammit", :git => "git://github.com/documentcloud/jammit.git"
-
+   
 # Deploy with Capistrano
 # gem 'capistrano'
 
@@ -49,4 +45,7 @@ group :development, :test do
    gem 'autotest'
    gem 'launchy'
    gem 'heroku'
+   
+   # use thin as the local web server
+   gem 'thin'
 end
