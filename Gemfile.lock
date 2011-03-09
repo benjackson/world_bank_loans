@@ -172,6 +172,7 @@ DEPENDENCIES
   httparty
   jammit!
   jquery-rails (>= 0.2.6)
+  json
   launchy
   rails (= 3.0.0.rc2)
   rspec-rails
