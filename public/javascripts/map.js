@@ -6,6 +6,9 @@ $.WorldBank.TheMap = function() {
   var map_center;
   var last_zoom;
   
+  // Show this by default
+  var data_to_view = "undisbursed_percent";
+  
   // Use browser geolocation to find the map center
   function findCenter() {
     map_center = new google.maps.LatLng(40, 14);
@@ -15,7 +18,7 @@ $.WorldBank.TheMap = function() {
   
   function locationFound(position) {
     map_center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    if (map) map.setCenter(map_center);
+    if (map) map.panTo(map_center);
   }
   
   function locationNotFound() {
@@ -77,6 +80,12 @@ $.WorldBank.TheMap = function() {
     google.maps.event.trigger(map, 'resize');
   }
   
+  // Begin when ready
+  $(document).ready(function () {
+    $("#view_disbursed_loans").one("click", function() { data_to_view = "disbursed_percent"; });
+    $("#MapContainer").one("selected", $.WorldBank.TheMap.initialize);
+  });
+
   var self = {
     initialize: function() {
       // Load the google maps API asynchronously
@@ -102,11 +111,4 @@ $.WorldBank.TheMap = function() {
   return self;
 } ();
 
-// Show this by default
-var data_to_view = "undisbursed_percent";
 
-// Begin when ready
-$(document).ready(function () {
-  $("#view_disbursed_loans").one("click", function() { data_to_view = "disbursed_percent"; });
-  $("#MapContainer").one("selected", $.WorldBank.TheMap.initialize);
-});
