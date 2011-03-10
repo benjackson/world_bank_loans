@@ -66,7 +66,7 @@ $.WorldBank.TheMap = function() {
           map.setZoom(1);
         
         if (zoomHasChanged()) {
-          $.WorldBank.Country.zoomChangedTo(map.getZoom());
+          markers.draw();
         }
     });
     

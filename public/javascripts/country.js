@@ -23,7 +23,7 @@ $.WorldBank.CountryMarkersOverlay = (function() {
         var fragment = document.createDocumentFragment();
         var countries = $.WorldBank.Country.all();
         
-        for (var i in countries) {
+        for (var i = 0; i < countries.length; i++) {
           var country = countries[i];
           var position = projection.fromLatLngToDivPixel(country.getLatLng());
           var marker_element = country.getMarkerElement(position)
@@ -53,52 +53,34 @@ $.WorldBank.Country = (function() {
   var marker_min = [ 10, 10, 14, 20, 28, 34, 40 ];
     
   return function(data) {
-    var map = $.WorldBank.TheMap.getMap();
     var data;         // the data that makes it up
-    var last_zoom = map.getZoom();    // the last zoom we were at
+    var map = $.WorldBank.TheMap.getMap();
     var self = this;  // handle closure scope
-    
-    var changeMarkerForZoom = function(zoom) {
-      var size_factor = self.getMarkerSizeFactor();
-      if (size_factor < 0) size_factor = 0;
-      
-      // Find a good size for the marker, depending on the zoom level
-      var marker_size = Math.round(marker_scale[zoom] * size_factor + marker_min[zoom]);
-      
-      // The center of the circle
-      var center = Math.round(marker_size / 2);
- 
-      // Set the icon size
-      marker.setIcon(new google.maps.MarkerImage(
-        self.getMarkerImageUrl(),
-        new google.maps.Size(marker_size, marker_size),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(center, center),
-        new google.maps.Size(marker_size, marker_size)
-        ));
-      
-      // Set the clickable shape
-      marker.setShape({ type: "circle", coords: [center, center, center * 0.6] });
-      
-      // Set the z-index so that smaller circles appear over larger ones
-      marker.setZIndex(Math.round(1 - size_factor * 100));
-    };
     
     var markerImageHtml = function(marker_size) {
       return "<img src=\"" + self.getMarkerImageUrl() + "\" style=\"width: "
         + marker_size + "px; height: " + marker_size + "px;\"/>";
     };
     
+    var markerOverlayHtml = function(marker_size) {
+      return "<div class=\"marker-overlay " 
+      + zoomClass() + " "
+      + sizeClass() + "\" style=\"left: 0; top: 0; width: "
+      + marker_size + "px; height: "
+      + marker_size + "px; line-height: "
+      + marker_size + "px;\">" + self.getOverlayText() + "</div>";
+    };
+    
     var markerSizeFactor = function() {
       return data.size_factor;
     };
     
-    this.getZoomClass = function() {
-      return "zoom-" + last_zoom;
+    var zoomClass = function() {
+      return "zoom-" + map.getZoom();
     };
     
-    this.getSizeClass = function() {
-      return Math.round(markerSizeFactor() * 3);
+    var sizeClass = function() {
+      return "size-" + Math.round(markerSizeFactor() * 3);
     };
     
     // Constructs a DOM element representing this country,
@@ -109,19 +91,22 @@ $.WorldBank.Country = (function() {
       if (size_factor < 0) size_factor = 0;
       
       // Find a good size for the marker, depending on the zoom level
-      var marker_size = Math.round(marker_scale[last_zoom] * size_factor + marker_min[last_zoom]);
+      var marker_size = Math.round(marker_scale[map.getZoom()] * size_factor + marker_min[map.getZoom()]);
       var half_marker = Math.round(marker_size / 2);
       
       var x = position.x - half_marker;
       var y = position.y - half_marker;
       
       // Set the z-index so that smaller circles appear over larger ones
-      //marker.setZIndex(Math.round(1 - size_factor * 100));
+      var z_index = Math.round(1 - size_factor * 100);
       
-      return $("<div class=\"country-marker\" style=\"left: "
+      return $("<div id=\"" + this.getId() + "\" class=\"country-marker\" style=\"left: "
         + x + "px; top: " + y + "px; width: "
-        + marker_size + "px; height: " + marker_size + "px;\">"
-        + markerImageHtml(marker_size) + "</div>").get(0);
+        + marker_size + "px; height: " + marker_size + "px; z-index: "
+        + z_index + "\">"
+        + markerImageHtml(marker_size) 
+        + markerOverlayHtml(marker_size)
+        + "</div>").get(0);
     };
     
     this.getMarkerImageUrl = function() {
@@ -131,10 +116,6 @@ $.WorldBank.Country = (function() {
     this.clicked = function(event) {
       window.iui.showPageByHref(self.getLink());
     };
-    
-    this.getMarker = function() {
-      return marker;
-    }
        
     this.getLatitude = function() {
       return data.latitude;
@@ -148,6 +129,10 @@ $.WorldBank.Country = (function() {
       return new google.maps.LatLng(this.getLatitude(), this.getLongitude());
     };
     
+    this.getId = function() {
+      return data.id;
+    };
+    
     this.getName = function() {
       return data.name;
     };
@@ -155,13 +140,6 @@ $.WorldBank.Country = (function() {
     // Update this country from the new data provided
     this.update = function(new_data) {
       data = new_data;
-    };
-    
-    // The map's zoom level has changed!
-    this.zoomChangedTo = function(new_zoom) {
-      // Update the overlay
-      //overlay.zoomChangedTo(new_zoom);
-      //changeMarkerForZoom(new_zoom);
     };
     
     this.getLink = function() {
@@ -225,14 +203,6 @@ $.WorldBank.Country.exists = function(data) {
     return true;
   else
     return false;
-}
-
-// Update all the markers and their labels
-$.WorldBank.Country.zoomChangedTo = function(new_zoom) {
-  for (var i = 0; i < this.countries.length; i++) {
-    var country = this.countries[i];
-    country.zoomChangedTo(new_zoom);
-  }
 }
 
 // Change what data we're looking at on the map
