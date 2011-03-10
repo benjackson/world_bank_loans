@@ -29,6 +29,9 @@ $.WorldBank.CountryMarkersOverlay = (function() {
       this.draw = function(force) {
         if (!force && zoomHasntChanged()) return;
         
+        // Remove all events
+        $(".country-marker").unbind("click");
+        
         // Remove all markers
         div.empty();
         
@@ -113,13 +116,18 @@ $.WorldBank.Country = (function() {
       // Set the z-index so that smaller circles appear over larger ones
       var z_index = Math.round(1 - size_factor * 100);
       
-      return $("<div id=\"" + this.getId() + "\" class=\"country-marker\" style=\"left: "
+      var div = $("<div class=\"country-marker\" style=\"left: "
         + x + "px; top: " + y + "px; width: "
         + marker_size + "px; height: " + marker_size + "px; z-index: "
         + z_index + "\">"
         + markerImageHtml(marker_size) 
         + markerOverlayHtml(marker_size)
-        + "</div>").get(0);
+        + "</div>");
+      
+      // Add the click event
+      div.click(this.clicked);
+      
+      return div.get(0);
     };
     
     this.getMarkerImageUrl = function() {
