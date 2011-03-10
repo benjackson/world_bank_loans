@@ -5,6 +5,7 @@ $.WorldBank.TheMap = function() {
   var map;
   var map_center;
   var last_zoom;
+  var markers;
   
   // Show this by default
   var data_to_view = "undisbursed_percent";
@@ -49,6 +50,10 @@ $.WorldBank.TheMap = function() {
     });
   }
   
+  function initializeMarkers() {
+    markers = new $.WorldBank.CountryMarkersOverlay(map);
+  }
+  
   function initializeEvents() {
     // resize the map when the window is resized
     $("#MapContainer").bind("selected", resize);
@@ -67,11 +72,11 @@ $.WorldBank.TheMap = function() {
     
     // handle the welcome page clicks
     $("#view_undisbursed_loans").click(function() {
-        $.WorldBank.Country.loadNewData($("#undisbursed_percent")[0]);
+        $.WorldBank.Country.load($("#undisbursed_percent")[0]);
     });
     
     $("#view_disbursed_loans").click(function() {
-        $.WorldBank.Country.loadNewData($("#disbursed_percent")[0]);
+        $.WorldBank.Country.load($("#disbursed_percent")[0]);
     });
   }
   
@@ -83,7 +88,7 @@ $.WorldBank.TheMap = function() {
   // Begin when ready
   $(document).ready(function () {
     $("#view_disbursed_loans").one("click", function() { data_to_view = "disbursed_percent"; });
-    $("#MapContainer").one("selected", $.WorldBank.TheMap.initialize);
+    $("#MapContainer").one("selected", self.initialize);
   });
 
   var self = {
@@ -93,15 +98,15 @@ $.WorldBank.TheMap = function() {
     },
     
     googleLoaded: function() {
-      // The google API is now loaded, so we can do this:
-      $.WorldBank.CountryOverlay.prototype = new google.maps.OverlayView;
+      $(window).trigger("google_ready");
       
       findCenter();
       initializeMap();
       
       // Show some data to begin with
-      $.WorldBank.Country.loadNewData($("#" + data_to_view)[0]);
+      $.WorldBank.Country.load($("#" + data_to_view)[0]);
       
+      initializeMarkers();
       initializeEvents();
     },
     

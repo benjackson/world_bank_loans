@@ -17,6 +17,10 @@ html,body {
   border: 1px solid black;
 }
 
+.country-marker {
+  position: absolute;
+}
+
 .country-overlay {
   position: absolute;
   color: white;
