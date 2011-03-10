@@ -16,7 +16,6 @@ $.WorldBank.CountryMarkersOverlay = (function() {
       };
       
       this.draw = function() {
-        var zoom = map.getZoom();
         // Remove all markers
         div.empty();
         
@@ -27,13 +26,8 @@ $.WorldBank.CountryMarkersOverlay = (function() {
         for (var i in countries) {
           var country = countries[i];
           var position = projection.fromLatLngToDivPixel(country.getLatLng());
-          var size = Math.round(country.getMarkerSizeFactor() * 3);
-          var marker = $("<div class=\"country-marker zoom-" 
-            + zoom + " size-" + size + "\" style=\"left: "
-            + position.x + "px; top: " + position.y + "px\">" 
-            + country.getName() + "</div>");
-          
-          fragment.appendChild(marker.get(0));
+          var marker_element = country.getMarkerElement(position)
+          fragment.appendChild(marker_element);
         }
         
         div.append(fragment);
@@ -52,59 +46,6 @@ $(window).one("google_ready", function() {
     $.WorldBank.CountryMarkersOverlay.prototype = new google.maps.OverlayView;
 });
 
-// A Class representing the text that goes over a data blob
-$.WorldBank.CountryOverlay = (function() {
-    return function(new_country) {
-      var country = new_country;
-      var div;
-      var projection;
-      
-      this.onAdd = function() {
-        var pane = this.getPanes().floatPane;
-        div = $("<div class=\"country-overlay\">" + country.getOverlayText() + "</div>");
-        projection = this.getProjection();
-        $(div).click(function() { country.clicked(); });
-        $(pane).append(div);
-      };
-      
-      this.onRemove = function() {
-        $(div).unbind("click");
-        $(div).remove();
-      };
-      
-      this.draw = function() {
-        var position = projection.fromLatLngToDivPixel(country.getLatLng());
-        div.css('left', position.x - div.width() / 2);
-        div.css('top', position.y - div.height() / 2);
-      };
-      
-      // Update the overlay
-      this.update = function() {
-        div.html(country.getOverlayText());
-        this.draw();
-      };
-      
-      // The map's zoom has changed!
-      this.zoomChangedTo = function(new_zoom) {
-        // Set the CSS for this label's zoom and size
-        div.removeClass("zoom-0 zoom-1 zoom-2 zoom-3 zoom-4 zoom-5 zoom-6");
-        div.addClass("zoom-" + new_zoom);
-        
-        div.removeClass("size-0 size-1 size-2 size-3");
-        div.addClass("size-" + Math.round(country.getMarkerSizeFactor() * 3));
-        
-        this.draw();
-      };
-      
-      this.setMap(country.getMarker().getMap());
-    };
-}) ();
-
-$(window).one("google_ready", function() {
-    // The google API is now loaded, so we can do this:
-    $.WorldBank.CountryOverlay.prototype = new google.maps.OverlayView;
-});
-
 // class representing a Country, including the markers necessary to display it on the map
 $.WorldBank.Country = (function() {
   
@@ -113,10 +54,8 @@ $.WorldBank.Country = (function() {
     
   return function(data) {
     var map = $.WorldBank.TheMap.getMap();
-    var marker;       // the Google marker object
-    var overlay;      // text to overlay over the marker
     var data;         // the data that makes it up
-    var last_zoom;    // the last zoom we were at
+    var last_zoom = map.getZoom();    // the last zoom we were at
     var self = this;  // handle closure scope
     
     var changeMarkerForZoom = function(zoom) {
@@ -145,9 +84,49 @@ $.WorldBank.Country = (function() {
       marker.setZIndex(Math.round(1 - size_factor * 100));
     };
     
+    var markerImageHtml = function(marker_size) {
+      return "<img src=\"" + self.getMarkerImageUrl() + "\" style=\"width: "
+        + marker_size + "px; height: " + marker_size + "px;\"/>";
+    };
+    
+    var markerSizeFactor = function() {
+      return data.size_factor;
+    };
+    
+    this.getZoomClass = function() {
+      return "zoom-" + last_zoom;
+    };
+    
+    this.getSizeClass = function() {
+      return Math.round(markerSizeFactor() * 3);
+    };
+    
+    // Constructs a DOM element representing this country,
+    // showing a marker blob of the relevant size and some
+    // text overlayed on top
+    this.getMarkerElement = function(position) {
+      var size_factor = markerSizeFactor();
+      if (size_factor < 0) size_factor = 0;
+      
+      // Find a good size for the marker, depending on the zoom level
+      var marker_size = Math.round(marker_scale[last_zoom] * size_factor + marker_min[last_zoom]);
+      var half_marker = Math.round(marker_size / 2);
+      
+      var x = position.x - half_marker;
+      var y = position.y - half_marker;
+      
+      // Set the z-index so that smaller circles appear over larger ones
+      //marker.setZIndex(Math.round(1 - size_factor * 100));
+      
+      return $("<div class=\"country-marker\" style=\"left: "
+        + x + "px; top: " + y + "px; width: "
+        + marker_size + "px; height: " + marker_size + "px;\">"
+        + markerImageHtml(marker_size) + "</div>").get(0);
+    };
+    
     this.getMarkerImageUrl = function() {
       return data["marker_image_url"];
-    }
+    };
     
     this.clicked = function(event) {
       window.iui.showPageByHref(self.getLink());
@@ -183,10 +162,6 @@ $.WorldBank.Country = (function() {
       // Update the overlay
       //overlay.zoomChangedTo(new_zoom);
       //changeMarkerForZoom(new_zoom);
-    };
-    
-    this.getMarkerSizeFactor = function() {
-      return data.size_factor;
     };
     
     this.getLink = function() {
