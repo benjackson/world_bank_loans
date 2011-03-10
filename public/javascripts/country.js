@@ -250,13 +250,14 @@ $.WorldBank.Country.load = function(button_div) {
   $(button_div).attr("selected", "progress");
   
   var data_url = "/country_data/" + button_div.id;
-  if (localStorage[data_url]) {
+  var key = button_div.id;
+  if (localStorage[key]) {
     // Use the cached data
-    this.changeData($.parseJSON(localStorage[data_url]));
+    this.changeData($.parseJSON(localStorage[key]));
     $(button_div).attr("selected", true);
   } else {
     $.get(data_url + ".json", function(data) {
-        localStorage[data_url] = data;
+        localStorage[key] = data;
         $.WorldBank.Country.changeData($.parseJSON(data));
         $(button_div).attr("selected", true);
     }, "text");
