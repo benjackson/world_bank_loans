@@ -26,8 +26,8 @@ $.WorldBank.CountryMarkersOverlay = (function() {
         div.remove();
       };
       
-      this.draw = function() {
-        if (zoomHasntChanged()) return;
+      this.draw = function(force) {
+        if (!force && zoomHasntChanged()) return;
         
         // Remove all markers
         div.empty();
@@ -221,6 +221,8 @@ $.WorldBank.Country.exists = function(data) {
 // Change what data we're looking at on the map
 $.WorldBank.Country.changeData = function(data) {
   $.WorldBank.Country.create_or_update(data);
+  
+  $.WorldBank.TheMap.redrawMarkers();
   
   // Put the events back in place
   $("#Navigation div.option").not("#Navigation .option[selected]").click(function() {
