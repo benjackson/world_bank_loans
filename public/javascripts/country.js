@@ -4,6 +4,17 @@ $.WorldBank.CountryMarkersOverlay = (function() {
       var map = the_map;
       var div = $("<div class=\"country-markers\"></div>");  
       var projection;
+      var last_zoom = -1;
+      
+      // Return true if the zoom is the same as last time
+      var zoomHasntChanged = function() {
+        if (map.getZoom() != last_zoom) {
+          last_zoom = map.getZoom();
+          return false;
+        } else {
+          return true;
+        }
+      };
       
       this.onAdd = function() {
         projection = this.getProjection();
@@ -16,6 +27,8 @@ $.WorldBank.CountryMarkersOverlay = (function() {
       };
       
       this.draw = function() {
+        if (zoomHasntChanged()) return;
+        
         // Remove all markers
         div.empty();
         

@@ -60,15 +60,15 @@ $.WorldBank.TheMap = function() {
     $(window).resize(resize);
     
     // watch for a change of zoom
-    google.maps.event.addListener(map, 'idle', function(event) {
-        // don't let the user get to zoom 0
-        if (map.getZoom() == 0)
-          map.setZoom(1);
-        
-        if (zoomHasChanged()) {
-          markers.draw();
-        }
-    });
+    // google.maps.event.addListener(map, 'idle', function(event) {
+        // // don't let the user get to zoom 0
+        // if (map.getZoom() == 0)
+          // map.setZoom(1);
+        // 
+        // if (zoomHasChanged()) {
+          // markers.draw();
+        // }
+    // });
     
     // handle the welcome page clicks
     $("#view_undisbursed_loans").click(function() {
@@ -88,7 +88,8 @@ $.WorldBank.TheMap = function() {
   // Begin when ready
   $(document).ready(function () {
     $("#view_disbursed_loans").one("click", function() { data_to_view = "disbursed_percent"; });
-    $("#MapContainer").one("selected", self.initialize);
+    self.initialize();
+    $("#MapContainer").one("aftertransition", function() { map.panTo(map_center); });
   });
 
   var self = {
